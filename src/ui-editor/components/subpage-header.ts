@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-@customElement("subpage-header")
+@customElement("pfcp-multi-subpage-header")
 export class SubpageHeader extends LitElement {
   public hass!: HomeAssistant;
   @property({ attribute: false }) public config!: PowerFlowCardPlusConfig;
@@ -52,6 +52,6 @@ export class SubpageHeader extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "subpage-header": SubpageHeader;
+    "pfcp-multi-subpage-header": SubpageHeader;
   }
 }

@@ -52,13 +52,13 @@ import { sortIndividualObjects } from "@/utils/sort-individual-objects";
 const circleCircumference = 238.76104;
 
 registerCustomCard({
-  type: "power-flow-card-plus",
-  name: "Power Flow Card Plus",
+  type: "power-flow-card-plus-multi",
+  name: "Power Flow Card Plus (Multi)",
   description:
     "An extended version of the power flow card with richer options, advanced features and a few small UI enhancements. Inspired by the Energy Dashboard.",
 });
 
-@customElement("power-flow-card-plus")
+@customElement("power-flow-card-plus-multi")
 export class PowerFlowCardPlus extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private _config = {} as PowerFlowCardPlusConfig;
@@ -182,7 +182,7 @@ export class PowerFlowCardPlus extends LitElement {
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import("./ui-editor/ui-editor");
-    return document.createElement("power-flow-card-plus-editor");
+    return document.createElement("power-flow-card-plus-multi-editor");
   }
 
   public static getStubConfig(hass: HomeAssistant): object {

@@ -45,8 +45,16 @@
 
 ## Fork additions: Multiple Batteries, Multiple PV & unlimited Individual devices
 
+> [!IMPORTANT]
+> **This fork uses its own card type so it can run side by side with the original card.**
+> - Card type in YAML: **`custom:power-flow-card-plus-multi`**
+> - JavaScript resource file: **`power-flow-card-plus-multi.js`**
+> - Name in the card picker: **“Power Flow Card Plus (Multi)”**
+>
+> Every custom element in this bundle is uniquely named, so installing both the original `power-flow-card-plus` and this `-multi` fork at the same time does not clash. Add the fork as a separate dashboard resource pointing to `power-flow-card-plus-multi.js`.
+
 > [!NOTE]
-> These options are **additions of this fork** (`sphings79/power-flow-card-plus`) and are not part of the upstream card. Everything else works exactly like upstream; existing configurations keep working unchanged.
+> The `sources`, `batteries` and `max_individual_in_grid` options are **additions of this fork** (`sphings79/power-flow-card-plus`) and are not part of the upstream card. Everything else works exactly like upstream; an upstream configuration keeps working once you switch its `type:` to `custom:power-flow-card-plus-multi`.
 
 This fork lets you drive the main **Solar** and **Battery** nodes from *several* entities and lift the four-device limit on **Individual** entities. The main nodes keep the familiar aggregated look and animated flows; each underlying device is additionally listed in a compact, docked breakdown directly below the flow diagram.
 
@@ -55,7 +63,7 @@ This fork lets you drive the main **Solar** and **Battery** nodes from *several*
 Provide a list of PV sources instead of (or in addition to) a single `solar.entity`. Their power is **summed** into the main solar node, and each source is listed below the diagram. If you omit `solar.entity`, the aggregate is computed automatically from the sources.
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   solar:
     # entity: sensor.pv_total   # optional – omit to auto-sum the sources
@@ -75,7 +83,7 @@ Each source accepts: `entity` (required), `name`, `icon`, `color`, `invert_state
 Provide a list of batteries. Their power is **summed** into the main battery node. If you don't set an aggregate `battery.state_of_charge`, the node's state of charge is the **average** of the individual batteries' states of charge (summing percentages would be wrong). Each battery is listed below the diagram with its own power and state of charge.
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   battery:
     # entity: sensor.battery_total_power        # optional – omit to auto-sum
@@ -97,7 +105,7 @@ Each battery accepts: `entity` (required), `state_of_charge`, `name`, `icon`, `c
 The `individual` list is unlimited. The first four devices occupy the four corner slots of the flow diagram (as before); any **additional** devices are rendered in the docked list below the diagram. Use `max_individual_in_grid` (0–4, default 4) to control how many go into the corners — set it to `0` to move *all* individual devices into the list.
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 max_individual_in_grid: 4   # optional, 0..4 (default 4)
 entities:
   individual:
@@ -140,17 +148,17 @@ After having HACS installed, simply search for "Power Flow Card Plus" and downlo
 <details>
 <summary>Manual install</summary>
 
-1. Download and copy `power-flow-card-plus.js` from the [latest release](https://github.com/flixlix/power-flow-card-plus/releases/latest) into your `config/www` directory.
+1. Download and copy `power-flow-card-plus-multi.js` from the [latest release](https://github.com/flixlix/power-flow-card-plus/releases/latest) into your `config/www` directory.
 
 2. Add the resource reference as decribed below.
 
 ### Add resource reference
 
-If you configure Dashboards via YAML, add a reference to `power-flow-card-plus.js` inside your `configuration.yaml`:
+If you configure Dashboards via YAML, add a reference to `power-flow-card-plus-multi.js` inside your `configuration.yaml`:
 
 ```yaml
 resources:
-  - url: /local/power-flow-card-plus.js
+  - url: /local/power-flow-card-plus-multi.js
     type: module
 ```
 
@@ -161,8 +169,8 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 3. Click three dot icon
 4. Select Resources
 5. Hit (+ ADD RESOURCE) icon
-6. Enter URL `/local/power-flow-card-plus.js` and select type "JavaScript Module".
-   (Use `/hacsfiles/power-flow-card-plus/power-flow-card-plus.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
+6. Enter URL `/local/power-flow-card-plus-multi.js` and select type "JavaScript Module".
+   (Use `/hacsfiles/power-flow-card-plus/power-flow-card-plus-multi.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
 
 </details>
 
@@ -177,7 +185,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
 | Name                        | Type      |                 Default                  | Description                                                                                                                                                                                                              |
 | --------------------------- | --------- | :--------------------------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| type                        | `string`  |               **required**               | `custom:power-flow-card-plus`.                                                                                                                                                                                           |
+| type                        | `string`  |               **required**               | `custom:power-flow-card-plus-multi`.                                                                                                                                                                                           |
 | entities                    | `object`  |               **required**               | One or more sensor entities, see [entities object](#entities-object) for additional entity options.                                                                                                                      |
 | title                       | `string`  |                                          | Shows a title at the top of the card.                                                                                                                                                                                    |
 | dashboard_link              | `string`  |                                          | Shows a link to an Energy Dashboard. Should be a url path to location of your choice. If you wanted to link to the built-in dashboard you would enter `/energy` for example.                                             |
@@ -395,7 +403,7 @@ In these examples I decided to use the Split entities option, but feel free to u
 #### Only Grid
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   grid:
     entity: sensor.grid_power
@@ -413,7 +421,7 @@ This should give you something like this:
 ##### Grid and Solar
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   grid:
     entity:
@@ -432,7 +440,7 @@ This should give you something like this:
 ##### Grid, Solar and Battery
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   grid:
     entity:
@@ -463,7 +471,7 @@ This should give you something like this:
 > This Configuration is a little bit random, it's just here to demonstrate the capabilities of this card.
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   home:
     entity: sensor.home_consumption

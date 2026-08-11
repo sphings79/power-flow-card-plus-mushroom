@@ -26,7 +26,7 @@ declare global {
   }
 }
 
-@customElement("individual-row-editor")
+@customElement("pfcp-multi-individual-row-editor")
 export class IndividualRowEditor extends LitElement {
   @property({ attribute: false }) protected hass?: HomeAssistant;
 
@@ -338,6 +338,6 @@ export class IndividualRowEditor extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "individual-row-editor": IndividualRowEditor;
+    "pfcp-multi-individual-row-editor": IndividualRowEditor;
   }
 }

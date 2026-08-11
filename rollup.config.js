@@ -27,6 +27,7 @@ export default [
         dir: "dist",
         format: "es",
         inlineDynamicImports: true,
+        entryFileNames: "power-flow-card-plus-multi.js",
       },
     ],
     plugins: [

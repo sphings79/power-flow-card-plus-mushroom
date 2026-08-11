@@ -59,7 +59,7 @@ const CONFIG_PAGES: {
   },
 ];
 
-@customElement("power-flow-card-plus-editor")
+@customElement("power-flow-card-plus-multi-editor")
 export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private _config?: PowerFlowCardPlusConfig;
@@ -100,8 +100,8 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
     if (this._currentConfigPage !== null) {
       if (this._currentConfigPage === "individual") {
         return html`
-          <subpage-header @go-back=${this._goBack} page=${this._currentConfigPage}> </subpage-header>
-          <individual-devices-editor .hass=${this.hass} .config=${this._config} @config-changed=${this._valueChanged}></individual-devices-editor>
+          <pfcp-multi-subpage-header @go-back=${this._goBack} page=${this._currentConfigPage}> </pfcp-multi-subpage-header>
+          <pfcp-multi-individual-devices-editor .hass=${this.hass} .config=${this._config} @config-changed=${this._valueChanged}></pfcp-multi-individual-devices-editor>
         `;
       }
 
@@ -113,7 +113,7 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
       const dataForForm = currentPage === "advanced" ? data : data.entities[currentPage];
 
       return html`
-        <subpage-header @go-back=${this._goBack} page=${this._currentConfigPage}> </subpage-header>
+        <pfcp-multi-subpage-header @go-back=${this._goBack} page=${this._currentConfigPage}> </pfcp-multi-subpage-header>
         <ha-form
           .hass=${this.hass}
           .data=${dataForForm}
@@ -132,13 +132,13 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
       };
       const icon = getIconToUse();
       return html`
-        <link-subpage
+        <pfcp-multi-link-subpage
           path=${page}
           header="${localize(`editor.${page}`)}"
           @open-sub-element-editor=${() => this._editDetailElement(page)}
           icon=${icon}
         >
-        </link-subpage>
+        </pfcp-multi-link-subpage>
       `;
     };
 
@@ -228,6 +228,6 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
 
 declare global {
   interface HTMLElementTagNameMap {
-    "power-flow-card-plus-editor": PowerFlowCardPlusEditor;
+    "power-flow-card-plus-multi-editor": PowerFlowCardPlusEditor;
   }
 }

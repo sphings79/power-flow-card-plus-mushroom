@@ -8,6 +8,9 @@
 
 ![2023-03-26-13-04-07](https://user-images.githubusercontent.com/61006057/227771568-78497ecc-e863-46f2-b29e-e15c7c20a154.gif)
 
+> [!TIP]  
+> Version 0.2.0 is out now! ✨ Check out the [new features](https://github.com/flixlix/power-flow-card-plus/releases/tag/v0.2.0)!
+
 > [!NOTE]
 > This card is distributed via [flixlix/power-flow-card-plus](https://github.com/flixlix/power-flow-card-plus), but the source code lives in the monorepo at [flixlix/flixlix-cards](https://github.com/flixlix/flixlix-cards). Issues and feature requests will be tracked there going forward.
 
@@ -39,6 +42,75 @@
 - Customize Battery, Solar and Home's color, icon, color of icon and label
 
 </details>
+
+## Fork additions: Multiple Batteries, Multiple PV & unlimited Individual devices
+
+> [!NOTE]
+> These options are **additions of this fork** (`sphings79/power-flow-card-plus`) and are not part of the upstream card. Everything else works exactly like upstream; existing configurations keep working unchanged.
+
+This fork lets you drive the main **Solar** and **Battery** nodes from *several* entities and lift the four-device limit on **Individual** entities. The main nodes keep the familiar aggregated look and animated flows; each underlying device is additionally listed in a compact, docked breakdown directly below the flow diagram.
+
+### Multiple PV sources (`solar.sources`)
+
+Provide a list of PV sources instead of (or in addition to) a single `solar.entity`. Their power is **summed** into the main solar node, and each source is listed below the diagram. If you omit `solar.entity`, the aggregate is computed automatically from the sources.
+
+```yaml
+type: custom:power-flow-card-plus
+entities:
+  solar:
+    # entity: sensor.pv_total   # optional – omit to auto-sum the sources
+    sources:
+      - entity: sensor.pv_roof_south
+        name: Roof South
+      - entity: sensor.pv_roof_east
+        name: Roof East
+      - entity: sensor.pv_garage
+        name: Garage
+```
+
+Each source accepts: `entity` (required), `name`, `icon`, `color`, `invert_state`.
+
+### Multiple batteries (`battery.batteries`)
+
+Provide a list of batteries. Their power is **summed** into the main battery node. If you don't set an aggregate `battery.state_of_charge`, the node's state of charge is the **average** of the individual batteries' states of charge (summing percentages would be wrong). Each battery is listed below the diagram with its own power and state of charge.
+
+```yaml
+type: custom:power-flow-card-plus
+entities:
+  battery:
+    # entity: sensor.battery_total_power        # optional – omit to auto-sum
+    # state_of_charge: sensor.battery_total_soc # optional – omit to average
+    color_circle: color_dynamically
+    batteries:
+      - entity: sensor.battery_1_power
+        state_of_charge: sensor.battery_1_soc
+        name: Battery 1
+      - entity: sensor.battery_2_power
+        state_of_charge: sensor.battery_2_soc
+        name: Battery 2
+```
+
+Each battery accepts: `entity` (required), `state_of_charge`, `name`, `icon`, `color`, `state_of_charge_unit`, `state_of_charge_decimals`, `invert_state`.
+
+### More than 4 Individual devices
+
+The `individual` list is unlimited. The first four devices occupy the four corner slots of the flow diagram (as before); any **additional** devices are rendered in the docked list below the diagram. Use `max_individual_in_grid` (0–4, default 4) to control how many go into the corners — set it to `0` to move *all* individual devices into the list.
+
+```yaml
+type: custom:power-flow-card-plus
+max_individual_in_grid: 4   # optional, 0..4 (default 4)
+entities:
+  individual:
+    - { entity: sensor.car, name: Car }
+    - { entity: sensor.washer, name: Washing Machine }
+    - { entity: sensor.dishwasher, name: Dishwasher }
+    - { entity: sensor.oven, name: Oven }
+    - { entity: sensor.server, name: Server }     # 5th+ -> shown in the list
+    - { entity: sensor.pool, name: Pool Pump }
+```
+
+> [!TIP]
+> All sub-entities of one node should share the same unit (e.g. all `W` or all `kW`); the aggregate uses the first entity's unit. The docked list items are clickable (more-info) when `clickable_entities` is enabled.
 
 ## Goal
 
@@ -112,11 +184,11 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 | dashboard_link_label        | `string`  | Go To Energy Dashboard (auto-translates) | If set, overrides the default link label to go to a different dashboard.                                                                                                                                                 |
 | second_dashboard_link       | `string`  |                                          | Shows another link to an Energy Dashboard. Should be a url path to location of your choice. If you wanted to link to the built-in dashboard you would enter `/energy` for example. (Only available in the YAML Editor)   |
 | second_dashboard_link_label | `string`  | Go To Energy Dashboard (auto-translates) | If set, overrides the second default link label to go to a different dashboard.                                                                                                                                          |
-| kilo_decimals               | `number`  |                    1                     | Number of decimals rounded to when kilowatts are displayed.                                                                                                                                                              |
-| base_decimals               | `number`  |                    1                     | Number of decimals rounded to when watts are displayed.                                                                                                                                                                  |
+| kw_decimals                 | `number`  |                    1                     | Number of decimals rounded to when kilowatts are displayed.                                                                                                                                                              |
+| w_decimals                  | `number`  |                    1                     | Number of decimals rounded to when watts are displayed.                                                                                                                                                                  |
 | min_flow_rate               | `number`  |                   .75                    | Represents how much time it takes for the quickest dot to travel from one end to the other in seconds.                                                                                                                   |
 | max_flow_rate               | `number`  |                    6                     | Represents how much time it takes for the slowest dot to travel from one end to the other in seconds.                                                                                                                    |
-| kilo_threshold              | `number`  |                    0                     | The number of watts to display before converting to and displaying kilowatts. Setting of 0 will always display in kilowatts.                                                                                             |
+| watt_threshold              | `number`  |                    0                     | The number of watts to display before converting to and displaying kilowatts. Setting of 0 will always display in kilowatts.                                                                                             |
 | clickable_entities          | `boolean` |                  false                   | If true, clicking on the entity will open the entity's more info dialog.                                                                                                                                                 |
 | min_expected_power          | `number`  |                   0.01                   | Represents the minimum amount of power (in Watts) expected to flow through the system at a given moment. Only used in the [New Flow Formula](#new-flow-formula).                                                         |
 | max_expected_power          | `number`  |                   2000                   | Represents the maximum amount of power (in Watts) expected to flow through the system at a given moment. Only used in the [New Flow Formula](#new-flow-formula).                                                         |
@@ -331,7 +403,7 @@ entities:
       entity: sensor.power_outage
     display_state: one_way
     color_circle: true
-kilo_threshold: 10000
+watt_threshold: 10000
 ```
 
 This should give you something like this:
@@ -379,7 +451,7 @@ entities:
     color_circle: true
   home:
     color_icon: true
-kilo_threshold: 10000
+watt_threshold: 10000
 ```
 
 This should give you something like this:
@@ -430,11 +502,11 @@ entities:
       display_zero: true
       color: "#ff8080"
       icon: mdi:motorbike-electric
-base_decimals: 0
-kilo_decimals: 2
+w_decimals: 0
+kw_decimals: 2
 min_flow_rate: 0.9
 max_flow_rate: 6
-kilo_threshold: 10000
+watt_threshold: 10000
 clickable_entities: true
 title: Power Flow Card Plus
 ```

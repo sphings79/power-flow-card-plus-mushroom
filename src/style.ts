@@ -123,7 +123,13 @@ export const styles = css`
     height: 146px;
     display: flex;
     justify-content: flex-start;
-    padding: 0 16px 16px;
+    /*
+     * Upstream pads this box by 16px on the sides and bottom, which is exactly
+     * what makes the flow lines stop short of the circles and ride 16px above
+     * their centres. Without the padding the lines meet the circle edges and sit
+     * on the centre line. This is a deliberate deviation from the original card.
+     */
+    padding: 0;
     box-sizing: border-box;
     pointer-events: none;
   }
@@ -147,7 +153,9 @@ export const styles = css`
     bottom: 110px;
   }
   .lines.high {
-    bottom: 100px;
+    /* 92 instead of 100: compensates the removed 16px bottom padding so the
+       horizontal lines sit on the circle centres rather than above them. */
+    bottom: 92px;
     height: 156px;
   }
   .lines svg {

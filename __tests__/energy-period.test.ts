@@ -115,3 +115,42 @@ describe("productionColor", () => {
     expect(rgb(socColor(100))).toEqual(rgb(productionColor(100, 100)));
   });
 });
+
+import { fetchEnergyTotals } from "../src/energy/energy-totals";
+
+const hassWith = (response: any) => ({ callWS: async () => response }) as any;
+
+describe("fetchEnergyTotals", () => {
+  it("reports zero for a period that has no bucket yet", async () => {
+    // Just after midnight there is no completed hour, so the API returns nothing.
+    const totals = await fetchEnergyTotals(hassWith({}), ["sensor.a", "sensor.b"], "today", NOW);
+    expect(totals).toEqual({ "sensor.a": 0, "sensor.b": 0 });
+  });
+
+  it("sums the change values across buckets", async () => {
+    const totals = await fetchEnergyTotals(
+      hassWith({ "sensor.a": [{ change: 1.5 }, { change: 2.25 }] }),
+      ["sensor.a"],
+      "today",
+      NOW
+    );
+    expect(totals["sensor.a"]).toBeCloseTo(3.75);
+  });
+
+  it("falls back to the difference of cumulative sums when change is absent", async () => {
+    const totals = await fetchEnergyTotals(
+      hassWith({ "sensor.a": [{ sum: 100 }, { sum: 104.5 }] }),
+      ["sensor.a"],
+      "today",
+      NOW
+    );
+    expect(totals["sensor.a"]).toBeCloseTo(4.5);
+  });
+
+  it("does not query at all without entities", async () => {
+    let called = false;
+    const hass = { callWS: async () => ((called = true), {}) } as any;
+    expect(await fetchEnergyTotals(hass, [], "today", NOW)).toEqual({});
+    expect(called).toBe(false);
+  });
+});

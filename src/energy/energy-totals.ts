@@ -96,7 +96,14 @@ export const fetchEnergyTotals = async (
 
   for (const id of ids) {
     const points = response[id];
-    if (!Array.isArray(points) || points.length === 0) continue;
+
+    // No bucket yet is a real answer, not a missing one: right after midnight
+    // "today" has no completed hour, and every requested entity legitimately
+    // stands at zero. Leaving it out instead would blank the whole list.
+    if (!Array.isArray(points) || points.length === 0) {
+      totals[id] = 0;
+      continue;
+    }
 
     const changes = points.map((p) => p.change).filter((c): c is number => typeof c === "number");
     if (changes.length) {
@@ -105,7 +112,7 @@ export const fetchEnergyTotals = async (
     }
 
     const sums = points.map((p) => p.sum).filter((s): s is number => typeof s === "number");
-    if (sums.length >= 2) totals[id] = sums[sums.length - 1] - sums[0];
+    totals[id] = sums.length >= 2 ? sums[sums.length - 1] - sums[0] : 0;
   }
 
   return totals;

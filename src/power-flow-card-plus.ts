@@ -234,6 +234,9 @@ export class PowerFlowCardPlus extends LitElement {
     try {
       this._energyTotals = await fetchEnergyTotals(this.hass, ids, this._energyPeriod);
     } catch (err) {
+      // Clear the key so the next update retries instead of being suppressed by
+      // the de-duplication guard.
+      this._energyRequestKey = "";
       // A core without the statistics websocket API, or an entity without
       // statistics, should not take the whole card down.
       logError(`could not load energy statistics: ${err}`);
@@ -283,6 +286,8 @@ export class PowerFlowCardPlus extends LitElement {
 
   public connectedCallback() {
     super.connectedCallback();
+    // `hass` is usually not assigned yet at this point, so this first attempt
+    // often bails out; `updated()` picks it up as soon as it arrives.
     this._refreshEnergyTotals();
     // Statistics only change once an hour, so a slow refresh is plenty.
     this._energyTimer = window.setInterval(() => this._refreshEnergyTotals(true), 5 * 60 * 1000);
@@ -646,6 +651,13 @@ export class PowerFlowCardPlus extends LitElement {
     super.updated(changedProps);
     if (!this._config || !this.hass) {
       return;
+    }
+
+    // The first load happens here rather than in connectedCallback: `hass` is
+    // assigned after the element connects, so the call there finds nothing to
+    // query. The de-duplication guard inside keeps this to one request.
+    if (changedProps.has("hass") || changedProps.has("_config")) {
+      this._refreshEnergyTotals();
     }
 
     const elem = this.shadowRoot?.querySelector("#power-flow-card-plus") as HTMLElement | null;

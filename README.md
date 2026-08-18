@@ -260,6 +260,11 @@ windows counting whole days back from today, today included.
 In the lists the batteries show both directions, with an arrow down for energy
 charged and an arrow up for energy discharged.
 
+Every one of these entities has a field in the visual editor: each node page
+(grid, solar, home, battery, charging source) carries an **Energy** section, as
+does each entry in the battery, PV-source and charging-source lists, and each
+individual device.
+
 Large totals switch to MWh so they do not crowd the layout:
 
 ```yaml

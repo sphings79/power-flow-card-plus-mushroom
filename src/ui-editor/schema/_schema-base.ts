@@ -182,3 +182,39 @@ export function getBaseMainConfigSchema(field?: string) {
   }
   return result;
 }
+
+/**
+ * Expandable "Energy" block for a node's editor page.
+ *
+ * The card derives the period total from a cumulative kWh entity's statistics,
+ * so these point at lifetime counters. `energy_from_state` switches to reading
+ * the entity's state verbatim, for sensors that already cover the period.
+ */
+export function getEnergySchema(kind: "single" | "grid" | "battery") {
+  const entityFields =
+    kind === "grid"
+      ? [
+          { name: "energy_consumed_entity", label: "Energy consumed (kWh)", selector: { entity: {} } },
+          { name: "energy_returned_entity", label: "Energy returned (kWh)", selector: { entity: {} } },
+        ]
+      : kind === "battery"
+        ? [
+            { name: "energy_charged_entity", label: "Energy charged (kWh)", selector: { entity: {} } },
+            { name: "energy_discharged_entity", label: "Energy discharged (kWh)", selector: { entity: {} } },
+          ]
+        : [{ name: "energy_entity", label: "Energy entity (kWh)", selector: { entity: {} } }];
+
+  return {
+    title: localize("editor.energy"),
+    name: "",
+    type: "expandable",
+    schema: [
+      ...entityFields,
+      {
+        name: "energy_from_state",
+        label: "Read state as-is (sensor already covers the period)",
+        selector: { boolean: {} },
+      },
+    ],
+  };
+}

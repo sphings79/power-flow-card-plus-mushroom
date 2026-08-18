@@ -112,6 +112,13 @@
     "energy_period_last_30_days": "last 30 days",
     "energy_period_last_365_days": "last 365 days",
     "energy_period": "Energy period",
-    "energy_default": "Start in kWh mode"
+    "energy_default": "Start in kWh mode",
+    "energy": "Energy",
+    "energy_entity": "Energy entity (kWh)",
+    "energy_consumed_entity": "Energy consumed (kWh)",
+    "energy_returned_entity": "Energy returned (kWh)",
+    "energy_charged_entity": "Energy charged (kWh)",
+    "energy_discharged_entity": "Energy discharged (kWh)",
+    "energy_from_state": "Read state as-is (sensor already covers the period)"
   }
 }

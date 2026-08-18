@@ -1,4 +1,4 @@
-import { secondaryInfoSchema, getBaseMainConfigSchema, actionSchema } from "./_schema-base";
+import { secondaryInfoSchema, getBaseMainConfigSchema, actionSchema, getEnergySchema } from "./_schema-base";
 import localize from "@/localize/localize";
 
 const mainSchema = {
@@ -69,6 +69,7 @@ export const chargerSchema = [
     type: "expandable",
     schema: secondaryInfoSchema,
   },
+  getEnergySchema("single"),
   {
     title: localize("editor.action"),
     name: "",

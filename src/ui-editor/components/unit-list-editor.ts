@@ -19,6 +19,10 @@ export interface UnitLike {
   state_of_charge?: string;
   state_of_charge_unit?: string;
   state_of_charge_decimals?: number;
+  energy_entity?: string;
+  energy_charged_entity?: string;
+  energy_discharged_entity?: string;
+  energy_from_state?: boolean;
 }
 
 const DEFAULT_ICON: Record<UnitListKind, string> = {
@@ -51,7 +55,43 @@ const unitSchema = (kind: UnitListKind) => {
     },
   ];
 
-  if (kind !== "battery") return base;
+  const energy =
+    kind === "battery"
+      ? [
+          {
+            name: "energy_charged_entity",
+            label: localize("editor.energy_charged_entity"),
+            selector: { entity: {} },
+          },
+          {
+            name: "energy_discharged_entity",
+            label: localize("editor.energy_discharged_entity"),
+            selector: { entity: {} },
+          },
+        ]
+      : [
+          {
+            name: "energy_entity",
+            label: localize("editor.energy_entity"),
+            selector: { entity: {} },
+          },
+        ];
+
+  const energyBlock = {
+    title: localize("editor.energy"),
+    name: "",
+    type: "expandable",
+    schema: [
+      ...energy,
+      {
+        name: "energy_from_state",
+        label: localize("editor.energy_from_state"),
+        selector: { boolean: {} },
+      },
+    ],
+  };
+
+  if (kind !== "battery") return [...base, energyBlock];
 
   return [
     ...base,
@@ -73,6 +113,7 @@ const unitSchema = (kind: UnitListKind) => {
         },
       ],
     },
+    energyBlock,
   ];
 };
 

@@ -1,10 +1,4 @@
-import {
-  getEntitySeparatedSelectionSchema,
-  getBaseMainConfigSchema,
-  customColorsSchema,
-  getEntityCombinedSelectionSchema,
-  actionSchema,
-} from "./_schema-base";
+import { getEntitySeparatedSelectionSchema, getBaseMainConfigSchema, customColorsSchema, getEntityCombinedSelectionSchema, actionSchema, getEnergySchema } from "./_schema-base";
 import localize from "@/localize/localize";
 
 const mainSchema = {
@@ -94,6 +88,7 @@ export const batterySchema = [
   },
   mainSchema,
   customColorsSchema,
+  getEnergySchema("battery"),
   {
     title: localize("editor.action"),
     name: "",

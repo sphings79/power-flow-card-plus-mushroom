@@ -112,6 +112,13 @@
     "energy_period_last_30_days": "letzte 30 Tage",
     "energy_period_last_365_days": "letzte 365 Tage",
     "energy_period": "Zeitraum der Energiewerte",
-    "energy_default": "Im kWh-Modus starten"
+    "energy_default": "Im kWh-Modus starten",
+    "energy": "Energie",
+    "energy_entity": "Energie-Entität (kWh)",
+    "energy_consumed_entity": "Bezogene Energie (kWh)",
+    "energy_returned_entity": "Eingespeiste Energie (kWh)",
+    "energy_charged_entity": "Geladene Energie (kWh)",
+    "energy_discharged_entity": "Entladene Energie (kWh)",
+    "energy_from_state": "Zustand unverändert lesen (Sensor bildet den Zeitraum bereits ab)"
   }
 }

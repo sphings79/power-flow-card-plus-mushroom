@@ -1,11 +1,4 @@
-import {
-  getEntityCombinedSelectionSchema,
-  getEntitySeparatedSelectionSchema,
-  secondaryInfoSchema,
-  getBaseMainConfigSchema,
-  customColorsSchema,
-  actionSchema,
-} from "./_schema-base";
+import { getEntityCombinedSelectionSchema, getEntitySeparatedSelectionSchema, secondaryInfoSchema, getBaseMainConfigSchema, customColorsSchema, actionSchema, getEnergySchema } from "./_schema-base";
 import localize from "@/localize/localize";
 
 const mainSchema = {
@@ -62,6 +55,7 @@ export const gridSchema = [
     type: "expandable",
     schema: powerOutageGridSchema,
   },
+  getEnergySchema("grid"),
   {
     title: localize("editor.action"),
     name: "",

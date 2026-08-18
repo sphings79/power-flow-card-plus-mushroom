@@ -628,6 +628,39 @@ export const styles = css`
   }
 
   /* ---- Docked breakdown lists (multi PV / multi battery / extra individuals) ---- */
+  /*
+   * Dedicated container for the charging-source line. Spans the gap between the
+   * charger circle and the battery circle inside the battery row. The shared
+   * .lines overlay cannot be used here: it sits above this row and clips its
+   * contents to a narrow band.
+   */
+  .pfcp-charger-lines {
+    position: absolute;
+    /* Vertically centred on the battery row's circles. */
+    bottom: 50px;
+    /* From the charger circle's right edge to the battery circle's centre. The
+       battery node is always horizontally centred, hence the 50%. */
+    left: var(--size-circle-entity);
+    width: calc(50% - var(--size-circle-entity));
+    height: 20px;
+    pointer-events: none;
+  }
+
+  .pfcp-charger-lines svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /*
+   * Positioning context for the flow diagram. Without it the flow lines anchor to
+   * .card-content, and the breakdown list below them shifts every line down by its
+   * own height.
+   */
+  .pfcp-flow {
+    position: relative;
+  }
+
   .pfcp-breakdown {
     display: flex;
     flex-wrap: wrap;

@@ -369,6 +369,13 @@ export class PowerFlowCardPlus extends LitElement {
           id="power-flow-card-plus"
           style=${this._config.style_card_content ? this._config.style_card_content : ""}
         >
+          <!--
+            The flow diagram needs its own positioning context. The flow lines are
+            absolutely positioned against the bottom of their offset parent, so any
+            content added below them inside that parent (the docked breakdown) would
+            push every line downwards by its own height.
+          -->
+          <div class="pfcp-flow">
           ${solar.has || individualObjs?.some((individual) => individual?.has) || nonFossil.hasPercentage
             ? html`<div class="row">
                 ${nonFossilElement(this, this._config, {
@@ -464,6 +471,7 @@ export class PowerFlowCardPlus extends LitElement {
             solar,
             charger,
           })}
+          </div>
           ${solar.subs?.length || battery.subs?.length || charger.subs?.length || overflowIndividualObjects?.length
             ? html`<div class="pfcp-breakdown">
                 ${subsElement(this, this._config, { kind: "solar", title: solar.name, items: solar.subs })}

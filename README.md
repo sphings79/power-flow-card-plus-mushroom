@@ -120,6 +120,58 @@ entities:
 > [!TIP]
 > All sub-entities of one node should share the same unit (e.g. all `W` or all `kW`); the aggregate uses the first entity's unit. The docked list items are clickable (more-info) when `clickable_entities` is enabled.
 
+### Mushroom appearance
+
+Set `appearance: mushroom` to restyle the card so it sits comfortably next to
+[Mushroom](https://github.com/piitaya/lovelace-mushroom) cards. This is a pure
+styling switch — no entity, layout or behaviour change — so you can flip between
+the two looks at any time.
+
+```yaml
+type: custom:power-flow-card-plus-multi
+appearance: mushroom   # classic (default) | mushroom
+entities:
+  grid:
+    entity: sensor.grid_power
+```
+
+What changes compared to `classic`:
+
+- **Shapes instead of rings** — the circles lose their 2px outline and are filled
+  with their own colour at 20% opacity, with the icon in full colour. This is the
+  same shape treatment Mushroom uses for its icons.
+- **Typography** — values and labels adopt Mushroom's weights and sizes;
+  secondary info is dimmed rather than drawn in full contrast.
+- **Softer flow lines** — slightly thicker with rounded caps, so they read as
+  strokes rather than hairlines.
+- **Breakdown list as chips** — the docked list of PV sources / batteries / extra
+  individual devices becomes a row of tinted chips with their own icon shapes,
+  instead of the left-border list style.
+
+#### Fine-tuning
+
+Three CSS custom properties are available, settable per card via
+`style_card_content` or globally in your theme:
+
+| Property                | Default                               | Description                                                      |
+| ----------------------- | ------------------------------------- | ---------------------------------------------------------------- |
+| `--pfcp-shape-strength` | `20%`                                 | Opacity of the shape fill. Lower is subtler, higher is bolder.    |
+| `--pfcp-shape-radius`   | `var(--mush-icon-border-radius, 50%)` | Shape corner radius. Follows your Mushroom theme if it sets one.  |
+| `--pfcp-shape-fallback` | `var(--primary-color)`                | Fill colour used when a node has no colour of its own.            |
+
+For squared shapes, matching a Mushroom theme with squared icons:
+
+```yaml
+appearance: mushroom
+style_card_content: "--pfcp-shape-radius: 12px;"
+```
+
+> [!NOTE]
+> The shape fill uses the CSS `color-mix()` function. Every browser Home
+> Assistant currently supports handles it; on an older browser the shapes simply
+> render transparent rather than breaking the layout.
+
+
 ## Goal
 
 The Goal of this card is to provide an easy to understand and visualize way of displaying the current Power Distribution coming from and to different sources, such as solar, grid, home batteries etc. Furthermore, this card aims to expose a lot of customizability and control of its behavior to the configuration, allowing users to tailor it to their specific requirements.
@@ -207,6 +259,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 | use_new_flow_rate_model     | `boolean` |                  false                   | If `true`, the card will use the [New Flow Formula](#new-flow-formula).                                                                                                                                                  |
 | sort_individual_devices     | `boolean` |           true (since v0.3.1)            | If `true`, sort devices in order of power consumption -> entity id -> alphabetically.                                                                                                                                    |
 | allow_layout_break          | `boolean` |                  false                   | Always allow up to 4 individual devices to show, even when there is not enough space, causing visual layout break.                                                                                                       |
+| appearance                  | `string`  |                `classic`                 | `classic` keeps the original outlined-circle look. `mushroom` restyles the card to match [Mushroom](https://github.com/piitaya/lovelace-mushroom) cards — see [Mushroom appearance](#mushroom-appearance).                |
 
 #### Action Configuration
 

@@ -44,4 +44,4 @@ custom-elements.json
 !.hass_dev/views
 !.hass_dev/www
 !.hass_dev/packages
-.hass_dev/www/community/*
+.hass_dev/www/community/*_to_delete/

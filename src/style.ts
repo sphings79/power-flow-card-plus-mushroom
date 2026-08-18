@@ -698,4 +698,130 @@ export const styles = css`
     opacity: 0.75;
     color: var(--secondary-text-color, var(--primary-text-color));
   }
+
+  /* ===================================================================
+     Mushroom appearance  (config: appearance: mushroom)
+     Filled shapes instead of outlined rings, Mushroom typography,
+     softer flow lines and a chip-styled breakdown list.
+     =================================================================== */
+  .card-content.appearance-mushroom {
+    --pfcp-shape-strength: 20%;
+    --pfcp-shape-radius: var(--mush-icon-border-radius, 50%);
+    --pfcp-shape-fallback: var(--primary-color, #03a9f4);
+  }
+
+  .card-content.appearance-mushroom .circle {
+    border-color: transparent;
+    background-color: color-mix(in srgb, var(--pfcp-shape, var(--pfcp-shape-fallback)) var(--pfcp-shape-strength), transparent);
+    background-clip: padding-box;
+    border-radius: var(--pfcp-shape-radius);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 14px;
+    gap: 1px;
+  }
+
+  .card-content.appearance-mushroom .circle > ha-ripple {
+    border-radius: var(--pfcp-shape-radius);
+  }
+
+  .card-content.appearance-mushroom .circle span {
+    font-weight: 500;
+  }
+
+  .card-content.appearance-mushroom span.secondary-info {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
+  .card-content.appearance-mushroom .label {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    color: var(--secondary-text-color);
+  }
+
+  /* Shape colour follows the icon colour of each node, the way Mushroom does it. */
+  .card-content.appearance-mushroom .solar .circle {
+    --pfcp-shape: var(--icon-solar-color, var(--energy-solar-color, #ff9800));
+  }
+  .card-content.appearance-mushroom .low-carbon .circle {
+    --pfcp-shape: var(--icon-non-fossil-color, var(--non-fossil-color, #0f9d58));
+  }
+  .card-content.appearance-mushroom .grid .circle {
+    --pfcp-shape: var(--icon-grid-color, var(--circle-grid-color, var(--energy-grid-consumption-color, #488fc2)));
+  }
+  .card-content.appearance-mushroom .battery .circle {
+    --pfcp-shape: var(--icon-battery-color, var(--circle-battery-color, var(--energy-battery-in-color, #f06292)));
+  }
+  .card-content.appearance-mushroom .home .circle {
+    --pfcp-shape: var(--icon-home-color, var(--energy-grid-consumption-color, #488fc2));
+  }
+  .card-content.appearance-mushroom .individual-top:not(.individual-right) .circle {
+    --pfcp-shape: var(--icon-individual-left-top-color, var(--individual-left-top-color, #964cb5));
+  }
+  .card-content.appearance-mushroom .individual-bottom:not(.individual-right) .circle {
+    --pfcp-shape: var(--icon-individual-left-bottom-color, var(--individual-left-bottom-color, #d0cc5b));
+  }
+  .card-content.appearance-mushroom .individual-right-top .circle {
+    --pfcp-shape: var(--icon-individual-right-top-color, var(--individual-right-top-color, #b54c9d));
+  }
+  .card-content.appearance-mushroom .individual-right-bottom .circle {
+    --pfcp-shape: var(--icon-individual-right-bottom-color, var(--individual-right-bottom-color, #5bd0cc));
+  }
+
+  /* Softer flow lines. */
+  .card-content.appearance-mushroom line,
+  .card-content.appearance-mushroom path {
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
+  /* Breakdown list rendered as Mushroom-style chips. */
+  .card-content.appearance-mushroom .pfcp-breakdown {
+    gap: 10px 14px;
+    border-top-color: var(--divider-color, rgba(127, 127, 127, 0.12));
+  }
+
+  .card-content.appearance-mushroom .pfcp-subs-title {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+
+  .card-content.appearance-mushroom .pfcp-sub {
+    border-left: none;
+    border-radius: var(--ha-card-border-radius, 12px);
+    padding: 6px 10px;
+    gap: 10px;
+    background: color-mix(in srgb, var(--pfcp-sub-color) 12%, transparent);
+  }
+
+  .card-content.appearance-mushroom .pfcp-sub:hover {
+    background: color-mix(in srgb, var(--pfcp-sub-color) 22%, transparent);
+  }
+
+  .card-content.appearance-mushroom .pfcp-sub-icon {
+    --mdc-icon-size: 16px;
+    padding: 6px;
+    border-radius: var(--pfcp-shape-radius);
+    background: color-mix(in srgb, var(--pfcp-sub-color) var(--pfcp-shape-strength), transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-content.appearance-mushroom .pfcp-sub-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .card-content.appearance-mushroom .pfcp-sub-values {
+    font-weight: 500;
+  }
+
 `;

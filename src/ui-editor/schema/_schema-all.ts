@@ -53,6 +53,8 @@ export const cardConfigStruct = assign(
       fossil_fuel_percentage: optional(any()),
       individual: optional(any()),
     }),
+    appearance: optional(string()),
+    max_individual_in_grid: optional(number()),
     sort_individual_devices: optional(boolean()),
     allow_layout_break: optional(boolean()),
   })
@@ -205,6 +207,19 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
         label: "New Flow Model?",
         default: true,
         selector: { boolean: {} },
+      },
+      {
+        name: "appearance",
+        label: "Appearance",
+        selector: {
+          select: {
+            options: [
+              { value: "classic", label: "Classic" },
+              { value: "mushroom", label: "Mushroom" },
+            ],
+            mode: "dropdown",
+          },
+        },
       },
       {
         name: "sort_individual_devices",

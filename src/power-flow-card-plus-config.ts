@@ -26,6 +26,13 @@ interface mainConfigOptions {
     transparency?: number;
     grey_color?: string | number[];
   };
+  /**
+   * Visual style of the card.
+   * - `classic` (default): outlined circles, the original look.
+   * - `mushroom`: filled shapes, Mushroom typography, softer flow lines
+   *   and a chip-styled breakdown list, to blend in with Mushroom cards.
+   */
+  appearance?: "classic" | "mushroom";
   sort_individual_devices?: boolean;
   allow_layout_break?: boolean;
   /**

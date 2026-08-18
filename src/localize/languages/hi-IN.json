@@ -96,6 +96,11 @@
     "battery_units": "अलग-अलग बैटरियाँ",
     "solar_units": "अलग-अलग पीवी स्रोत",
     "charger_units": "चार्जिंग स्रोत",
-    "charger": "चार्जिंग स्रोत"
+    "charger": "चार्जिंग स्रोत",
+    "appearance": "रूप",
+    "individual_position": "अलग-अलग उपकरण",
+    "color_individual_by_usage": "खपत के अनुसार उपकरण रंगें",
+    "individual_color_max": "खपत रंग: पूर्ण लाल के लिए वाट",
+    "color_battery_by_soc": "चार्ज के अनुसार बैटरियाँ रंगें"
   }
 }

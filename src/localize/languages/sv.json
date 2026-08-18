@@ -96,6 +96,11 @@
     "battery_units": "Enskilda batterier",
     "solar_units": "Enskilda PV-källor",
     "charger_units": "Laddkällor",
-    "charger": "Laddkälla"
+    "charger": "Laddkälla",
+    "appearance": "Utseende",
+    "individual_position": "Enskilda enheter",
+    "color_individual_by_usage": "Färglägg enheter efter förbrukning",
+    "individual_color_max": "Förbrukningsfärg: watt för helröd",
+    "color_battery_by_soc": "Färglägg batterier efter laddning"
   }
 }

@@ -96,6 +96,11 @@
     "battery_units": "Jednotlivé batérie",
     "solar_units": "Jednotlivé FV zdroje",
     "charger_units": "Zdroje nabíjania",
-    "charger": "Zdroj nabíjania"
+    "charger": "Zdroj nabíjania",
+    "appearance": "Vzhľad",
+    "individual_position": "Jednotlivé zariadenia",
+    "color_individual_by_usage": "Zafarbiť zariadenia podľa spotreby",
+    "individual_color_max": "Farba spotreby: watty pre plnú červenú",
+    "color_battery_by_soc": "Zafarbiť batérie podľa nabitia"
   }
 }

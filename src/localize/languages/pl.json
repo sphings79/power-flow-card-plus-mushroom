@@ -96,6 +96,11 @@
     "battery_units": "Poszczególne baterie",
     "solar_units": "Poszczególne źródła PV",
     "charger_units": "Źródła ładowania",
-    "charger": "Źródło ładowania"
+    "charger": "Źródło ładowania",
+    "appearance": "Wygląd",
+    "individual_position": "Poszczególne urządzenia",
+    "color_individual_by_usage": "Koloruj urządzenia według zużycia",
+    "individual_color_max": "Kolor zużycia: waty dla pełnej czerwieni",
+    "color_battery_by_soc": "Koloruj baterie według naładowania"
   }
 }

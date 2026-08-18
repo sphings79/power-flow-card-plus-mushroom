@@ -96,6 +96,11 @@
     "battery_units": "Отдельные батареи",
     "solar_units": "Отдельные источники PV",
     "charger_units": "Источники зарядки",
-    "charger": "Источник зарядки"
+    "charger": "Источник зарядки",
+    "appearance": "Внешний вид",
+    "individual_position": "Отдельные устройства",
+    "color_individual_by_usage": "Окрашивать устройства по потреблению",
+    "individual_color_max": "Цвет потребления: ватты для полного красного",
+    "color_battery_by_soc": "Окрашивать батареи по заряду"
   }
 }

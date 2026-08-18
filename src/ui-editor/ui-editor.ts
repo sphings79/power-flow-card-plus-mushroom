@@ -244,8 +244,22 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
     });
   }
 
-  private _computeLabelCallback = (schema: any) =>
-    this.hass!.localize(`ui.panel.lovelace.editor.card.generic.${schema?.name}`) || localize(`editor.${schema?.name}`) || schema?.label;
+  /**
+   * Home Assistant's generic strings win, then our own translations. When a field
+   * has neither, fall back to the schema's own `label` instead of rendering the
+   * bare translation key — `localize` returns the key itself when it finds no
+   * translation, which would otherwise leave the field looking unnamed.
+   */
+  private _computeLabelCallback = (schema: any) => {
+    const generic = this.hass?.localize?.(`ui.panel.lovelace.editor.card.generic.${schema?.name}`);
+    if (generic) return generic;
+
+    const key = `editor.${schema?.name}`;
+    const translated = localize(key);
+    if (translated && translated !== key) return translated;
+
+    return schema?.label ?? schema?.name ?? "";
+  };
 
   static get styles() {
     return css`

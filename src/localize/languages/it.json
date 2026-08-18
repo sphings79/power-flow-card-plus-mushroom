@@ -96,6 +96,11 @@
     "battery_units": "Batterie singole",
     "solar_units": "Fonti FV singole",
     "charger_units": "Fonti di ricarica",
-    "charger": "Fonte di ricarica"
+    "charger": "Fonte di ricarica",
+    "appearance": "Aspetto",
+    "individual_position": "Dispositivi individuali",
+    "color_individual_by_usage": "Colora i dispositivi in base al consumo",
+    "individual_color_max": "Colore consumo: watt per il rosso pieno",
+    "color_battery_by_soc": "Colora le batterie in base alla carica"
   }
 }

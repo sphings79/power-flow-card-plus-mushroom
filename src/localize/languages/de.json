@@ -96,6 +96,11 @@
     "battery_units": "Einzelne Batterien",
     "solar_units": "Einzelne PV-Quellen",
     "charger_units": "Ladequellen",
-    "charger": "Ladequelle"
+    "charger": "Ladequelle",
+    "appearance": "Darstellung",
+    "individual_position": "Individuelle Geräte",
+    "color_individual_by_usage": "Individuelle Geräte nach Verbrauch einfärben",
+    "individual_color_max": "Verbrauchsfarbe: Watt für volles Rot",
+    "color_battery_by_soc": "Batterien nach Ladestand einfärben"
   }
 }

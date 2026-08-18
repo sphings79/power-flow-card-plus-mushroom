@@ -96,6 +96,11 @@
     "battery_units": "Individuelle batterier",
     "solar_units": "Individuelle PV-kilder",
     "charger_units": "Opladningskilder",
-    "charger": "Opladningskilde"
+    "charger": "Opladningskilde",
+    "appearance": "Udseende",
+    "individual_position": "Individuelle enheder",
+    "color_individual_by_usage": "Farvelæg enheder efter forbrug",
+    "individual_color_max": "Forbrugsfarve: watt for helt rød",
+    "color_battery_by_soc": "Farvelæg batterier efter ladning"
   }
 }

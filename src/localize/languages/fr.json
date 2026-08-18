@@ -96,6 +96,11 @@
     "battery_units": "Batteries individuelles",
     "solar_units": "Sources PV individuelles",
     "charger_units": "Sources de charge",
-    "charger": "Source de charge"
+    "charger": "Source de charge",
+    "appearance": "Apparence",
+    "individual_position": "Appareils individuels",
+    "color_individual_by_usage": "Colorer les appareils selon la consommation",
+    "individual_color_max": "Couleur de consommation : watts pour le rouge",
+    "color_battery_by_soc": "Colorer les batteries selon la charge"
   }
 }

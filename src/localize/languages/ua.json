@@ -96,6 +96,11 @@
     "battery_units": "Окремі батареї",
     "solar_units": "Окремі джерела PV",
     "charger_units": "Джерела заряджання",
-    "charger": "Джерело заряджання"
+    "charger": "Джерело заряджання",
+    "appearance": "Вигляд",
+    "individual_position": "Окремі пристрої",
+    "color_individual_by_usage": "Забарвлювати пристрої за споживанням",
+    "individual_color_max": "Колір споживання: вати для повного червоного",
+    "color_battery_by_soc": "Забарвлювати батареї за зарядом"
   }
 }

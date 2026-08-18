@@ -96,6 +96,11 @@
     "battery_units": "Yksittäiset akut",
     "solar_units": "Yksittäiset aurinkolähteet",
     "charger_units": "Latauslähteet",
-    "charger": "Latauslähde"
+    "charger": "Latauslähde",
+    "appearance": "Ulkoasu",
+    "individual_position": "Yksittäiset laitteet",
+    "color_individual_by_usage": "Väritä laitteet kulutuksen mukaan",
+    "individual_color_max": "Kulutusväri: watit täydelle punaiselle",
+    "color_battery_by_soc": "Väritä akut varaustilan mukaan"
   }
 }

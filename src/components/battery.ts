@@ -1,7 +1,7 @@
 import { html, nothing } from "lit";
 import { PowerFlowCardPlus } from "@/power-flow-card-plus";
 import { ConfigEntities, PowerFlowCardPlusConfig } from "@/power-flow-card-plus-config";
-import { displayValue } from "@/utils/display-value";
+import { displayEnergy, displayValue } from "@/utils/display-value";
 
 export const batteryElement = (
   main: PowerFlowCardPlus,
@@ -153,12 +153,14 @@ export const batteryElement = (
             }}
           >
             <ha-icon class="small" .icon=${"mdi:arrow-down"}></ha-icon>
-            ${displayValue(main.hass, config, battery.state.toBattery, {
-              unit: battery.unit,
-              unitWhiteSpace: battery.unit_white_space,
-              decimals: battery.decimals,
-              watt_threshold: config.watt_threshold,
-            })}</span
+            ${main.energyMode && battery.energy?.charged !== null && battery.energy?.charged !== undefined
+              ? displayEnergy(main.hass, config, battery.energy.charged)
+              : displayValue(main.hass, config, battery.state.toBattery, {
+                  unit: battery.unit,
+                  unitWhiteSpace: battery.unit_white_space,
+                  decimals: battery.decimals,
+                  watt_threshold: config.watt_threshold,
+                })}</span
           >`
         : nothing}
       ${entities.battery?.display_state === "two_way" ||
@@ -195,12 +197,14 @@ export const batteryElement = (
             }}
           >
             <ha-icon class="small" .icon=${"mdi:arrow-up"}></ha-icon>
-            ${displayValue(main.hass, config, battery.state.fromBattery, {
-              unit: battery.unit,
-              unitWhiteSpace: battery.unit_white_space,
-              decimals: battery.decimals,
-              watt_threshold: config.watt_threshold,
-            })}</span
+            ${main.energyMode && battery.energy?.discharged !== null && battery.energy?.discharged !== undefined
+              ? displayEnergy(main.hass, config, battery.energy.discharged)
+              : displayValue(main.hass, config, battery.state.fromBattery, {
+                  unit: battery.unit,
+                  unitWhiteSpace: battery.unit_white_space,
+                  decimals: battery.decimals,
+                  watt_threshold: config.watt_threshold,
+                })}</span
           >`
         : nothing}
     </div>

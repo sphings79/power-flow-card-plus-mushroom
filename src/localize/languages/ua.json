@@ -101,6 +101,17 @@
     "individual_position": "Окремі пристрої",
     "color_individual_by_usage": "Забарвлювати пристрої за споживанням",
     "individual_color_max": "Колір споживання: вати для повного червоного",
-    "color_battery_by_soc": "Забарвлювати батареї за зарядом"
+    "color_battery_by_soc": "Забарвлювати батареї за зарядом",
+    "energy_toggle": "Unit",
+    "energy_period_today": "today",
+    "energy_period_yesterday": "yesterday",
+    "energy_period_week": "this week",
+    "energy_period_month": "this month",
+    "energy_period_year": "this year",
+    "energy_period_last_7_days": "last 7 days",
+    "energy_period_last_30_days": "last 30 days",
+    "energy_period_last_365_days": "last 365 days",
+    "energy_period": "Energy period",
+    "energy_default": "Start in kWh mode"
   }
 }

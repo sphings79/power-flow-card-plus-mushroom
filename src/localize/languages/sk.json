@@ -101,6 +101,17 @@
     "individual_position": "Jednotlivé zariadenia",
     "color_individual_by_usage": "Zafarbiť zariadenia podľa spotreby",
     "individual_color_max": "Farba spotreby: watty pre plnú červenú",
-    "color_battery_by_soc": "Zafarbiť batérie podľa nabitia"
+    "color_battery_by_soc": "Zafarbiť batérie podľa nabitia",
+    "energy_toggle": "Unit",
+    "energy_period_today": "today",
+    "energy_period_yesterday": "yesterday",
+    "energy_period_week": "this week",
+    "energy_period_month": "this month",
+    "energy_period_year": "this year",
+    "energy_period_last_7_days": "last 7 days",
+    "energy_period_last_30_days": "last 30 days",
+    "energy_period_last_365_days": "last 365 days",
+    "energy_period": "Energy period",
+    "energy_default": "Start in kWh mode"
   }
 }

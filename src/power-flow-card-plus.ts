@@ -11,6 +11,7 @@ import { individualLeftTopElement } from "@/components/individual-left-top-eleme
 import { individualRightBottomElement } from "@/components/individual-right-bottom-element";
 import { individualRightTopElement } from "@/components/individual-right-top-element";
 import { dashboardLinkElement } from "@/components/misc/dashboard-link";
+import { energyToggleElement } from "@/components/misc/energy-toggle";
 import { nonFossilElement } from "@/components/non-fossil";
 import { chargerElement } from "@/components/charger";
 import { solarElement } from "@/components/solar";
@@ -44,13 +45,15 @@ import {
   getTopLeftIndividual,
   getTopRightIndividual,
 } from "@/utils/compute-individual-position";
-import { displayValue } from "@/utils/display-value";
+import { displayEnergy, displayValue } from "@/utils/display-value";
 import { defaultValues, getDefaultConfig } from "@/utils/get-default-config";
 import { registerCustomCard } from "@/utils/register-custom-card";
 import { coerceNumber } from "@/utils/utils";
 import { checkShouldShowDots } from "@/utils/check-should-show-dots";
 import { IndividualSortMode, sortIndividualObjects } from "@/utils/sort-individual-objects";
 import { socColor, usageColor } from "@/utils/usage-color";
+import { EnergyPeriod, fetchEnergyTotals } from "@/energy/energy-totals";
+import { logError } from "@/logging";
 import localize from "@/localize/localize";
 
 const circleCircumference = 238.76104;
@@ -70,6 +73,12 @@ export class PowerFlowCardPlus extends LitElement {
   @state() private _templateResults: Partial<Record<string, RenderTemplateResult>> = {};
   @state() private _unsubRenderTemplates?: Map<string, Promise<UnsubscribeFunc>> = new Map();
   @state() private _width = 0;
+  /** Period totals per energy entity, keyed by entity id. */
+  @state() private _energyTotals: Record<string, number> = {};
+  /** True while the card shows energy instead of power. */
+  @state() private _energyMode = false;
+  private _energyRequestKey = "";
+  private _energyTimer?: number;
   private readonly wideEnoughForFourIndividuals = 359;
   private _resizeObserver?: ResizeObserver;
   private _handleVisibilityChange = () => {
@@ -116,6 +125,7 @@ export class PowerFlowCardPlus extends LitElement {
       throw new Error("You are using an outdated configuration. Please update your configuration to the latest version.");
     }
     config = this._normalizeMultiEntityConfig(config);
+    if (config.energy_default === true) this._energyMode = true;
     if (!config.entities || (!config.entities?.battery?.entity && !config.entities?.grid?.entity && !config.entities?.solar?.entity)) {
       throw new Error("At least one entity for battery, grid or solar must be defined");
     }
@@ -177,8 +187,101 @@ export class PowerFlowCardPlus extends LitElement {
     return { ...config, entities };
   }
 
+  /** Energy entities that need a period total derived from statistics. */
+  private _statisticEnergyIds(): string[] {
+    const e = this._config?.entities;
+    if (!e) return [];
+    const ids: string[] = [];
+    const add = (id?: string, fromState?: boolean) => {
+      if (id && !fromState) ids.push(id);
+    };
+
+    add(e.grid?.energy_consumed_entity, e.grid?.energy_from_state);
+    add(e.grid?.energy_returned_entity, e.grid?.energy_from_state);
+    add(e.solar?.energy_entity, e.solar?.energy_from_state);
+    add(e.home?.energy_entity, e.home?.energy_from_state);
+    add(e.charger?.energy_entity, e.charger?.energy_from_state);
+    add(e.battery?.energy_charged_entity, e.battery?.energy_from_state);
+    add(e.battery?.energy_discharged_entity, e.battery?.energy_from_state);
+    e.battery?.batteries?.forEach((b) => {
+      add(b.energy_charged_entity, b.energy_from_state);
+      add(b.energy_discharged_entity, b.energy_from_state);
+    });
+    e.individual?.forEach((i) => add(i.energy_entity, i.energy_from_state));
+
+    return Array.from(new Set(ids));
+  }
+
+  private get _energyPeriod(): EnergyPeriod {
+    return this._config?.energy_period ?? "today";
+  }
+
+  /**
+   * Loads the period totals. Deliberately keyed on period plus entity list so a
+   * plain state update does not trigger a fresh statistics query on every tick.
+   */
+  private async _refreshEnergyTotals(force = false): Promise<void> {
+    if (!this.hass) return;
+    const ids = this._statisticEnergyIds();
+    if (!ids.length) return;
+
+    const key = `${this._energyPeriod}|${ids.join(",")}`;
+    if (!force && key === this._energyRequestKey) return;
+    this._energyRequestKey = key;
+
+    try {
+      this._energyTotals = await fetchEnergyTotals(this.hass, ids, this._energyPeriod);
+    } catch (err) {
+      // A core without the statistics websocket API, or an entity without
+      // statistics, should not take the whole card down.
+      logError(`could not load energy statistics: ${err}`);
+    }
+  }
+
+  /** True while the card shows energy instead of power. */
+  public get energyMode(): boolean {
+    return this._energyMode;
+  }
+
+  public setEnergyMode(on: boolean): void {
+    this._energyMode = on;
+    if (on) this._refreshEnergyTotals();
+  }
+
+  /** Whether anything is configured that the energy mode could show. */
+  public get hasEnergyConfigured(): boolean {
+    const e = this._config?.entities;
+    if (!e) return false;
+    return Boolean(
+      e.grid?.energy_consumed_entity ||
+        e.grid?.energy_returned_entity ||
+        e.solar?.energy_entity ||
+        e.home?.energy_entity ||
+        e.charger?.energy_entity ||
+        e.battery?.energy_charged_entity ||
+        e.battery?.energy_discharged_entity ||
+        e.battery?.batteries?.some((b) => b.energy_charged_entity || b.energy_discharged_entity) ||
+        e.individual?.some((i) => i.energy_entity)
+    );
+  }
+
+  /** Period energy for one entity, or null when it is not available. */
+  public energyValue(entityId?: string, fromState?: boolean): number | null {
+    if (!entityId) return null;
+    if (fromState) {
+      const raw = this.hass?.states?.[entityId]?.state;
+      const num = Number(raw);
+      return Number.isFinite(num) ? num : null;
+    }
+    const value = this._energyTotals[entityId];
+    return typeof value === "number" && Number.isFinite(value) ? value : null;
+  }
+
   public connectedCallback() {
     super.connectedCallback();
+    this._refreshEnergyTotals();
+    // Statistics only change once an hour, so a slow refresh is plenty.
+    this._energyTimer = window.setInterval(() => this._refreshEnergyTotals(true), 5 * 60 * 1000);
     if (typeof document !== "undefined") {
       document.addEventListener("visibilitychange", this._handleVisibilityChange);
     }
@@ -186,6 +289,10 @@ export class PowerFlowCardPlus extends LitElement {
   }
 
   public disconnectedCallback() {
+    if (this._energyTimer) {
+      window.clearInterval(this._energyTimer);
+      this._energyTimer = undefined;
+    }
     this._resizeObserver?.disconnect();
     this._resizeObserver = undefined;
     if (typeof document !== "undefined") {
@@ -356,6 +463,7 @@ export class PowerFlowCardPlus extends LitElement {
     const usageMax = this._config.individual_color_max ?? this._config.max_expected_power;
     const toSubEntity = (i: IndividualObject): SubEntity => {
       const explicit = typeof i.color === "string" ? i.color : undefined;
+      const cfg = this._config.entities.individual?.find((c) => c.entity === i.entity);
       return {
         entity: i.entity,
         name: i.name,
@@ -363,6 +471,7 @@ export class PowerFlowCardPlus extends LitElement {
         color: explicit ?? (colorByUsage ? usageColor(i.state ?? 0, usageMax) || undefined : undefined),
         state: i.state ?? 0,
         display: getIndividualDisplayState(i),
+        energy: this.energyValue(cfg?.energy_entity, cfg?.energy_from_state),
       };
     };
     const getIndividualDisplayState = (field?: IndividualObject) => {
@@ -387,6 +496,7 @@ export class PowerFlowCardPlus extends LitElement {
           id="power-flow-card-plus"
           style=${this._config.style_card_content ? this._config.style_card_content : ""}
         >
+          ${energyToggleElement(this, this._config, this.hasEnergyConfigured)}
           <!--
             The flow diagram needs its own positioning context. The flow lines are
             absolutely positioned against the bottom of their offset parent, so any
@@ -555,6 +665,10 @@ export class PowerFlowCardPlus extends LitElement {
       changedProps.has("_config") ||
       changedProps.has("_templateResults") ||
       changedProps.has("_width") ||
+      // Statistics arrive asynchronously, so the cached render data has to be
+      // rebuilt once they land — otherwise the lists keep their empty values.
+      changedProps.has("_energyTotals") ||
+      changedProps.has("_energyMode") ||
       this._renderData === undefined
     ) {
       this.style.setProperty("--clickable-cursor", this._config.clickable_entities ? "pointer" : "default");
@@ -569,6 +683,10 @@ export class PowerFlowCardPlus extends LitElement {
       entity: entities.grid?.entity,
       has: entities?.grid?.entity !== undefined,
       hasReturnToGrid: typeof entities.grid?.entity === "string" || !!entities.grid?.entity?.production,
+      energy: {
+        consumed: this.energyValue(entities.grid?.energy_consumed_entity, entities.grid?.energy_from_state),
+        returned: this.energyValue(entities.grid?.energy_returned_entity, entities.grid?.energy_from_state),
+      },
       state: {
         fromGrid: getGridConsumptionState(this.hass, this._config),
         toGrid: getGridProductionState(this.hass, this._config),
@@ -621,6 +739,7 @@ export class PowerFlowCardPlus extends LitElement {
       entity: entities.solar?.entity as string | undefined,
       has: hasSolarEntity && displayZero,
       subs: getSolarSubs(this.hass, this._config),
+      energy: this.energyValue(entities.solar?.energy_entity, entities.solar?.energy_from_state),
       state: {
         total: getSolarState(this.hass, this._config),
         toHome: initialNumericState,
@@ -655,15 +774,25 @@ export class PowerFlowCardPlus extends LitElement {
     const battery = {
       entity: entities.battery?.entity,
       has: checkIfHasBattery(),
-      subs: getBatterySubs(this.hass, this._config).map((sub) =>
+      subs: getBatterySubs(this.hass, this._config).map((sub, index) => {
+        const unit = entities.battery?.batteries?.[index];
+        const withEnergy = {
+          ...sub,
+          energyCharged: this.energyValue(unit?.energy_charged_entity, unit?.energy_from_state),
+          energyDischarged: this.energyValue(unit?.energy_discharged_entity, unit?.energy_from_state),
+        };
         // Tint by state of charge, unless the battery carries an explicit colour.
-        this._config.color_battery_by_soc === true && sub.color === undefined && sub.soc !== null && sub.soc !== undefined
-          ? { ...sub, color: socColor(Number(sub.soc)) || undefined }
-          : sub
-      ),
+        return this._config.color_battery_by_soc === true && withEnergy.color === undefined && withEnergy.soc !== null && withEnergy.soc !== undefined
+          ? { ...withEnergy, color: socColor(Number(withEnergy.soc)) || undefined }
+          : withEnergy;
+      }),
       mainEntity: typeof entities.battery?.entity === "object" ? entities.battery.entity.consumption : entities.battery?.entity,
       name: computeFieldName(this.hass, entities.battery, this.hass.localize("ui.panel.lovelace.cards.energy.energy_distribution.battery")),
       icon: computeFieldIcon(this.hass, entities.battery, "mdi:battery-high"),
+      energy: {
+        charged: this.energyValue(entities.battery?.energy_charged_entity, entities.battery?.energy_from_state),
+        discharged: this.energyValue(entities.battery?.energy_discharged_entity, entities.battery?.energy_from_state),
+      },
       state_of_charge: {
         state: getBatteryStateOfCharge(this.hass, this._config),
         unit: entities?.battery?.state_of_charge_unit ?? "%",
@@ -693,6 +822,7 @@ export class PowerFlowCardPlus extends LitElement {
       entity: entities.charger?.entity,
       // Needs a battery to flow into — on its own the node would have nowhere to point.
       has: entities.charger?.entity !== undefined && checkIfHasBattery() && (entities.charger?.display_zero !== false || chargerIsActive),
+      energy: this.energyValue(entities.charger?.energy_entity, entities.charger?.energy_from_state),
       // A single source repeats the node's own value, so it is not listed by default.
       subs: (entities.charger?.show_breakdown ?? (entities.charger?.sources?.length ?? 0) > 1)
         ? getChargerSubs(this.hass, this._config)
@@ -720,6 +850,7 @@ export class PowerFlowCardPlus extends LitElement {
     const home = {
       entity: entities.home?.entity,
       has: entities?.home?.entity !== undefined,
+      energy: this.energyValue(entities.home?.energy_entity, entities.home?.energy_from_state),
       state: initialNumericState,
       icon: computeFieldIcon(this.hass, entities?.home, "mdi:home"),
       name: computeFieldName(this.hass, entities?.home, this.hass.localize("ui.panel.lovelace.cards.energy.energy_distribution.home")),
@@ -812,8 +943,10 @@ export class PowerFlowCardPlus extends LitElement {
     const homeGridCircumference =
       circleCircumference *
       ((totalHomeConsumption - (nonFossil.state.power ?? 0) - (battery.state.toHome ?? 0) - (solar.state.toHome ?? 0)) / totalHomeConsumption);
-    const homeUsageToDisplay =
-      entities.home?.override_state && entities.home.entity
+    const homeEnergy = this.energyValue(entities.home?.energy_entity, entities.home?.energy_from_state);
+    const homeUsageToDisplay = this._energyMode && homeEnergy !== null
+      ? displayEnergy(this.hass, this._config, homeEnergy)
+      : entities.home?.override_state && entities.home.entity
         ? entities.home?.subtract_individual
           ? displayValue(this.hass, this._config, getEntityStateWatts(this.hass, entities.home.entity) - totalIndividualConsumption, {
               unit: entities.home?.unit_of_measurement,

@@ -648,6 +648,52 @@ export const styles = css`
   }
 
   /* ---- Docked breakdown lists (multi PV / multi battery / extra individuals) ---- */
+  .pfcp-sub-energy {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    font-size: 11px;
+    color: var(--secondary-text-color);
+    white-space: nowrap;
+  }
+
+  .pfcp-sub-energy-icon {
+    --mdc-icon-size: 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Watt / kWh switch in the card header. */
+  .pfcp-energy-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .pfcp-energy-option {
+    font: inherit;
+    font-size: 12px;
+    line-height: 1;
+    padding: 4px 10px;
+    border: 1px solid var(--divider-color, rgba(127, 127, 127, 0.3));
+    background: none;
+    color: var(--secondary-text-color);
+    cursor: var(--clickable-cursor);
+    border-radius: 12px;
+  }
+
+  .pfcp-energy-option.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-primary-color, #fff);
+  }
+
+  .pfcp-energy-period {
+    font-size: 11px;
+    color: var(--secondary-text-color);
+  }
+
   /*
    * Diagram plus the optional device rail beside it. Without a rail the layout is
    * a single column and behaves exactly as before.

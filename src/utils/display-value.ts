@@ -51,3 +51,11 @@ export const displayValue = (
 
   return `${v}${whiteSpace}${unit || (isKW ? "kW" : "W")}`;
 };
+
+/**
+ * Formats a period energy total. Passing an explicit unit keeps `displayValue`
+ * from applying its watt-to-kilowatt conversion, which would be wrong here — the
+ * value already is in kilowatt hours.
+ */
+export const displayEnergy = (hass: HomeAssistant, config: PowerFlowCardPlusConfig, kwh: number | null, decimals = 1): string =>
+  displayValue(hass, config, kwh, { unit: "kWh", decimals, accept_negative: true });

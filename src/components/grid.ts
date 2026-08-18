@@ -1,6 +1,6 @@
 import { html, nothing } from "lit";
 import { PowerFlowCardPlus } from "@/power-flow-card-plus";
-import { displayValue } from "@/utils/display-value";
+import { displayEnergy, displayValue } from "@/utils/display-value";
 import { generalSecondarySpan } from "./spans/general-secondary-span";
 import { TemplatesObj } from "@/type";
 import { ConfigEntities, PowerFlowCardPlusConfig } from "@/power-flow-card-plus-config";
@@ -101,12 +101,14 @@ export const gridElement = (
           >
             <ha-icon class="small" .icon=${"mdi:arrow-left"}></ha-icon>
 
-            ${displayValue(main.hass, config, grid.state.toGrid, {
-              unit: grid.unit,
-              unitWhiteSpace: grid.unit_white_space,
-              decimals: grid.decimals,
-              watt_threshold: config.watt_threshold,
-            })}
+            ${main.energyMode && grid.energy?.returned !== null && grid.energy?.returned !== undefined
+              ? displayEnergy(main.hass, config, grid.energy.returned)
+              : displayValue(main.hass, config, grid.state.toGrid, {
+                  unit: grid.unit,
+                  unitWhiteSpace: grid.unit_white_space,
+                  decimals: grid.decimals,
+                  watt_threshold: config.watt_threshold,
+                })}
           </span>`
         : nothing}
       ${((entities.grid?.display_state === "two_way" ||
@@ -144,12 +146,14 @@ export const gridElement = (
             }}
           >
             <ha-icon class="small" .icon=${"mdi:arrow-right"}></ha-icon>
-            ${displayValue(main.hass, config, grid.state.fromGrid, {
-              unit: grid.unit,
-              unitWhiteSpace: grid.unit_white_space,
-              decimals: grid.decimals,
-              watt_threshold: config.watt_threshold,
-            })}
+            ${main.energyMode && grid.energy?.consumed !== null && grid.energy?.consumed !== undefined
+              ? displayEnergy(main.hass, config, grid.energy.consumed)
+              : displayValue(main.hass, config, grid.state.fromGrid, {
+                  unit: grid.unit,
+                  unitWhiteSpace: grid.unit_white_space,
+                  decimals: grid.decimals,
+                  watt_threshold: config.watt_threshold,
+                })}
           </span>`
         : nothing}
       ${grid.powerOutage?.isOutage && !grid.powerOutage?.entityGenerator

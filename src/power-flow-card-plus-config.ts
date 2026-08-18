@@ -62,6 +62,23 @@ interface mainConfigOptions {
    * itself takes precedence.
    */
   color_battery_by_soc?: boolean;
+  /**
+   * Period the energy values cover.
+   *
+   * Calendar based: `week` starts on Monday, `month` on the first, `year` on
+   * 1 January — each running up to now. `yesterday` is the full previous day.
+   *
+   * Rolling: `last_7_days`, `last_30_days` and `last_365_days` count whole days
+   * back from today, today included.
+   */
+  energy_period?: "today" | "yesterday" | "week" | "month" | "year" | "last_7_days" | "last_30_days" | "last_365_days";
+  /**
+   * Show the Watt / kWh switch in the card header. Defaults to `true` as soon as
+   * at least one energy entity is configured.
+   */
+  energy_toggle?: boolean;
+  /** Start the card in energy mode rather than power mode. */
+  energy_default?: boolean;
   allow_layout_break?: boolean;
   /**
    * Maximum number of individual devices rendered in the four corner slots of the flow diagram.
@@ -83,6 +100,12 @@ export type IndividualField = IndividualDeviceType[];
  */
 export interface BatteryUnit {
   entity: string;
+  /** Cumulative kWh entity for energy charged into this battery. */
+  energy_charged_entity?: string;
+  /** Cumulative kWh entity for energy discharged from this battery. */
+  energy_discharged_entity?: string;
+  /** Read those entities' states as-is instead of deriving period totals. */
+  energy_from_state?: boolean;
   name?: string;
   icon?: string;
   color?: string;
@@ -94,6 +117,12 @@ export interface BatteryUnit {
 }
 
 interface Battery extends BaseConfigEntity {
+  /** Cumulative kWh entity for energy charged into the battery. */
+  energy_charged_entity?: string;
+  /** Cumulative kWh entity for energy discharged from the battery. */
+  energy_discharged_entity?: string;
+  /** Read those entities' states as-is instead of deriving period totals. */
+  energy_from_state?: boolean;
   state_of_charge?: string;
   state_of_charge_unit?: string;
   state_of_charge_unit_white_space?: boolean;
@@ -113,6 +142,12 @@ interface Battery extends BaseConfigEntity {
 }
 
 interface Grid extends BaseConfigEntity {
+  /** Cumulative kWh entity for energy drawn from the grid. */
+  energy_consumed_entity?: string;
+  /** Cumulative kWh entity for energy fed back into the grid. */
+  energy_returned_entity?: string;
+  /** Read those entities' states as-is instead of deriving period totals. */
+  energy_from_state?: boolean;
   power_outage: GridPowerOutage;
   secondary_info?: SecondaryInfoType;
   color_circle: "color_dynamically" | "production" | "consumption";
@@ -134,6 +169,10 @@ export interface SolarSource {
 
 interface Solar extends Omit<BaseConfigEntity, "entity"> {
   entity?: string;
+  /** Cumulative kWh entity; the card derives the period total from its statistics. */
+  energy_entity?: string;
+  /** Read the entity's state as-is instead of deriving a period total from it. */
+  energy_from_state?: boolean;
   color?: any;
   color_icon?: boolean;
   color_value?: boolean;
@@ -174,6 +213,10 @@ export interface ChargerSource {
  */
 interface Charger extends Omit<BaseConfigEntity, "entity"> {
   entity?: string;
+  /** Cumulative kWh entity; the card derives the period total from its statistics. */
+  energy_entity?: string;
+  /** Read the entity's state as-is instead of deriving a period total from it. */
+  energy_from_state?: boolean;
   color?: string;
   color_icon?: boolean;
   color_value?: boolean;
@@ -198,6 +241,10 @@ interface Charger extends Omit<BaseConfigEntity, "entity"> {
 
 interface Home extends BaseConfigEntity {
   entity: string;
+  /** Cumulative kWh entity; the card derives the period total from its statistics. */
+  energy_entity?: string;
+  /** Read the entity's state as-is instead of deriving a period total from it. */
+  energy_from_state?: boolean;
   override_state?: boolean;
   color_icon?: boolean | "solar" | "grid" | "battery";
   color_value?: boolean | "solar" | "grid" | "battery";

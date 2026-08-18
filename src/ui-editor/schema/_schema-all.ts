@@ -62,6 +62,9 @@ export const cardConfigStruct = assign(
     color_individual_by_usage: optional(boolean()),
     individual_color_max: optional(number()),
     color_battery_by_soc: optional(boolean()),
+    energy_period: optional(string()),
+    energy_toggle: optional(boolean()),
+    energy_default: optional(boolean()),
     allow_layout_break: optional(boolean()),
   })
 );
@@ -249,6 +252,36 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
         name: "individual_color_max",
         label: "Usage colour: watts for full red",
         selector: { number: { mode: "box", min: 1, max: 1000000, step: 1 } },
+      },
+      {
+        name: "energy_period",
+        label: "Energy period",
+        selector: {
+          select: {
+            options: [
+              { value: "today", label: "Today" },
+              { value: "yesterday", label: "Yesterday" },
+              { value: "week", label: "This week (from Monday)" },
+              { value: "month", label: "This month" },
+              { value: "year", label: "This year" },
+              { value: "last_7_days", label: "Last 7 days" },
+              { value: "last_30_days", label: "Last 30 days" },
+              { value: "last_365_days", label: "Last 365 days" },
+            ],
+            mode: "dropdown",
+          },
+        },
+      },
+      {
+        name: "energy_toggle",
+        label: "Show the Watt / kWh switch",
+        default: true,
+        selector: { boolean: {} },
+      },
+      {
+        name: "energy_default",
+        label: "Start in kWh mode",
+        selector: { boolean: {} },
       },
       {
         name: "color_battery_by_soc",

@@ -50,6 +50,10 @@ export type GridPowerOutage = {
 
 export type IndividualDeviceType = BaseConfigEntity & {
   entity: string;
+  /** Cumulative kWh entity; the card derives the period total from its statistics. */
+  energy_entity?: string;
+  /** Read the entity's state as-is instead of deriving a period total from it. */
+  energy_from_state?: boolean;
   color?: string;
   color_icon?: boolean;
   inverted_animation?: boolean;
@@ -108,6 +112,11 @@ export type GridObject = {
   entity: string | ComboEntity | undefined;
   has: boolean;
   hasReturnToGrid: boolean;
+  /** Period energy in kWh, null when not configured or not yet loaded. */
+  energy?: {
+    consumed: number | null;
+    returned: number | null;
+  };
   state: {
     fromGrid: number | null;
     toGrid: number | null;

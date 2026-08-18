@@ -101,6 +101,17 @@
     "individual_position": "अलग-अलग उपकरण",
     "color_individual_by_usage": "खपत के अनुसार उपकरण रंगें",
     "individual_color_max": "खपत रंग: पूर्ण लाल के लिए वाट",
-    "color_battery_by_soc": "चार्ज के अनुसार बैटरियाँ रंगें"
+    "color_battery_by_soc": "चार्ज के अनुसार बैटरियाँ रंगें",
+    "energy_toggle": "Unit",
+    "energy_period_today": "today",
+    "energy_period_yesterday": "yesterday",
+    "energy_period_week": "this week",
+    "energy_period_month": "this month",
+    "energy_period_year": "this year",
+    "energy_period_last_7_days": "last 7 days",
+    "energy_period_last_30_days": "last 30 days",
+    "energy_period_last_365_days": "last 365 days",
+    "energy_period": "Energy period",
+    "energy_default": "Start in kWh mode"
   }
 }

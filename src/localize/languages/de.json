@@ -101,6 +101,17 @@
     "individual_position": "Individuelle Geräte",
     "color_individual_by_usage": "Individuelle Geräte nach Verbrauch einfärben",
     "individual_color_max": "Verbrauchsfarbe: Watt für volles Rot",
-    "color_battery_by_soc": "Batterien nach Ladestand einfärben"
+    "color_battery_by_soc": "Batterien nach Ladestand einfärben",
+    "energy_toggle": "Einheit",
+    "energy_period_today": "heute",
+    "energy_period_yesterday": "gestern",
+    "energy_period_week": "diese Woche",
+    "energy_period_month": "dieser Monat",
+    "energy_period_year": "dieses Jahr",
+    "energy_period_last_7_days": "letzte 7 Tage",
+    "energy_period_last_30_days": "letzte 30 Tage",
+    "energy_period_last_365_days": "letzte 365 Tage",
+    "energy_period": "Zeitraum der Energiewerte",
+    "energy_default": "Im kWh-Modus starten"
   }
 }

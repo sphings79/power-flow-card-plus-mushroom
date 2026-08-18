@@ -1,7 +1,7 @@
 import { html, nothing } from "lit";
 import { PowerFlowCardPlus } from "@/power-flow-card-plus";
 import { PowerFlowCardPlusConfig } from "@/power-flow-card-plus-config";
-import { displayValue } from "@/utils/display-value";
+import { displayEnergy, displayValue } from "@/utils/display-value";
 import { SubEntity } from "@/states/raw/subs";
 
 export interface SubsGroup {
@@ -41,6 +41,19 @@ export const subsElement = (main: PowerFlowCardPlus, config: PowerFlowCardPlusCo
           ${item.icon ? html`<ha-icon class="pfcp-sub-icon" .icon=${item.icon}></ha-icon>` : nothing}
           <span class="pfcp-sub-name">${item.name}</span>
           <span class="pfcp-sub-values">
+            ${item.energyCharged !== null && item.energyCharged !== undefined
+              ? html`<span class="pfcp-sub-energy" title="geladen">
+                  <ha-icon class="pfcp-sub-energy-icon" icon="mdi:arrow-down"></ha-icon>${displayEnergy(main.hass, config, item.energyCharged)}
+                </span>`
+              : nothing}
+            ${item.energyDischarged !== null && item.energyDischarged !== undefined
+              ? html`<span class="pfcp-sub-energy" title="entladen">
+                  <ha-icon class="pfcp-sub-energy-icon" icon="mdi:arrow-up"></ha-icon>${displayEnergy(main.hass, config, item.energyDischarged)}
+                </span>`
+              : nothing}
+            ${item.energy !== null && item.energy !== undefined
+              ? html`<span class="pfcp-sub-energy">${displayEnergy(main.hass, config, item.energy)}</span>`
+              : nothing}
             ${group.showSoc && item.soc !== null && item.soc !== undefined
               ? html`<span class="pfcp-sub-soc"
                   >${displayValue(main.hass, config, item.soc, {

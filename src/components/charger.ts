@@ -2,7 +2,7 @@ import { html, nothing } from "lit";
 import { PowerFlowCardPlus } from "@/power-flow-card-plus";
 import { ConfigEntities, PowerFlowCardPlusConfig } from "@/power-flow-card-plus-config";
 import { generalSecondarySpan } from "./spans/general-secondary-span";
-import { displayValue } from "@/utils/display-value";
+import { displayEnergy, displayValue } from "@/utils/display-value";
 import { TemplatesObj } from "@/type";
 import { isNumberValue } from "@/utils/utils";
 
@@ -63,7 +63,9 @@ export const chargerElement = (
       <ha-ripple .disabled=${disableEntityClick}></ha-ripple>
       ${shouldShowSecondary() ? generalSecondarySpan(main.hass, main, config, templatesObj, charger, "charger") : nothing}
       ${charger.icon !== " " ? html`<ha-icon id="charger-icon" .icon=${charger.icon}></ha-icon>` : nothing}
-      ${entities.charger?.display_zero_state !== false || (charger.state.toBattery || 0) > 0
+      ${main.energyMode && charger.energy !== null && charger.energy !== undefined
+        ? html`<span class="charger">${displayEnergy(main.hass, config, charger.energy)}</span>`
+        : entities.charger?.display_zero_state !== false || (charger.state.toBattery || 0) > 0
         ? html`<span class="charger">
             ${displayValue(main.hass, config, charger.state.toBattery, {
               watt_threshold: config.watt_threshold,

@@ -215,6 +215,51 @@ A colour set on the battery itself always wins over either tint.
 The docked breakdown below the diagram lays its entries out two per row, so four
 batteries form a 2x2 block rather than one tall column.
 
+### Energy mode (`kWh`)
+
+The card can show energy instead of power. A switch in the header flips between
+the two, and the batteries and individual devices show their energy permanently
+in the lists — there is room for it there.
+
+```yaml
+type: custom:power-flow-card-plus-mushroom
+energy_period: today   # yesterday | week | month | year | last_7_days | last_30_days | last_365_days
+energy_toggle: true    # show the W / kWh switch (default: true once energy is configured)
+energy_default: false  # start in kWh mode
+entities:
+  grid:
+    entity: sensor.grid_power
+    energy_consumed_entity: sensor.grid_import          # cumulative kWh
+    energy_returned_entity: sensor.grid_export
+  solar:
+    entity: sensor.solar_power
+    energy_entity: sensor.solar_production
+  battery:
+    entity: sensor.battery_power
+    energy_charged_entity: sensor.battery_charged_total
+    energy_discharged_entity: sensor.battery_discharged_total
+    batteries:
+      - entity: sensor.battery_a_power
+        energy_charged_entity: sensor.battery_a_charged_total
+        energy_discharged_entity: sensor.battery_a_discharged_total
+  individual:
+    - entity: sensor.washing_machine_power
+      energy_entity: sensor.washing_machine_energy
+```
+
+**Point these at cumulative kWh sensors**, not at daily ones. The card asks Home
+Assistant's statistics for the difference over the chosen period, so one lifetime
+counter serves every period. If a sensor already represents exactly the period you
+want, add `energy_from_state: true` next to it and the card reads its state as-is
+instead.
+
+Periods are calendar based — `week` starts on Monday, `month` on the first,
+`year` on 1 January, each running up to now. The `last_*` variants are rolling
+windows counting whole days back from today, today included.
+
+In the lists the batteries show both directions, with an arrow down for energy
+charged and an arrow up for energy discharged.
+
 ### Mushroom appearance
 
 Set `appearance: mushroom` to restyle the card so it sits comfortably next to

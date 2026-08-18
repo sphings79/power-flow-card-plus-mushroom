@@ -18,6 +18,12 @@ export interface SubEntity {
   socDecimals?: number;
   /** Pre-formatted value string. When set, it is shown verbatim instead of formatting `state`. */
   display?: string;
+  /** Period energy in kWh for the item (individual devices, charging sources). */
+  energy?: number | null;
+  /** Period energy charged into this battery, in kWh. */
+  energyCharged?: number | null;
+  /** Period energy discharged from this battery, in kWh. */
+  energyDischarged?: number | null;
 }
 
 const friendlyName = (hass: HomeAssistant, entity: string, fallback?: string): string => {

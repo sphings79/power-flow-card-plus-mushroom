@@ -8,6 +8,9 @@
 
 ![2023-03-26-13-04-07](https://user-images.githubusercontent.com/61006057/227771568-78497ecc-e863-46f2-b29e-e15c7c20a154.gif)
 
+> [!TIP]  
+> Version 0.2.0 is out now! ✨ Check out the [new features](https://github.com/flixlix/power-flow-card-plus/releases/tag/v0.2.0)!
+
 > [!NOTE]
 > This card is distributed via [flixlix/power-flow-card-plus](https://github.com/flixlix/power-flow-card-plus), but the source code lives in the monorepo at [flixlix/flixlix-cards](https://github.com/flixlix/flixlix-cards). Issues and feature requests will be tracked there going forward.
 
@@ -40,6 +43,135 @@
 
 </details>
 
+## Fork additions: Multiple Batteries, Multiple PV & unlimited Individual devices
+
+> [!IMPORTANT]
+> **This fork uses its own card type so it can run side by side with the original card.**
+> - Card type in YAML: **`custom:power-flow-card-plus-multi`**
+> - JavaScript resource file: **`power-flow-card-plus-multi.js`**
+> - Name in the card picker: **“Power Flow Card Plus (Multi)”**
+>
+> Every custom element in this bundle is uniquely named, so installing both the original `power-flow-card-plus` and this `-multi` fork at the same time does not clash. Add the fork as a separate dashboard resource pointing to `power-flow-card-plus-multi.js`.
+
+> [!NOTE]
+> The `sources`, `batteries` and `max_individual_in_grid` options are **additions of this fork** (`sphings79/power-flow-card-plus`) and are not part of the upstream card. Everything else works exactly like upstream; an upstream configuration keeps working once you switch its `type:` to `custom:power-flow-card-plus-multi`.
+
+This fork lets you drive the main **Solar** and **Battery** nodes from *several* entities and lift the four-device limit on **Individual** entities. The main nodes keep the familiar aggregated look and animated flows; each underlying device is additionally listed in a compact, docked breakdown directly below the flow diagram.
+
+### Multiple PV sources (`solar.sources`)
+
+Provide a list of PV sources instead of (or in addition to) a single `solar.entity`. Their power is **summed** into the main solar node, and each source is listed below the diagram. If you omit `solar.entity`, the aggregate is computed automatically from the sources.
+
+```yaml
+type: custom:power-flow-card-plus-multi
+entities:
+  solar:
+    # entity: sensor.pv_total   # optional – omit to auto-sum the sources
+    sources:
+      - entity: sensor.pv_roof_south
+        name: Roof South
+      - entity: sensor.pv_roof_east
+        name: Roof East
+      - entity: sensor.pv_garage
+        name: Garage
+```
+
+Each source accepts: `entity` (required), `name`, `icon`, `color`, `invert_state`.
+
+### Multiple batteries (`battery.batteries`)
+
+Provide a list of batteries. Their power is **summed** into the main battery node. If you don't set an aggregate `battery.state_of_charge`, the node's state of charge is the **average** of the individual batteries' states of charge (summing percentages would be wrong). Each battery is listed below the diagram with its own power and state of charge.
+
+```yaml
+type: custom:power-flow-card-plus-multi
+entities:
+  battery:
+    # entity: sensor.battery_total_power        # optional – omit to auto-sum
+    # state_of_charge: sensor.battery_total_soc # optional – omit to average
+    color_circle: color_dynamically
+    batteries:
+      - entity: sensor.battery_1_power
+        state_of_charge: sensor.battery_1_soc
+        name: Battery 1
+      - entity: sensor.battery_2_power
+        state_of_charge: sensor.battery_2_soc
+        name: Battery 2
+```
+
+Each battery accepts: `entity` (required), `state_of_charge`, `name`, `icon`, `color`, `state_of_charge_unit`, `state_of_charge_decimals`, `invert_state`.
+
+### More than 4 Individual devices
+
+The `individual` list is unlimited. The first four devices occupy the four corner slots of the flow diagram (as before); any **additional** devices are rendered in the docked list below the diagram. Use `max_individual_in_grid` (0–4, default 4) to control how many go into the corners — set it to `0` to move *all* individual devices into the list.
+
+```yaml
+type: custom:power-flow-card-plus-multi
+max_individual_in_grid: 4   # optional, 0..4 (default 4)
+entities:
+  individual:
+    - { entity: sensor.car, name: Car }
+    - { entity: sensor.washer, name: Washing Machine }
+    - { entity: sensor.dishwasher, name: Dishwasher }
+    - { entity: sensor.oven, name: Oven }
+    - { entity: sensor.server, name: Server }     # 5th+ -> shown in the list
+    - { entity: sensor.pool, name: Pool Pump }
+```
+
+> [!TIP]
+> All sub-entities of one node should share the same unit (e.g. all `W` or all `kW`); the aggregate uses the first entity's unit. The docked list items are clickable (more-info) when `clickable_entities` is enabled.
+
+### Mushroom appearance
+
+Set `appearance: mushroom` to restyle the card so it sits comfortably next to
+[Mushroom](https://github.com/piitaya/lovelace-mushroom) cards. This is a pure
+styling switch — no entity, layout or behaviour change — so you can flip between
+the two looks at any time.
+
+```yaml
+type: custom:power-flow-card-plus-multi
+appearance: mushroom   # classic (default) | mushroom
+entities:
+  grid:
+    entity: sensor.grid_power
+```
+
+What changes compared to `classic`:
+
+- **Shapes instead of rings** — the circles lose their 2px outline and are filled
+  with their own colour at 20% opacity, with the icon in full colour. This is the
+  same shape treatment Mushroom uses for its icons.
+- **Typography** — values and labels adopt Mushroom's weights and sizes;
+  secondary info is dimmed rather than drawn in full contrast.
+- **Softer flow lines** — slightly thicker with rounded caps, so they read as
+  strokes rather than hairlines.
+- **Breakdown list as chips** — the docked list of PV sources / batteries / extra
+  individual devices becomes a row of tinted chips with their own icon shapes,
+  instead of the left-border list style.
+
+#### Fine-tuning
+
+Three CSS custom properties are available, settable per card via
+`style_card_content` or globally in your theme:
+
+| Property                | Default                               | Description                                                      |
+| ----------------------- | ------------------------------------- | ---------------------------------------------------------------- |
+| `--pfcp-shape-strength` | `20%`                                 | Opacity of the shape fill. Lower is subtler, higher is bolder.    |
+| `--pfcp-shape-radius`   | `var(--mush-icon-border-radius, 50%)` | Shape corner radius. Follows your Mushroom theme if it sets one.  |
+| `--pfcp-shape-fallback` | `var(--primary-color)`                | Fill colour used when a node has no colour of its own.            |
+
+For squared shapes, matching a Mushroom theme with squared icons:
+
+```yaml
+appearance: mushroom
+style_card_content: "--pfcp-shape-radius: 12px;"
+```
+
+> [!NOTE]
+> The shape fill uses the CSS `color-mix()` function. Every browser Home
+> Assistant currently supports handles it; on an older browser the shapes simply
+> render transparent rather than breaking the layout.
+
+
 ## Goal
 
 The Goal of this card is to provide an easy to understand and visualize way of displaying the current Power Distribution coming from and to different sources, such as solar, grid, home batteries etc. Furthermore, this card aims to expose a lot of customizability and control of its behavior to the configuration, allowing users to tailor it to their specific requirements.
@@ -68,17 +200,17 @@ After having HACS installed, simply search for "Power Flow Card Plus" and downlo
 <details>
 <summary>Manual install</summary>
 
-1. Download and copy `power-flow-card-plus.js` from the [latest release](https://github.com/flixlix/power-flow-card-plus/releases/latest) into your `config/www` directory.
+1. Download and copy `power-flow-card-plus-multi.js` from the [latest release](https://github.com/flixlix/power-flow-card-plus/releases/latest) into your `config/www` directory.
 
 2. Add the resource reference as decribed below.
 
 ### Add resource reference
 
-If you configure Dashboards via YAML, add a reference to `power-flow-card-plus.js` inside your `configuration.yaml`:
+If you configure Dashboards via YAML, add a reference to `power-flow-card-plus-multi.js` inside your `configuration.yaml`:
 
 ```yaml
 resources:
-  - url: /local/power-flow-card-plus.js
+  - url: /local/power-flow-card-plus-multi.js
     type: module
 ```
 
@@ -89,8 +221,8 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 3. Click three dot icon
 4. Select Resources
 5. Hit (+ ADD RESOURCE) icon
-6. Enter URL `/local/power-flow-card-plus.js` and select type "JavaScript Module".
-   (Use `/hacsfiles/power-flow-card-plus/power-flow-card-plus.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
+6. Enter URL `/local/power-flow-card-plus-multi.js` and select type "JavaScript Module".
+   (Use `/hacsfiles/power-flow-card-plus/power-flow-card-plus-multi.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
 
 </details>
 
@@ -105,18 +237,18 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
 | Name                        | Type      |                 Default                  | Description                                                                                                                                                                                                              |
 | --------------------------- | --------- | :--------------------------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| type                        | `string`  |               **required**               | `custom:power-flow-card-plus`.                                                                                                                                                                                           |
+| type                        | `string`  |               **required**               | `custom:power-flow-card-plus-multi`.                                                                                                                                                                                           |
 | entities                    | `object`  |               **required**               | One or more sensor entities, see [entities object](#entities-object) for additional entity options.                                                                                                                      |
 | title                       | `string`  |                                          | Shows a title at the top of the card.                                                                                                                                                                                    |
 | dashboard_link              | `string`  |                                          | Shows a link to an Energy Dashboard. Should be a url path to location of your choice. If you wanted to link to the built-in dashboard you would enter `/energy` for example.                                             |
 | dashboard_link_label        | `string`  | Go To Energy Dashboard (auto-translates) | If set, overrides the default link label to go to a different dashboard.                                                                                                                                                 |
 | second_dashboard_link       | `string`  |                                          | Shows another link to an Energy Dashboard. Should be a url path to location of your choice. If you wanted to link to the built-in dashboard you would enter `/energy` for example. (Only available in the YAML Editor)   |
 | second_dashboard_link_label | `string`  | Go To Energy Dashboard (auto-translates) | If set, overrides the second default link label to go to a different dashboard.                                                                                                                                          |
-| kilo_decimals               | `number`  |                    1                     | Number of decimals rounded to when kilowatts are displayed.                                                                                                                                                              |
-| base_decimals               | `number`  |                    1                     | Number of decimals rounded to when watts are displayed.                                                                                                                                                                  |
+| kw_decimals                 | `number`  |                    1                     | Number of decimals rounded to when kilowatts are displayed.                                                                                                                                                              |
+| w_decimals                  | `number`  |                    1                     | Number of decimals rounded to when watts are displayed.                                                                                                                                                                  |
 | min_flow_rate               | `number`  |                   .75                    | Represents how much time it takes for the quickest dot to travel from one end to the other in seconds.                                                                                                                   |
 | max_flow_rate               | `number`  |                    6                     | Represents how much time it takes for the slowest dot to travel from one end to the other in seconds.                                                                                                                    |
-| kilo_threshold              | `number`  |                    0                     | The number of watts to display before converting to and displaying kilowatts. Setting of 0 will always display in kilowatts.                                                                                             |
+| watt_threshold              | `number`  |                    0                     | The number of watts to display before converting to and displaying kilowatts. Setting of 0 will always display in kilowatts.                                                                                             |
 | clickable_entities          | `boolean` |                  false                   | If true, clicking on the entity will open the entity's more info dialog.                                                                                                                                                 |
 | min_expected_power          | `number`  |                   0.01                   | Represents the minimum amount of power (in Watts) expected to flow through the system at a given moment. Only used in the [New Flow Formula](#new-flow-formula).                                                         |
 | max_expected_power          | `number`  |                   2000                   | Represents the maximum amount of power (in Watts) expected to flow through the system at a given moment. Only used in the [New Flow Formula](#new-flow-formula).                                                         |
@@ -127,6 +259,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 | use_new_flow_rate_model     | `boolean` |                  false                   | If `true`, the card will use the [New Flow Formula](#new-flow-formula).                                                                                                                                                  |
 | sort_individual_devices     | `boolean` |           true (since v0.3.1)            | If `true`, sort devices in order of power consumption -> entity id -> alphabetically.                                                                                                                                    |
 | allow_layout_break          | `boolean` |                  false                   | Always allow up to 4 individual devices to show, even when there is not enough space, causing visual layout break.                                                                                                       |
+| appearance                  | `string`  |                `classic`                 | `classic` keeps the original outlined-circle look. `mushroom` restyles the card to match [Mushroom](https://github.com/piitaya/lovelace-mushroom) cards — see [Mushroom appearance](#mushroom-appearance).                |
 
 #### Action Configuration
 
@@ -323,7 +456,7 @@ In these examples I decided to use the Split entities option, but feel free to u
 #### Only Grid
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   grid:
     entity: sensor.grid_power
@@ -331,7 +464,7 @@ entities:
       entity: sensor.power_outage
     display_state: one_way
     color_circle: true
-kilo_threshold: 10000
+watt_threshold: 10000
 ```
 
 This should give you something like this:
@@ -341,7 +474,7 @@ This should give you something like this:
 ##### Grid and Solar
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   grid:
     entity:
@@ -360,7 +493,7 @@ This should give you something like this:
 ##### Grid, Solar and Battery
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   grid:
     entity:
@@ -379,7 +512,7 @@ entities:
     color_circle: true
   home:
     color_icon: true
-kilo_threshold: 10000
+watt_threshold: 10000
 ```
 
 This should give you something like this:
@@ -391,7 +524,7 @@ This should give you something like this:
 > This Configuration is a little bit random, it's just here to demonstrate the capabilities of this card.
 
 ```yaml
-type: custom:power-flow-card-plus
+type: custom:power-flow-card-plus-multi
 entities:
   home:
     entity: sensor.home_consumption
@@ -430,11 +563,11 @@ entities:
       display_zero: true
       color: "#ff8080"
       icon: mdi:motorbike-electric
-base_decimals: 0
-kilo_decimals: 2
+w_decimals: 0
+kw_decimals: 2
 min_flow_rate: 0.9
 max_flow_rate: 6
-kilo_threshold: 10000
+watt_threshold: 10000
 clickable_entities: true
 title: Power Flow Card Plus
 ```

@@ -773,9 +773,16 @@ export class PowerFlowCardPlus extends LitElement {
         };
         // Each array is judged against its own peak power, so a small balcony
         // unit at full tilt reads as green just like a large roof array does.
-        if (this._config.color_solar_by_output !== true || withEnergy.color !== undefined) return withEnergy;
+        if (this._config.color_solar_by_output !== true) return withEnergy;
         const max = source?.color_max ?? this._config.solar_color_max ?? this._config.max_expected_power;
-        return { ...withEnergy, color: productionColor(withEnergy.state ?? 0, max) || undefined };
+        const tint = productionColor(withEnergy.state ?? 0, max) || undefined;
+        return {
+          ...withEnergy,
+          // An explicit colour still wins for the row accent, but the reading
+          // itself always follows the output so the number stays comparable.
+          color: withEnergy.color ?? tint,
+          stateColor: tint,
+        };
       }),
       energy: this.energyValue(entities.solar?.energy_entity, entities.solar?.energy_from_state),
       state: {
@@ -814,10 +821,17 @@ export class PowerFlowCardPlus extends LitElement {
       has: checkIfHasBattery(),
       subs: getBatterySubs(this.hass, this._config).map((sub, index) => {
         const unit = entities.battery?.batteries?.[index];
+        // Discharge shows up as a negative reading, the same way the row displays
+        // it; charging counts as no discharge and therefore stays green.
+        const dischargeMax = unit?.discharge_color_max ?? this._config.battery_discharge_max ?? this._config.max_expected_power;
         const withEnergy = {
           ...sub,
           energyCharged: this.energyValue(unit?.energy_charged_entity, unit?.energy_from_state),
           energyDischarged: this.energyValue(unit?.energy_discharged_entity, unit?.energy_from_state),
+          stateColor:
+            this._config.color_battery_by_discharge === true
+              ? usageColor(Math.max(0, -(sub.state ?? 0)), dischargeMax) || undefined
+              : undefined,
         };
         // Tint by state of charge, unless the battery carries an explicit colour.
         return this._config.color_battery_by_soc === true && withEnergy.color === undefined && withEnergy.soc !== null && withEnergy.soc !== undefined

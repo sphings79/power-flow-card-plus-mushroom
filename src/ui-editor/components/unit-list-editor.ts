@@ -19,6 +19,8 @@ export interface UnitLike {
   state_of_charge?: string;
   state_of_charge_unit?: string;
   state_of_charge_decimals?: number;
+  discharge_color_max?: number;
+  color_max?: number;
   energy_entity?: string;
   energy_charged_entity?: string;
   energy_discharged_entity?: string;
@@ -124,6 +126,11 @@ const unitSchema = (kind: UnitListKind) => {
           selector: { number: { mode: "box", min: 0, max: 4, step: 1 } },
         },
       ],
+    },
+    {
+      name: "discharge_color_max",
+      label: localize("editor.discharge_color_max"),
+      selector: { number: { mode: "box", min: 0, max: 1000000, step: 10 } },
     },
     energyBlock,
   ];

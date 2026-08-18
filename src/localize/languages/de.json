@@ -125,6 +125,9 @@
     "solar_color_max": "PV-Farbe: Watt für volles Grün",
     "solar_position": "Liste der PV-Quellen",
     "battery_position": "Liste der Batterien",
-    "charger_position": "Liste der Ladequellen"
+    "charger_position": "Liste der Ladequellen",
+    "discharge_color_max": "Maximale Entladung (W) für volles Rot",
+    "color_battery_by_discharge": "Batterien nach Entladung einfärben",
+    "battery_discharge_max": "Entladefarbe: Watt für volles Rot"
   }
 }

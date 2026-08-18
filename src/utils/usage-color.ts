@@ -58,8 +58,15 @@ export const socColor = (soc: number): string => {
  * @param value Current output in watts.
  * @param max   Output counting as full production, typically the array's peak power.
  */
+export const IDLE_COLOR = "var(--disabled-text-color, #6f6f6f)";
+
 export const productionColor = (value: number, max: number): string => {
   if (!Number.isFinite(value) || !Number.isFinite(max) || max <= 0) return "";
-  const clamped = Math.min(Math.abs(value), max);
+
+  // Producing nothing is not an alarm — at night every array sits at zero. Red is
+  // reserved for "could produce but barely does", so idle goes grey instead.
+  if (value <= 0) return IDLE_COLOR;
+
+  const clamped = Math.min(value, max);
   return usageColor(max - clamped, max);
 };

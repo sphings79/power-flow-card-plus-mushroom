@@ -74,6 +74,17 @@ interface mainConfigOptions {
    */
   color_battery_by_soc?: boolean;
   /**
+   * Colour a battery's power reading by how hard it is discharging: green when
+   * barely, orange in between, red at `battery_discharge_max`. Charging counts
+   * as no discharge and stays green.
+   */
+  color_battery_by_discharge?: boolean;
+  /**
+   * Discharge in watts counting as full load, used when a battery sets no
+   * `discharge_color_max` of its own. Defaults to `max_expected_power`.
+   */
+  battery_discharge_max?: number;
+  /**
    * Colour each PV source by how much it currently produces: red when idle,
    * orange in between, green at its peak. Each source is measured against its
    * own `color_max`, so arrays of different sizes stay comparable.
@@ -130,6 +141,12 @@ export type IndividualField = IndividualDeviceType[];
  */
 export interface BatteryUnit {
   entity: string;
+  /**
+   * Discharge in watts at which this battery counts as fully loaded. Lets a small
+   * battery be judged against its own maximum rather than a shared number.
+   * Falls back to `battery_discharge_max`.
+   */
+  discharge_color_max?: number;
   /** Cumulative kWh entity for energy charged into this battery. */
   energy_charged_entity?: string;
   /** Cumulative kWh entity for energy discharged from this battery. */

@@ -65,6 +65,8 @@ export const cardConfigStruct = assign(
     color_individual_by_usage: optional(boolean()),
     individual_color_max: optional(number()),
     color_battery_by_soc: optional(boolean()),
+    color_battery_by_discharge: optional(boolean()),
+    battery_discharge_max: optional(number()),
     color_solar_by_output: optional(boolean()),
     solar_color_max: optional(number()),
     energy_period: optional(string()),
@@ -352,6 +354,16 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
         name: "color_battery_by_soc",
         label: "Colour batteries by state of charge",
         selector: { boolean: {} },
+      },
+      {
+        name: "color_battery_by_discharge",
+        label: "Colour batteries by discharge",
+        selector: { boolean: {} },
+      },
+      {
+        name: "battery_discharge_max",
+        label: "Discharge colour: watts for full red",
+        selector: { number: { mode: "box", min: 1, max: 1000000, step: 10 } },
       },
       {
         name: "color_solar_by_output",

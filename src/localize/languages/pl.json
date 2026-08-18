@@ -125,6 +125,9 @@
     "solar_color_max": "PV colour: watts for full green",
     "solar_position": "PV source list",
     "battery_position": "Battery list",
-    "charger_position": "Charging source list"
+    "charger_position": "Charging source list",
+    "discharge_color_max": "Max discharge (W) for full red",
+    "color_battery_by_discharge": "Colour batteries by discharge",
+    "battery_discharge_max": "Discharge colour: watts for full red"
   }
 }

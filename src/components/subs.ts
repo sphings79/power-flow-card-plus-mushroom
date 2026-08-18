@@ -64,7 +64,7 @@ export const subsElement = (main: PowerFlowCardPlus, config: PowerFlowCardPlusCo
                   })}</span
                 >`
               : nothing}
-            <span class="pfcp-sub-power"
+            <span class="pfcp-sub-power" style=${item.stateColor ? `color: ${item.stateColor};` : ""}
               >${item.display ??
               displayValue(main.hass, config, item.state, {
                 accept_negative: true,

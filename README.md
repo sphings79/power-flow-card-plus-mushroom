@@ -210,6 +210,26 @@ when full, orange around half, red when empty:
 color_battery_by_soc: true
 ```
 
+A battery's power reading can be coloured by how hard it is discharging — green
+when barely, red at full load. Each battery is judged against its own maximum:
+
+```yaml
+color_battery_by_discharge: true
+battery_discharge_max: 8000        # fallback for batteries without their own
+entities:
+  battery:
+    batteries:
+      - entity: sensor.battery_a_power
+        discharge_color_max: 8000
+      - entity: sensor.battery_b_power
+        discharge_color_max: 2500
+```
+
+Discharge is read as a **negative** reading, the same way the row displays it;
+charging counts as no discharge and stays green. The two switches are
+independent: `color_battery_by_soc` tints the icon and the accent bar,
+`color_battery_by_discharge` the power value.
+
 A colour set on the battery itself always wins over either tint.
 
 The docked breakdown below the diagram lays its entries out two per row, so four
@@ -310,7 +330,12 @@ Red when idle, orange in between, green at peak — the mirror image of the usag
 colouring. **Each array is measured against its own `color_max`**, so a 800 Wp
 balcony unit at full tilt reads as green just like a 10 kWp roof array does.
 Without `color_max` a source falls back to `solar_color_max`, then to
-`max_expected_power`.
+`max_expected_power`. The power value is tinted along with the icon and the
+accent bar.
+
+At zero output the row turns **grey** rather than red: producing nothing at
+night is not a fault, and red is reserved for an array that could produce but
+barely does.
 
 PV sources and charging sources take `energy_entity` too, so their kWh appear in
 the list alongside the batteries and individual devices.

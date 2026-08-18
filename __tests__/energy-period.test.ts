@@ -88,8 +88,9 @@ import { productionColor, socColor, usageColor } from "../src/utils/usage-color"
 const rgb = (s: string) => (s.match(/\d+/g) ?? []).map(Number);
 
 describe("productionColor", () => {
-  it("is red at no output and green at peak", () => {
-    expect(rgb(productionColor(0, 5000))).toEqual(rgb(usageColor(5000, 5000)));
+  it("is red at barely any output and green at peak", () => {
+    // Exactly zero is handled separately as idle; just above it is the red end.
+    expect(rgb(productionColor(1, 5000))).toEqual(rgb(usageColor(4999, 5000)));
     expect(rgb(productionColor(5000, 5000))).toEqual(rgb(usageColor(0, 5000)));
   });
 
@@ -110,8 +111,8 @@ describe("productionColor", () => {
     expect(productionColor(500, 0)).toBe("");
   });
 
-  it("runs opposite to the battery ramp: empty is red, full is green", () => {
-    expect(rgb(socColor(0))).toEqual(rgb(productionColor(0, 100)));
+  it("runs opposite to the battery ramp: little is red, full is green", () => {
+    expect(rgb(socColor(1))).toEqual(rgb(productionColor(1, 100)));
     expect(rgb(socColor(100))).toEqual(rgb(productionColor(100, 100)));
   });
 });
@@ -152,5 +153,19 @@ describe("fetchEnergyTotals", () => {
     const hass = { callWS: async () => ((called = true), {}) } as any;
     expect(await fetchEnergyTotals(hass, [], "today", NOW)).toEqual({});
     expect(called).toBe(false);
+  });
+});
+
+describe("productionColor at rest", () => {
+  it("is grey rather than red when nothing is produced", () => {
+    expect(productionColor(0, 5000)).toContain("--disabled-text-color");
+  });
+
+  it("is grey for a negative reading too", () => {
+    expect(productionColor(-5, 5000)).toContain("--disabled-text-color");
+  });
+
+  it("switches to the ramp as soon as anything is produced", () => {
+    expect(productionColor(1, 5000)).toMatch(/^rgb\(/);
   });
 });

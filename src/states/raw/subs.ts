@@ -18,6 +18,8 @@ export interface SubEntity {
   socDecimals?: number;
   /** Pre-formatted value string. When set, it is shown verbatim instead of formatting `state`. */
   display?: string;
+  /** Colour applied to the numeric reading itself, independent of the row accent. */
+  stateColor?: string;
   /** Period energy in kWh for the item (individual devices, charging sources). */
   energy?: number | null;
   /** Period energy charged into this battery, in kWh. */

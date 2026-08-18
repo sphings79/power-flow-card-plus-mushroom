@@ -50,3 +50,16 @@ export const socColor = (soc: number): string => {
   const clamped = soc < 0 ? 0 : soc > 100 ? 100 : soc;
   return usageColor(100 - clamped, 100);
 };
+
+/**
+ * Colour for a producing source — the ramp read the other way round: nothing
+ * generated is red, full output is green.
+ *
+ * @param value Current output in watts.
+ * @param max   Output counting as full production, typically the array's peak power.
+ */
+export const productionColor = (value: number, max: number): string => {
+  if (!Number.isFinite(value) || !Number.isFinite(max) || max <= 0) return "";
+  const clamped = Math.min(Math.abs(value), max);
+  return usageColor(max - clamped, max);
+};

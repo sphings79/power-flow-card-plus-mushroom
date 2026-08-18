@@ -704,25 +704,32 @@ export const styles = css`
     gap: 16px;
   }
 
-  .card-content.has-rail {
-    /* The diagram keeps its own width; the rail uses the space next to it, so the
-       content must be allowed to grow past the usual cap. */
+  .card-content.has-side-zone {
+    /* The diagram keeps its own width; a side zone uses the space next to it, so
+       the content must be allowed to grow past the usual cap. Lifting the cap also
+       removes the centring that used to keep the content off the card edge, hence
+       the explicit inset. */
     max-width: none;
+    padding-right: 16px;
+    box-sizing: border-box;
   }
 
-  .card-content.has-rail .pfcp-flow {
+  .card-content.has-side-zone .pfcp-flow {
     flex: 0 0 470px;
     max-width: 470px;
   }
 
-  .pfcp-rail {
-    flex: 1 1 180px;
-    min-width: 150px;
-    padding-top: 8px;
+  .pfcp-zone-left .pfcp-subs,
+  .pfcp-zone-right .pfcp-subs {
+    min-width: 0;
   }
 
-  .pfcp-rail .pfcp-subs {
-    min-width: 0;
+  /* A side zone is narrow, so its entries always stack one per row. Both classes
+     are needed to outrank the general breakdown rule further down, which would
+     otherwise force its 290px minimum into a much narrower column. */
+  .pfcp-breakdown.pfcp-zone-left .pfcp-subs-items,
+  .pfcp-breakdown.pfcp-zone-right .pfcp-subs-items {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   /* Narrow cards: the rail drops below the diagram instead of squeezing it. */
@@ -730,7 +737,7 @@ export const styles = css`
     .pfcp-layout {
       flex-wrap: wrap;
     }
-    .card-content.has-rail .pfcp-flow {
+    .card-content.has-side-zone .pfcp-flow {
       flex: 1 1 100%;
       margin: 0 auto;
     }
@@ -768,6 +775,30 @@ export const styles = css`
    */
   .pfcp-flow {
     position: relative;
+  }
+
+  /* Above the diagram the separator belongs on the other side, so the block reads
+     as belonging to what sits below it. */
+  .pfcp-zone-top {
+    margin-top: 0;
+    margin-bottom: 12px;
+    padding-top: 0;
+    padding-bottom: 12px;
+    border-top: none;
+    border-bottom: 1px solid var(--divider-color, rgba(127, 127, 127, 0.2));
+  }
+
+  /* Side zones sit next to the diagram, so they carry no horizontal rule at all
+     and stack their groups vertically. */
+  .pfcp-zone-left,
+  .pfcp-zone-right {
+    flex: 1 1 200px;
+    min-width: 150px;
+    margin-top: 0;
+    padding-top: 8px;
+    border-top: none;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .pfcp-breakdown {
@@ -816,16 +847,13 @@ export const styles = css`
   /* In the docked breakdown the entries are laid out two per row, so four
      batteries form a 2x2 block instead of one tall column. The side rail stays
      single-column — it is too narrow to split. */
+  /* Two per row where there is room, one where there is not — a fixed two-column
+     grid squeezed the names into an ellipsis as soon as two groups sat side by
+     side. */
   .pfcp-breakdown .pfcp-subs-items {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     gap: 4px 16px;
-  }
-
-  @media (max-width: 520px) {
-    .pfcp-breakdown .pfcp-subs-items {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 
   .pfcp-sub {

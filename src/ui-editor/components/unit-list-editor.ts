@@ -91,6 +91,18 @@ const unitSchema = (kind: UnitListKind) => {
     ],
   };
 
+  if (kind === "solar") {
+    return [
+      ...base,
+      {
+        name: "color_max",
+        label: localize("editor.color_max"),
+        selector: { number: { mode: "box", min: 0, max: 1000000, step: 10 } },
+      },
+      energyBlock,
+    ];
+  }
+
   if (kind !== "battery") return [...base, energyBlock];
 
   return [

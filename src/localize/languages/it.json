@@ -119,6 +119,12 @@
     "energy_returned_entity": "Energy returned (kWh)",
     "energy_charged_entity": "Energy charged (kWh)",
     "energy_discharged_entity": "Energy discharged (kWh)",
-    "energy_from_state": "Read state as-is (sensor already covers the period)"
+    "energy_from_state": "Read state as-is (sensor already covers the period)",
+    "color_max": "Peak power (W) for full green",
+    "color_solar_by_output": "Colour PV sources by output",
+    "solar_color_max": "PV colour: watts for full green",
+    "solar_position": "PV source list",
+    "battery_position": "Battery list",
+    "charger_position": "Charging source list"
   }
 }

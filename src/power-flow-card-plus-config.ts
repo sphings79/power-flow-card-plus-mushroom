@@ -45,7 +45,18 @@ interface mainConfigOptions {
    * - `right`: none of them get a circle; they are listed in a column to the right
    *   of the diagram instead, which suits setups with many devices
    */
-  individual_position?: "grid" | "right";
+  /**
+   * Where the individual devices go.
+   * - `grid` (default): up to four occupy the corner slots of the flow diagram
+   * - anything else: no circles; they are listed in that zone around the diagram
+   */
+  individual_position?: "grid" | "top" | "bottom" | "left" | "right";
+  /** Where the list of individual PV sources goes. Defaults to `top`. */
+  solar_position?: "top" | "bottom" | "left" | "right";
+  /** Where the list of individual batteries goes. Defaults to `bottom`. */
+  battery_position?: "top" | "bottom" | "left" | "right";
+  /** Where the list of individual charging sources goes. Defaults to `bottom`. */
+  charger_position?: "top" | "bottom" | "left" | "right";
   /**
    * Colour each individual device by how much it currently draws: green when
    * low, orange in the middle, red at `individual_color_max` and above.
@@ -62,6 +73,17 @@ interface mainConfigOptions {
    * itself takes precedence.
    */
   color_battery_by_soc?: boolean;
+  /**
+   * Colour each PV source by how much it currently produces: red when idle,
+   * orange in between, green at its peak. Each source is measured against its
+   * own `color_max`, so arrays of different sizes stay comparable.
+   */
+  color_solar_by_output?: boolean;
+  /**
+   * Output in watts at which a PV source counts as producing fully, used when a
+   * source sets no `color_max` of its own. Defaults to `max_expected_power`.
+   */
+  solar_color_max?: number;
   /**
    * Period the energy values cover.
    *
@@ -173,6 +195,16 @@ export interface SolarSource {
   icon?: string;
   color?: string;
   invert_state?: boolean;
+  /** Cumulative kWh entity; the card derives the period total from its statistics. */
+  energy_entity?: string;
+  /** Read the entity's state as-is instead of deriving a period total from it. */
+  energy_from_state?: boolean;
+  /**
+   * Output in watts at which this array counts as producing fully — its peak
+   * power. Used by `color_solar_by_output`, so each array is judged against its
+   * own size rather than a shared number. Falls back to `solar_color_max`.
+   */
+  color_max?: number;
 }
 
 interface Solar extends Omit<BaseConfigEntity, "entity"> {
@@ -208,6 +240,10 @@ export interface ChargerSource {
   icon?: string;
   color?: string;
   invert_state?: boolean;
+  /** Cumulative kWh entity; the card derives the period total from its statistics. */
+  energy_entity?: string;
+  /** Read the entity's state as-is instead of deriving a period total from it. */
+  energy_from_state?: boolean;
 }
 
 /**

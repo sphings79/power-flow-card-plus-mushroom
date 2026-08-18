@@ -51,7 +51,7 @@ import { registerCustomCard } from "@/utils/register-custom-card";
 import { coerceNumber } from "@/utils/utils";
 import { checkShouldShowDots } from "@/utils/check-should-show-dots";
 import { IndividualSortMode, sortIndividualObjects } from "@/utils/sort-individual-objects";
-import { socColor, usageColor } from "@/utils/usage-color";
+import { productionColor, socColor, usageColor } from "@/utils/usage-color";
 import { EnergyPeriod, fetchEnergyTotals } from "@/energy/energy-totals";
 import { logError } from "@/logging";
 import localize from "@/localize/localize";
@@ -207,6 +207,8 @@ export class PowerFlowCardPlus extends LitElement {
       add(b.energy_charged_entity, b.energy_from_state);
       add(b.energy_discharged_entity, b.energy_from_state);
     });
+    e.solar?.sources?.forEach((s) => add(s.energy_entity, s.energy_from_state));
+    e.charger?.sources?.forEach((s) => add(s.energy_entity, s.energy_from_state));
     e.individual?.forEach((i) => add(i.energy_entity, i.energy_from_state));
 
     return Array.from(new Set(ids));
@@ -261,6 +263,8 @@ export class PowerFlowCardPlus extends LitElement {
         e.battery?.energy_charged_entity ||
         e.battery?.energy_discharged_entity ||
         e.battery?.batteries?.some((b) => b.energy_charged_entity || b.energy_discharged_entity) ||
+        e.solar?.sources?.some((s) => s.energy_entity) ||
+        e.charger?.sources?.some((s) => s.energy_entity) ||
         e.individual?.some((i) => i.energy_entity)
     );
   }
@@ -485,6 +489,32 @@ export class PowerFlowCardPlus extends LitElement {
       });
     };
 
+    // Each breakdown list can be parked in any of the four zones around the
+    // diagram; `individual` additionally supports `grid`, where the devices keep
+    // their circles instead of being listed at all.
+    const groups: { kind: "solar" | "battery" | "charger" | "individual"; where: string; items: SubEntity[]; title?: string; showSoc?: boolean }[] = [
+      { kind: "solar", where: this._config.solar_position ?? "top", items: solar.subs ?? [], title: solar.name },
+      { kind: "battery", where: this._config.battery_position ?? "bottom", items: battery.subs ?? [], title: battery.name, showSoc: true },
+      { kind: "charger", where: this._config.charger_position ?? "bottom", items: charger.subs ?? [], title: charger.name },
+      {
+        kind: "individual",
+        where: individualsOnRail ? (this._config.individual_position as string) : "none",
+        items: individualsOnRail ? (overflowIndividualObjects ?? []).map(toSubEntity) : [],
+      },
+    ];
+
+    // A side zone narrows the diagram, so the content must be allowed past its
+    // usual width cap.
+    const hasSideZone = groups.some((g) => (g.where === "left" || g.where === "right") && g.items.length);
+
+    const zone = (where: "top" | "bottom" | "left" | "right") => {
+      const inZone = groups.filter((g) => g.where === where && g.items.length);
+      if (!inZone.length) return nothing;
+      return html`<div class="pfcp-breakdown pfcp-zone-${where}">
+        ${inZone.map((g) => subsElement(this, this._config, { kind: g.kind, title: g.title, items: g.items, showSoc: g.showSoc }))}
+      </div>`;
+    };
+
     return html`
       <ha-card
         .header=${this._config.title}
@@ -492,11 +522,12 @@ export class PowerFlowCardPlus extends LitElement {
         style=${this._config.style_ha_card ? this._config.style_ha_card : ""}
       >
         <div
-          class="card-content ${this._config.full_size ? "full-size" : ""} ${this._config.no_labels ? "no-labels" : ""} ${this._config.appearance === "mushroom" ? "appearance-mushroom" : ""} ${individualsOnRail && overflowIndividualObjects?.length ? "has-rail" : ""}"
+          class="card-content ${this._config.full_size ? "full-size" : ""} ${this._config.no_labels ? "no-labels" : ""} ${this._config.appearance === "mushroom" ? "appearance-mushroom" : ""} ${hasSideZone ? "has-side-zone" : ""}"
           id="power-flow-card-plus"
           style=${this._config.style_card_content ? this._config.style_card_content : ""}
         >
           ${energyToggleElement(this, this._config, this.hasEnergyConfigured)}
+          ${zone("top")}
           <!--
             The flow diagram needs its own positioning context. The flow lines are
             absolutely positioned against the bottom of their offset parent, so any
@@ -504,6 +535,7 @@ export class PowerFlowCardPlus extends LitElement {
             push every line downwards by its own height.
           -->
           <div class="pfcp-layout">
+          ${zone("left")}
           <div class="pfcp-flow">
           ${solar.has || individualObjs?.some((individual) => individual?.has) || nonFossil.hasPercentage
             ? html`<div class="row">
@@ -601,26 +633,9 @@ export class PowerFlowCardPlus extends LitElement {
             charger,
           })}
           </div>
-          ${individualsOnRail && overflowIndividualObjects?.length
-            ? html`<div class="pfcp-rail">
-                ${subsElement(this, this._config, {
-                  kind: "individual",
-                  items: overflowIndividualObjects.map(toSubEntity),
-                })}
-              </div>`
-            : nothing}
+          ${zone("right")}
           </div>
-          ${solar.subs?.length || battery.subs?.length || charger.subs?.length || (!individualsOnRail && overflowIndividualObjects?.length)
-            ? html`<div class="pfcp-breakdown">
-                ${subsElement(this, this._config, { kind: "solar", title: solar.name, items: solar.subs })}
-                ${subsElement(this, this._config, { kind: "battery", title: battery.name, items: battery.subs, showSoc: true })}
-                ${subsElement(this, this._config, { kind: "charger", title: charger.name, items: charger.subs })}
-                ${subsElement(this, this._config, {
-                  kind: "individual",
-                  items: (individualsOnRail ? [] : overflowIndividualObjects ?? []).map(toSubEntity),
-                })}
-              </div>`
-            : nothing}
+          ${zone("bottom")}
         </div>
         ${dashboardLinkElement(this._config, this.hass)}
       </ha-card>
@@ -738,7 +753,18 @@ export class PowerFlowCardPlus extends LitElement {
     const solar = {
       entity: entities.solar?.entity as string | undefined,
       has: hasSolarEntity && displayZero,
-      subs: getSolarSubs(this.hass, this._config),
+      subs: getSolarSubs(this.hass, this._config).map((sub, index) => {
+        const source = entities.solar?.sources?.[index];
+        const withEnergy = {
+          ...sub,
+          energy: this.energyValue(source?.energy_entity, source?.energy_from_state),
+        };
+        // Each array is judged against its own peak power, so a small balcony
+        // unit at full tilt reads as green just like a large roof array does.
+        if (this._config.color_solar_by_output !== true || withEnergy.color !== undefined) return withEnergy;
+        const max = source?.color_max ?? this._config.solar_color_max ?? this._config.max_expected_power;
+        return { ...withEnergy, color: productionColor(withEnergy.state ?? 0, max) || undefined };
+      }),
       energy: this.energyValue(entities.solar?.energy_entity, entities.solar?.energy_from_state),
       state: {
         total: getSolarState(this.hass, this._config),
@@ -825,7 +851,10 @@ export class PowerFlowCardPlus extends LitElement {
       energy: this.energyValue(entities.charger?.energy_entity, entities.charger?.energy_from_state),
       // A single source repeats the node's own value, so it is not listed by default.
       subs: (entities.charger?.show_breakdown ?? (entities.charger?.sources?.length ?? 0) > 1)
-        ? getChargerSubs(this.hass, this._config)
+        ? getChargerSubs(this.hass, this._config).map((sub, index) => {
+            const source = entities.charger?.sources?.[index];
+            return { ...sub, energy: this.energyValue(source?.energy_entity, source?.energy_from_state) };
+          })
         : [],
       name: computeFieldName(this.hass, entities.charger, localize("editor.charger")),
       icon: computeFieldIcon(this.hass, entities.charger, "mdi:ev-station"),
@@ -1051,9 +1080,10 @@ export class PowerFlowCardPlus extends LitElement {
     const sortMode: IndividualSortMode | null =
       sortSetting === true ? "value" : typeof sortSetting === "string" ? (sortSetting as IndividualSortMode) : null;
     const sortedIndividualObjects = sortMode ? sortIndividualObjects(individualObjs, sortMode) : individualObjs;
-    // With `individual_position: right` the devices are listed beside the diagram
-    // instead of occupying corner slots, so none of them go into the grid.
-    const individualsOnRail = this._config.individual_position === "right";
+    // Any `individual_position` other than `grid` lists the devices in one of the
+    // zones around the diagram instead of occupying corner slots, so none of them
+    // go into the grid.
+    const individualsOnRail = (this._config.individual_position ?? "grid") !== "grid";
     // How many individual devices may occupy the four corner slots of the flow diagram.
     // Physically capped at 4; user-configurable via `max_individual_in_grid` (0..4).
     const maxInGrid = individualsOnRail ? 0 : Math.max(0, Math.min(4, this._config.max_individual_in_grid ?? 4));

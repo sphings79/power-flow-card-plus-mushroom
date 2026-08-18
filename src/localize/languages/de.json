@@ -119,6 +119,12 @@
     "energy_returned_entity": "Eingespeiste Energie (kWh)",
     "energy_charged_entity": "Geladene Energie (kWh)",
     "energy_discharged_entity": "Entladene Energie (kWh)",
-    "energy_from_state": "Zustand unverändert lesen (Sensor bildet den Zeitraum bereits ab)"
+    "energy_from_state": "Zustand unverändert lesen (Sensor bildet den Zeitraum bereits ab)",
+    "color_max": "Spitzenleistung (W) für volles Grün",
+    "color_solar_by_output": "PV-Quellen nach Ertrag einfärben",
+    "solar_color_max": "PV-Farbe: Watt für volles Grün",
+    "solar_position": "Liste der PV-Quellen",
+    "battery_position": "Liste der Batterien",
+    "charger_position": "Liste der Ladequellen"
   }
 }

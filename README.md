@@ -272,6 +272,49 @@ kwh_threshold: 1000   # kWh at which MWh takes over; 0 disables the switch
 mwh_decimals: 2
 ```
 
+### Where the lists go (`*_position`)
+
+Each breakdown list can be parked in any zone around the diagram, so the layout
+follows your setup rather than the other way round:
+
+```yaml
+solar_position: top        # top (default) | bottom | left | right
+battery_position: bottom   # top | bottom (default) | left | right
+charger_position: bottom   # top | bottom (default) | left | right
+individual_position: right # grid (default, circles) | top | bottom | left | right
+```
+
+Side zones stack one entry per row; top and bottom fit two per row where there is
+width for it. `individual_position: grid` is the only value that keeps the
+devices as circles in the diagram — every other value lists them instead.
+
+### PV sources coloured by output (`color_solar_by_output`)
+
+```yaml
+color_solar_by_output: true
+solar_color_max: 10000        # fallback for sources without their own peak
+entities:
+  solar:
+    sources:
+      - entity: sensor.roof_power
+        name: Roof 10 kWp
+        color_max: 10000       # this array's peak power in watts
+        energy_entity: sensor.roof_energy
+      - entity: sensor.balcony_power
+        name: Balcony 800 Wp
+        color_max: 800
+        energy_entity: sensor.balcony_energy
+```
+
+Red when idle, orange in between, green at peak — the mirror image of the usage
+colouring. **Each array is measured against its own `color_max`**, so a 800 Wp
+balcony unit at full tilt reads as green just like a 10 kWp roof array does.
+Without `color_max` a source falls back to `solar_color_max`, then to
+`max_expected_power`.
+
+PV sources and charging sources take `energy_entity` too, so their kWh appear in
+the list alongside the batteries and individual devices.
+
 ### Mushroom appearance
 
 Set `appearance: mushroom` to restyle the card so it sits comfortably next to

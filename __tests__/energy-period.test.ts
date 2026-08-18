@@ -82,3 +82,36 @@ describe("displayEnergy", () => {
     expect(displayEnergy(hass, cfg(), -1500)).toContain("MWh");
   });
 });
+
+import { productionColor, socColor, usageColor } from "../src/utils/usage-color";
+
+const rgb = (s: string) => (s.match(/\d+/g) ?? []).map(Number);
+
+describe("productionColor", () => {
+  it("is red at no output and green at peak", () => {
+    expect(rgb(productionColor(0, 5000))).toEqual(rgb(usageColor(5000, 5000)));
+    expect(rgb(productionColor(5000, 5000))).toEqual(rgb(usageColor(0, 5000)));
+  });
+
+  it("is the mirror image of the usage ramp", () => {
+    expect(rgb(productionColor(1000, 5000))).toEqual(rgb(usageColor(4000, 5000)));
+  });
+
+  it("treats each array against its own peak, so equal load ratios match", () => {
+    // A 600 W balcony unit at full tilt reads like a 10 kW roof array at full tilt.
+    expect(rgb(productionColor(600, 600))).toEqual(rgb(productionColor(10000, 10000)));
+  });
+
+  it("clamps output above the peak instead of wrapping back to red", () => {
+    expect(rgb(productionColor(9000, 5000))).toEqual(rgb(productionColor(5000, 5000)));
+  });
+
+  it("returns nothing for a non-positive peak", () => {
+    expect(productionColor(500, 0)).toBe("");
+  });
+
+  it("runs opposite to the battery ramp: empty is red, full is green", () => {
+    expect(rgb(socColor(0))).toEqual(rgb(productionColor(0, 100)));
+    expect(rgb(socColor(100))).toEqual(rgb(productionColor(100, 100)));
+  });
+});

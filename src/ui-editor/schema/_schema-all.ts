@@ -59,9 +59,14 @@ export const cardConfigStruct = assign(
     // Accepts the legacy boolean as well as the sort-mode strings.
     sort_individual_devices: optional(union([boolean(), string()])),
     individual_position: optional(string()),
+    solar_position: optional(string()),
+    battery_position: optional(string()),
+    charger_position: optional(string()),
     color_individual_by_usage: optional(boolean()),
     individual_color_max: optional(number()),
     color_battery_by_soc: optional(boolean()),
+    color_solar_by_output: optional(boolean()),
+    solar_color_max: optional(number()),
     energy_period: optional(string()),
     energy_toggle: optional(boolean()),
     energy_default: optional(boolean()),
@@ -239,7 +244,55 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
           select: {
             options: [
               { value: "grid", label: "As circles in the diagram" },
-              { value: "right", label: "As a list beside the diagram" },
+              { value: "top", label: "As a list above the diagram" },
+              { value: "bottom", label: "As a list below the diagram" },
+              { value: "left", label: "As a list left of the diagram" },
+              { value: "right", label: "As a list right of the diagram" },
+            ],
+            mode: "dropdown",
+          },
+        },
+      },
+      {
+        name: "solar_position",
+        label: "PV source list",
+        selector: {
+          select: {
+            options: [
+              { value: "top", label: "Above the diagram" },
+              { value: "bottom", label: "Below the diagram" },
+              { value: "left", label: "Left of the diagram" },
+              { value: "right", label: "Right of the diagram" },
+            ],
+            mode: "dropdown",
+          },
+        },
+      },
+      {
+        name: "battery_position",
+        label: "Battery list",
+        selector: {
+          select: {
+            options: [
+              { value: "top", label: "Above the diagram" },
+              { value: "bottom", label: "Below the diagram" },
+              { value: "left", label: "Left of the diagram" },
+              { value: "right", label: "Right of the diagram" },
+            ],
+            mode: "dropdown",
+          },
+        },
+      },
+      {
+        name: "charger_position",
+        label: "Charging source list",
+        selector: {
+          select: {
+            options: [
+              { value: "top", label: "Above the diagram" },
+              { value: "bottom", label: "Below the diagram" },
+              { value: "left", label: "Left of the diagram" },
+              { value: "right", label: "Right of the diagram" },
             ],
             mode: "dropdown",
           },
@@ -299,6 +352,16 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
         name: "color_battery_by_soc",
         label: "Colour batteries by state of charge",
         selector: { boolean: {} },
+      },
+      {
+        name: "color_solar_by_output",
+        label: "Colour PV sources by output",
+        selector: { boolean: {} },
+      },
+      {
+        name: "solar_color_max",
+        label: "PV colour: watts for full green",
+        selector: { number: { mode: "box", min: 1, max: 1000000, step: 10 } },
       },
       {
         name: "sort_individual_devices",

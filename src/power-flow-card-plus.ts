@@ -50,6 +50,7 @@ import { registerCustomCard } from "@/utils/register-custom-card";
 import { coerceNumber } from "@/utils/utils";
 import { checkShouldShowDots } from "@/utils/check-should-show-dots";
 import { IndividualSortMode, sortIndividualObjects } from "@/utils/sort-individual-objects";
+import { usageColor } from "@/utils/usage-color";
 import localize from "@/localize/localize";
 
 const circleCircumference = 238.76104;
@@ -349,6 +350,21 @@ export class PowerFlowCardPlus extends LitElement {
       individualFieldRightTop,
       individualFieldRightBottom,
     } = data;
+    // Individual devices may be tinted by how much they currently draw, so a
+    // glance at the list shows which one is the expensive device right now.
+    const colorByUsage = this._config.color_individual_by_usage === true;
+    const usageMax = this._config.individual_color_max ?? this._config.max_expected_power;
+    const toSubEntity = (i: IndividualObject): SubEntity => {
+      const explicit = typeof i.color === "string" ? i.color : undefined;
+      return {
+        entity: i.entity,
+        name: i.name,
+        icon: i.icon,
+        color: colorByUsage ? usageColor(i.state ?? 0, usageMax) || explicit : explicit,
+        state: i.state ?? 0,
+        display: getIndividualDisplayState(i),
+      };
+    };
     const getIndividualDisplayState = (field?: IndividualObject) => {
       if (!field) return "";
       if (field?.state === undefined) return "";
@@ -479,16 +495,7 @@ export class PowerFlowCardPlus extends LitElement {
             ? html`<div class="pfcp-rail">
                 ${subsElement(this, this._config, {
                   kind: "individual",
-                  items: overflowIndividualObjects.map(
-                    (i): SubEntity => ({
-                      entity: i.entity,
-                      name: i.name,
-                      icon: i.icon,
-                      color: typeof i.color === "string" ? i.color : undefined,
-                      state: i.state ?? 0,
-                      display: getIndividualDisplayState(i),
-                    })
-                  ),
+                  items: overflowIndividualObjects.map(toSubEntity),
                 })}
               </div>`
             : nothing}
@@ -500,16 +507,7 @@ export class PowerFlowCardPlus extends LitElement {
                 ${subsElement(this, this._config, { kind: "charger", title: charger.name, items: charger.subs })}
                 ${subsElement(this, this._config, {
                   kind: "individual",
-                  items: (individualsOnRail ? [] : overflowIndividualObjects ?? []).map(
-                    (i): SubEntity => ({
-                      entity: i.entity,
-                      name: i.name,
-                      icon: i.icon,
-                      color: typeof i.color === "string" ? i.color : undefined,
-                      state: i.state ?? 0,
-                      display: getIndividualDisplayState(i),
-                    })
-                  ),
+                  items: (individualsOnRail ? [] : overflowIndividualObjects ?? []).map(toSubEntity),
                 })}
               </div>`
             : nothing}

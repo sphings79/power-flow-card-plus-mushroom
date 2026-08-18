@@ -136,6 +136,7 @@ export const styles = css`
     padding: 0;
     box-sizing: border-box;
     pointer-events: none;
+    z-index: 0;
   }
 
   :dir(rtl) .lines {
@@ -200,6 +201,13 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    /*
+     * The line overlay is rendered after the rows, so without an explicit
+     * stacking order it paints on top of the circles and the flow lines run
+     * straight through them.
+     */
+    position: relative;
+    z-index: 1;
   }
   .circle-container.solar {
     height: 130px;
@@ -698,6 +706,7 @@ export const styles = css`
     width: calc(50% - var(--size-circle-entity));
     height: 20px;
     pointer-events: none;
+    z-index: 0;
   }
 
   .pfcp-charger-lines svg {
@@ -756,6 +765,21 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
+
+  /* In the docked breakdown the entries are laid out two per row, so four
+     batteries form a 2x2 block instead of one tall column. The side rail stays
+     single-column — it is too narrow to split. */
+  .pfcp-breakdown .pfcp-subs-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 16px;
+  }
+
+  @media (max-width: 520px) {
+    .pfcp-breakdown .pfcp-subs-items {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   .pfcp-sub {

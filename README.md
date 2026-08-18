@@ -195,6 +195,17 @@ entities:
 as `value` — highest usage first. On narrow cards the list moves below the
 diagram instead of squeezing it.
 
+Devices can additionally be tinted by how much they currently draw — green when
+low, orange in the middle, red at the top of the scale:
+
+```yaml
+color_individual_by_usage: true
+individual_color_max: 3000   # watts for full red; defaults to max_expected_power
+```
+
+The docked breakdown below the diagram lays its entries out two per row, so four
+batteries form a 2x2 block rather than one tall column.
+
 ### Mushroom appearance
 
 Set `appearance: mushroom` to restyle the card so it sits comfortably next to

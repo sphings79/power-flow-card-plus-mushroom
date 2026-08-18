@@ -46,6 +46,16 @@ interface mainConfigOptions {
    *   of the diagram instead, which suits setups with many devices
    */
   individual_position?: "grid" | "right";
+  /**
+   * Colour each individual device by how much it currently draws: green when
+   * low, orange in the middle, red at `individual_color_max` and above.
+   */
+  color_individual_by_usage?: boolean;
+  /**
+   * Power in watts at which the usage colouring reaches full red.
+   * Defaults to `max_expected_power`.
+   */
+  individual_color_max?: number;
   allow_layout_break?: boolean;
   /**
    * Maximum number of individual devices rendered in the four corner slots of the flow diagram.

@@ -59,6 +59,8 @@ export const cardConfigStruct = assign(
     // Accepts the legacy boolean as well as the sort-mode strings.
     sort_individual_devices: optional(union([boolean(), string()])),
     individual_position: optional(string()),
+    color_individual_by_usage: optional(boolean()),
+    individual_color_max: optional(number()),
     allow_layout_break: optional(boolean()),
   })
 );
@@ -236,6 +238,16 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
             mode: "dropdown",
           },
         },
+      },
+      {
+        name: "color_individual_by_usage",
+        label: "Colour individual devices by usage",
+        selector: { boolean: {} },
+      },
+      {
+        name: "individual_color_max",
+        label: "Usage colour: watts for full red",
+        selector: { number: { mode: "box", min: 1, max: 1000000, step: 1 } },
       },
       {
         name: "sort_individual_devices",

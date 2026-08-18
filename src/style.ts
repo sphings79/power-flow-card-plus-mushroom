@@ -903,10 +903,16 @@ export const styles = css`
     color: var(--primary-text-color);
   }
 
+  /* The state of charge is the headline number of a battery row, so it is the
+     largest thing in it rather than the smallest. It borrows the row's accent
+     colour, which carries the charge level itself when color_battery_by_soc is
+     on, and falls back to the normal text colour otherwise. */
   .pfcp-sub-soc {
-    font-size: 0.75rem;
-    opacity: 0.75;
-    color: var(--secondary-text-color, var(--primary-text-color));
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--pfcp-sub-color, var(--primary-text-color));
+    margin-right: 2px;
   }
 
   /* ===================================================================
@@ -1028,6 +1034,11 @@ export const styles = css`
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .card-content.appearance-mushroom .pfcp-sub-soc {
+    font-size: 1.05rem;
+    font-weight: 600;
   }
 
   .card-content.appearance-mushroom .pfcp-sub-name {

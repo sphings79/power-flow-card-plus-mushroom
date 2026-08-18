@@ -531,7 +531,6 @@ export class PowerFlowCardPlus extends LitElement {
           id="power-flow-card-plus"
           style=${this._config.style_card_content ? this._config.style_card_content : ""}
         >
-          ${energyToggleElement(this, this._config, this.hasEnergyConfigured)}
           ${zone("top")}
           <!--
             The flow diagram needs its own positioning context. The flow lines are
@@ -542,6 +541,7 @@ export class PowerFlowCardPlus extends LitElement {
           <div class="pfcp-layout">
           ${zone("left")}
           <div class="pfcp-flow">
+          ${energyToggleElement(this, this._config, this.hasEnergyConfigured)}
           ${solar.has || individualObjs?.some((individual) => individual?.has) || nonFossil.hasPercentage
             ? html`<div class="row">
                 ${nonFossilElement(this, this._config, {

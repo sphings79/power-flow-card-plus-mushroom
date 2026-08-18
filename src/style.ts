@@ -664,11 +664,16 @@ export const styles = css`
   }
 
   /* Watt / kWh switch in the card header. */
+  /* Sits in the empty corner of the diagram rather than on a row of its own, so
+     it costs no height and leaves the circle layout untouched. */
   .pfcp-energy-toggle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-bottom: 4px;
   }
 
   .pfcp-energy-option {
@@ -790,8 +795,10 @@ export const styles = css`
 
   /* Side zones sit next to the diagram, so they carry no horizontal rule at all
      and stack their groups vertically. */
-  .pfcp-zone-left,
-  .pfcp-zone-right {
+  /* Both classes again, so this outranks the general breakdown rule further down
+     that would otherwise draw a horizontal rule above a side zone. */
+  .pfcp-breakdown.pfcp-zone-left,
+  .pfcp-breakdown.pfcp-zone-right {
     flex: 1 1 200px;
     min-width: 150px;
     margin-top: 0;

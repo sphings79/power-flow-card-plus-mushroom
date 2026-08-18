@@ -56,6 +56,24 @@ export class IndividualRowEditor extends LitElement {
     this._indexBeingEdited = index;
   }
 
+  /**
+   * Row caption: the name the user gave the device, falling back to the entity's
+   * friendly name and finally to its id. The entity itself stays editable behind
+   * the pencil, so nothing is lost by not showing it here.
+   */
+  private _rowLabel(entityConf: LovelaceRowConfig): string {
+    const conf = entityConf as EntityConfig & { name?: string };
+    if (conf.name) return conf.name;
+    const id = conf.entity;
+    if (!id) return "";
+    return this.hass?.states?.[id]?.attributes?.friendly_name ?? id;
+  }
+
+  /** Tooltip always carries the entity id, so it stays discoverable. */
+  private _rowTitle(entityConf: LovelaceRowConfig): string {
+    return (entityConf as EntityConfig).entity ?? "";
+  }
+
   private _getKey(action: LovelaceRowConfig) {
     if (!this._entityKeys.has(action)) {
       this._entityKeys.set(action, Math.random().toString());
@@ -110,14 +128,9 @@ export class IndividualRowEditor extends LitElement {
                     </div>
                   `
                 : html`
-                    <ha-entity-picker
-                      allow-custom-entity
-                      hideClearIcon
-                      .hass=${this.hass}
-                      .value=${(entityConf as EntityConfig).entity}
-                      .index=${index}
-                      @value-changed=${this._valueChanged}
-                    ></ha-entity-picker>
+                    <button type="button" class="row-label" @click=${() => this._editRowElement(index)} title=${this._rowTitle(entityConf)}>
+                      ${this._rowLabel(entityConf)}
+                    </button>
                   `}
               <ha-icon-button
                 .label=${this.hass!.localize("ui.components.entity.entity-picker.clear")}
@@ -234,23 +247,6 @@ export class IndividualRowEditor extends LitElement {
     fireEvent(this, "entities-changed", { entities: newConfigEntities });
   }
 
-  private _valueChanged(ev: CustomEvent): void {
-    const value = ev.detail.value;
-    const index = (ev.target as any).index;
-    const newConfigEntities = this.entities!.concat();
-
-    if (value === "" || value === undefined) {
-      newConfigEntities.splice(index, 1);
-    } else {
-      newConfigEntities[index] = {
-        ...newConfigEntities[index],
-        entity: value!,
-      };
-    }
-
-    fireEvent(this, "entities-changed", { entities: newConfigEntities });
-  }
-
   private _editRow(ev: CustomEvent): void {
     const index = (ev.currentTarget as any).index;
     fireEvent(this, "edit-detail-element", {
@@ -276,6 +272,25 @@ export class IndividualRowEditor extends LitElement {
           align-items: center;
           margin-inline: 0.2rem;
           margin-bottom: 1rem;
+        }
+
+        .row-label {
+          flex: 1;
+          min-width: 0;
+          text-align: start;
+          font: inherit;
+          color: var(--primary-text-color);
+          background: none;
+          border: none;
+          padding: 8px 4px;
+          cursor: pointer;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .row-label:hover {
+          text-decoration: underline;
         }
 
         .add-entity {

@@ -2,6 +2,5 @@
   "name": "Power Flow Card Plus Mushroom",
   "render_readme": true,
   "homeassistant": "2023.12.3",
-  "filename": "power-flow-card-plus-mushroom.js",
-  "content_in_root": true
+  "filename": "power-flow-card-plus-mushroom.js"
 }

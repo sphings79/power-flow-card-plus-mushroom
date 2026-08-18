@@ -20,7 +20,8 @@ test/screenshots/**/failed
 
 # build
 _site/
-/dist/
+/dist/*
+!/dist/power-flow-card-plus-mushroom.js
 /out-tsc/
 /.rollup.cache/
 .tsbuildinfo

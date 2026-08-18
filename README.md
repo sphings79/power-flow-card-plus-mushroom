@@ -46,16 +46,24 @@
 
 ## Fork additions: Multiple Batteries, Multiple PV & unlimited Individual devices
 
+> [!WARNING]
+> **Breaking change — the card type was renamed.** Earlier builds of this fork used
+> `custom:power-flow-card-plus-multi`. It is now `custom:power-flow-card-plus-mushroom`.
+>
+> If you used an earlier build, edit every affected card and change its `type:` accordingly —
+> otherwise Home Assistant will show *"Custom element doesn't exist"*. Nothing else about your
+> configuration needs to change.
+
 > [!IMPORTANT]
 > **This fork uses its own card type so it can run side by side with the original card.**
-> - Card type in YAML: **`custom:power-flow-card-plus-multi`**
+> - Card type in YAML: **`custom:power-flow-card-plus-mushroom`**
 > - JavaScript resource file: **`power-flow-card-plus-mushroom.js`**
 > - Name in the card picker: **“Power Flow Card Plus (Mushroom)”**
 >
 > Every custom element in this bundle is uniquely named, so installing both the original `power-flow-card-plus` and this fork at the same time does not clash. Add the fork as a separate dashboard resource pointing to `power-flow-card-plus-mushroom.js`.
 
 > [!NOTE]
-> The `sources`, `batteries` and `max_individual_in_grid` options are **additions of this fork** (`sphings79/power-flow-card-plus-mushroom`) and are not part of the upstream card. Everything else works exactly like upstream; an upstream configuration keeps working once you switch its `type:` to `custom:power-flow-card-plus-multi`.
+> The `sources`, `batteries` and `max_individual_in_grid` options are **additions of this fork** (`sphings79/power-flow-card-plus-mushroom`) and are not part of the upstream card. Everything else works exactly like upstream; an upstream configuration keeps working once you switch its `type:` to `custom:power-flow-card-plus-mushroom`.
 
 This fork lets you drive the main **Solar** and **Battery** nodes from *several* entities and lift the four-device limit on **Individual** entities. The main nodes keep the familiar aggregated look and animated flows; each underlying device is additionally listed in a compact, docked breakdown directly below the flow diagram.
 
@@ -64,7 +72,7 @@ This fork lets you drive the main **Solar** and **Battery** nodes from *several*
 Provide a list of PV sources instead of (or in addition to) a single `solar.entity`. Their power is **summed** into the main solar node, and each source is listed below the diagram. If you omit `solar.entity`, the aggregate is computed automatically from the sources.
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 entities:
   solar:
     # entity: sensor.pv_total   # optional – omit to auto-sum the sources
@@ -84,7 +92,7 @@ Each source accepts: `entity` (required), `name`, `icon`, `color`, `invert_state
 Provide a list of batteries. Their power is **summed** into the main battery node. If you don't set an aggregate `battery.state_of_charge`, the node's state of charge is the **average** of the individual batteries' states of charge (summing percentages would be wrong). Each battery is listed below the diagram with its own power and state of charge.
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 entities:
   battery:
     # entity: sensor.battery_total_power        # optional – omit to auto-sum
@@ -106,7 +114,7 @@ Each battery accepts: `entity` (required), `state_of_charge`, `name`, `icon`, `c
 The `individual` list is unlimited. The first four devices occupy the four corner slots of the flow diagram (as before); any **additional** devices are rendered in the docked list below the diagram. Use `max_individual_in_grid` (0–4, default 4) to control how many go into the corners — set it to `0` to move *all* individual devices into the list.
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 max_individual_in_grid: 4   # optional, 0..4 (default 4)
 entities:
   individual:
@@ -129,7 +137,7 @@ styling switch — no entity, layout or behaviour change — so you can flip bet
 the two looks at any time.
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 appearance: mushroom   # classic (default) | mushroom
 entities:
   grid:
@@ -247,7 +255,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
 | Name                        | Type      |                 Default                  | Description                                                                                                                                                                                                              |
 | --------------------------- | --------- | :--------------------------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| type                        | `string`  |               **required**               | `custom:power-flow-card-plus-multi`.                                                                                                                                                                                           |
+| type                        | `string`  |               **required**               | `custom:power-flow-card-plus-mushroom`.                                                                                                                                                                                           |
 | entities                    | `object`  |               **required**               | One or more sensor entities, see [entities object](#entities-object) for additional entity options.                                                                                                                      |
 | title                       | `string`  |                                          | Shows a title at the top of the card.                                                                                                                                                                                    |
 | dashboard_link              | `string`  |                                          | Shows a link to an Energy Dashboard. Should be a url path to location of your choice. If you wanted to link to the built-in dashboard you would enter `/energy` for example.                                             |
@@ -466,7 +474,7 @@ In these examples I decided to use the Split entities option, but feel free to u
 #### Only Grid
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 entities:
   grid:
     entity: sensor.grid_power
@@ -485,7 +493,7 @@ This should give you something like this:
 ##### Grid and Solar
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 entities:
   grid:
     entity:
@@ -505,7 +513,7 @@ This should give you something like this:
 ##### Grid, Solar and Battery
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 entities:
   grid:
     entity:
@@ -537,7 +545,7 @@ This should give you something like this:
 > This Configuration is a little bit random, it's just here to demonstrate the capabilities of this card.
 
 ```yaml
-type: custom:power-flow-card-plus-multi
+type: custom:power-flow-card-plus-mushroom
 entities:
   home:
     entity: sensor.home_consumption

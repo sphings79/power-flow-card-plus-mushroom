@@ -173,6 +173,28 @@ Battery or Charging-source page and use **Add** to append an entry, with control
 to reorder and remove. Editing the rest of a page no longer discards a list that
 was set up in YAML.
 
+### Individual devices as a list (`individual_position`)
+
+With more than a handful of individual devices the four corner slots stop being
+useful. Set `individual_position: right` and they lose their circles entirely,
+appearing instead as a list beside the diagram — the same style as the battery
+breakdown below it.
+
+```yaml
+type: custom:power-flow-card-plus-mushroom
+individual_position: right          # grid (default) | right
+sort_individual_devices: name_desc  # value (default) | name | name_desc
+entities:
+  individual:
+    - entity: sensor.washing_machine
+      name: Washing machine
+      icon: mdi:washing-machine
+```
+
+`sort_individual_devices` also accepts the historical `true`, which is the same
+as `value` — highest usage first. On narrow cards the list moves below the
+diagram instead of squeezing it.
+
 ### Mushroom appearance
 
 Set `appearance: mushroom` to restyle the card so it sits comfortably next to

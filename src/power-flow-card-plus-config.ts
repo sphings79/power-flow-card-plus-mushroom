@@ -33,7 +33,19 @@ interface mainConfigOptions {
    *   and a chip-styled breakdown list, to blend in with Mushroom cards.
    */
   appearance?: "classic" | "mushroom";
-  sort_individual_devices?: boolean;
+  /**
+   * Ordering of the individual devices.
+   * `true` keeps the original behaviour (highest power first); pass `"name"` or
+   * `"name_desc"` to sort alphabetically instead.
+   */
+  sort_individual_devices?: boolean | "value" | "name" | "name_desc";
+  /**
+   * Where the individual devices are rendered.
+   * - `grid` (default): up to four of them occupy the corner slots of the flow diagram
+   * - `right`: none of them get a circle; they are listed in a column to the right
+   *   of the diagram instead, which suits setups with many devices
+   */
+  individual_position?: "grid" | "right";
   allow_layout_break?: boolean;
   /**
    * Maximum number of individual devices rendered in the four corner slots of the flow diagram.
@@ -160,6 +172,12 @@ interface Charger extends Omit<BaseConfigEntity, "entity"> {
    * below the diagram.
    */
   sources?: ChargerSource[];
+  /**
+   * Whether to list the individual sources below the diagram. Defaults to `true`
+   * for more than one source and `false` for a single one, where the list would
+   * only repeat what the node already shows.
+   */
+  show_breakdown?: boolean;
 }
 
 interface Home extends BaseConfigEntity {

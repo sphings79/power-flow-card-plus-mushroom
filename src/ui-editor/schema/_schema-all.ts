@@ -1,5 +1,5 @@
 import { mdiBatteryHigh, mdiHome, mdiLeaf, mdiTransmissionTower, mdiWeatherSunny } from "@mdi/js";
-import { any, assign, boolean, integer, number, object, optional, string } from "superstruct";
+import { any, assign, boolean, integer, number, object, optional, string, union } from "superstruct";
 import memoizeOne from "memoize-one";
 import { batterySchema } from "./battery";
 import { displayZeroLinesSchema } from "./display-zero-lines";
@@ -56,7 +56,9 @@ export const cardConfigStruct = assign(
     }),
     appearance: optional(string()),
     max_individual_in_grid: optional(number()),
-    sort_individual_devices: optional(boolean()),
+    // Accepts the legacy boolean as well as the sort-mode strings.
+    sort_individual_devices: optional(union([boolean(), string()])),
+    individual_position: optional(string()),
     allow_layout_break: optional(boolean()),
   })
 );
@@ -223,10 +225,31 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
         },
       },
       {
+        name: "individual_position",
+        label: "Individual devices",
+        selector: {
+          select: {
+            options: [
+              { value: "grid", label: "As circles in the diagram" },
+              { value: "right", label: "As a list beside the diagram" },
+            ],
+            mode: "dropdown",
+          },
+        },
+      },
+      {
         name: "sort_individual_devices",
-        label: "Sort individual devices by usage",
-        default: true,
-        selector: { boolean: {} },
+        label: "Sort individual devices",
+        selector: {
+          select: {
+            options: [
+              { value: "value", label: "By usage (highest first)" },
+              { value: "name", label: "By name (A-Z)" },
+              { value: "name_desc", label: "By name (Z-A)" },
+            ],
+            mode: "dropdown",
+          },
+        },
       },
       {
         name: "allow_layout_break",

@@ -49,7 +49,7 @@ import { defaultValues, getDefaultConfig } from "@/utils/get-default-config";
 import { registerCustomCard } from "@/utils/register-custom-card";
 import { coerceNumber } from "@/utils/utils";
 import { checkShouldShowDots } from "@/utils/check-should-show-dots";
-import { sortIndividualObjects } from "@/utils/sort-individual-objects";
+import { IndividualSortMode, sortIndividualObjects } from "@/utils/sort-individual-objects";
 import localize from "@/localize/localize";
 
 const circleCircumference = 238.76104;
@@ -102,6 +102,7 @@ export class PowerFlowCardPlus extends LitElement {
         homeUsageToDisplay: string;
         sortedIndividualObjects: IndividualObject[];
         overflowIndividualObjects: IndividualObject[];
+        individualsOnRail: boolean;
         individualFieldLeftTop?: IndividualObject;
         individualFieldLeftBottom?: IndividualObject;
         individualFieldRightTop?: IndividualObject;
@@ -342,6 +343,7 @@ export class PowerFlowCardPlus extends LitElement {
       homeSolarCircumference,
       homeUsageToDisplay,
       overflowIndividualObjects,
+      individualsOnRail,
       individualFieldLeftTop,
       individualFieldLeftBottom,
       individualFieldRightTop,
@@ -365,7 +367,7 @@ export class PowerFlowCardPlus extends LitElement {
         style=${this._config.style_ha_card ? this._config.style_ha_card : ""}
       >
         <div
-          class="card-content ${this._config.full_size ? "full-size" : ""} ${this._config.no_labels ? "no-labels" : ""} ${this._config.appearance === "mushroom" ? "appearance-mushroom" : ""}"
+          class="card-content ${this._config.full_size ? "full-size" : ""} ${this._config.no_labels ? "no-labels" : ""} ${this._config.appearance === "mushroom" ? "appearance-mushroom" : ""} ${individualsOnRail && overflowIndividualObjects?.length ? "has-rail" : ""}"
           id="power-flow-card-plus"
           style=${this._config.style_card_content ? this._config.style_card_content : ""}
         >
@@ -375,6 +377,7 @@ export class PowerFlowCardPlus extends LitElement {
             content added below them inside that parent (the docked breakdown) would
             push every line downwards by its own height.
           -->
+          <div class="pfcp-layout">
           <div class="pfcp-flow">
           ${solar.has || individualObjs?.some((individual) => individual?.has) || nonFossil.hasPercentage
             ? html`<div class="row">
@@ -472,14 +475,32 @@ export class PowerFlowCardPlus extends LitElement {
             charger,
           })}
           </div>
-          ${solar.subs?.length || battery.subs?.length || charger.subs?.length || overflowIndividualObjects?.length
+          ${individualsOnRail && overflowIndividualObjects?.length
+            ? html`<div class="pfcp-rail">
+                ${subsElement(this, this._config, {
+                  kind: "individual",
+                  items: overflowIndividualObjects.map(
+                    (i): SubEntity => ({
+                      entity: i.entity,
+                      name: i.name,
+                      icon: i.icon,
+                      color: typeof i.color === "string" ? i.color : undefined,
+                      state: i.state ?? 0,
+                      display: getIndividualDisplayState(i),
+                    })
+                  ),
+                })}
+              </div>`
+            : nothing}
+          </div>
+          ${solar.subs?.length || battery.subs?.length || charger.subs?.length || (!individualsOnRail && overflowIndividualObjects?.length)
             ? html`<div class="pfcp-breakdown">
                 ${subsElement(this, this._config, { kind: "solar", title: solar.name, items: solar.subs })}
                 ${subsElement(this, this._config, { kind: "battery", title: battery.name, items: battery.subs, showSoc: true })}
                 ${subsElement(this, this._config, { kind: "charger", title: charger.name, items: charger.subs })}
                 ${subsElement(this, this._config, {
                   kind: "individual",
-                  items: (overflowIndividualObjects ?? []).map(
+                  items: (individualsOnRail ? [] : overflowIndividualObjects ?? []).map(
                     (i): SubEntity => ({
                       entity: i.entity,
                       name: i.name,
@@ -669,7 +690,10 @@ export class PowerFlowCardPlus extends LitElement {
       entity: entities.charger?.entity,
       // Needs a battery to flow into — on its own the node would have nowhere to point.
       has: entities.charger?.entity !== undefined && checkIfHasBattery() && (entities.charger?.display_zero !== false || chargerIsActive),
-      subs: getChargerSubs(this.hass, this._config),
+      // A single source repeats the node's own value, so it is not listed by default.
+      subs: (entities.charger?.show_breakdown ?? (entities.charger?.sources?.length ?? 0) > 1)
+        ? getChargerSubs(this.hass, this._config)
+        : [],
       name: computeFieldName(this.hass, entities.charger, localize("editor.charger")),
       icon: computeFieldIcon(this.hass, entities.charger, "mdi:ev-station"),
       state: {
@@ -887,10 +911,16 @@ export class PowerFlowCardPlus extends LitElement {
     };
 
     const isCardWideEnough = this._width > 420;
-    const sortedIndividualObjects = this._config.sort_individual_devices ? sortIndividualObjects(individualObjs) : individualObjs;
+    const sortSetting = this._config.sort_individual_devices;
+    const sortMode: IndividualSortMode | null =
+      sortSetting === true ? "value" : typeof sortSetting === "string" ? (sortSetting as IndividualSortMode) : null;
+    const sortedIndividualObjects = sortMode ? sortIndividualObjects(individualObjs, sortMode) : individualObjs;
+    // With `individual_position: right` the devices are listed beside the diagram
+    // instead of occupying corner slots, so none of them go into the grid.
+    const individualsOnRail = this._config.individual_position === "right";
     // How many individual devices may occupy the four corner slots of the flow diagram.
     // Physically capped at 4; user-configurable via `max_individual_in_grid` (0..4).
-    const maxInGrid = Math.max(0, Math.min(4, this._config.max_individual_in_grid ?? 4));
+    const maxInGrid = individualsOnRail ? 0 : Math.max(0, Math.min(4, this._config.max_individual_in_grid ?? 4));
     const maxVisibleIndividuals = this._config.allow_layout_break
       ? maxInGrid
       : this._width >= this.wideEnoughForFourIndividuals
@@ -938,6 +968,7 @@ export class PowerFlowCardPlus extends LitElement {
       homeUsageToDisplay,
       sortedIndividualObjects: visibleIndividualObjects,
       overflowIndividualObjects,
+      individualsOnRail,
       individualFieldLeftTop,
       individualFieldLeftBottom,
       individualFieldRightTop,

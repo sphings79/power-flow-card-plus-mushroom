@@ -94,7 +94,11 @@ export const styles = css`
     text-decoration: none;
     color: var(--primary-text-color);
     gap: 2px;
-    // background-color: var(--card-background-color); /* hide overflowing lines behind background */
+    /* Opaque so the flow lines that run underneath end at the circle's edge
+       instead of showing through it. This was previously disabled by a
+       double-slash comment, which CSS does not support, so the declaration was
+       silently dropped. */
+    background-color: var(--card-background-color, var(--ha-card-background, var(--primary-background-color)));
     overflow: hidden;
   }
 
@@ -637,6 +641,48 @@ export const styles = css`
 
   /* ---- Docked breakdown lists (multi PV / multi battery / extra individuals) ---- */
   /*
+   * Diagram plus the optional device rail beside it. Without a rail the layout is
+   * a single column and behaves exactly as before.
+   */
+  .pfcp-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .card-content.has-rail {
+    /* The diagram keeps its own width; the rail uses the space next to it, so the
+       content must be allowed to grow past the usual cap. */
+    max-width: none;
+  }
+
+  .card-content.has-rail .pfcp-flow {
+    flex: 0 0 470px;
+    max-width: 470px;
+  }
+
+  .pfcp-rail {
+    flex: 1 1 180px;
+    min-width: 150px;
+    padding-top: 8px;
+  }
+
+  .pfcp-rail .pfcp-subs {
+    min-width: 0;
+  }
+
+  /* Narrow cards: the rail drops below the diagram instead of squeezing it. */
+  @media (max-width: 660px) {
+    .pfcp-layout {
+      flex-wrap: wrap;
+    }
+    .card-content.has-rail .pfcp-flow {
+      flex: 1 1 100%;
+      margin: 0 auto;
+    }
+  }
+
+  /*
    * Dedicated container for the charging-source line. Spans the gap between the
    * charger circle and the battery circle inside the battery row. The shared
    * .lines overlay cannot be used here: it sits above this row and clips its
@@ -778,7 +824,12 @@ export const styles = css`
 
   .card-content.appearance-mushroom .circle {
     border-color: transparent;
-    background-color: color-mix(in srgb, var(--pfcp-shape, var(--pfcp-shape-fallback)) var(--pfcp-shape-strength), transparent);
+    /* Tint layered over an opaque base, so the shape keeps its translucent look
+       without the flow lines showing through it. */
+    background-color: var(--card-background-color, var(--ha-card-background, var(--primary-background-color)));
+    background-image: linear-gradient(
+      color-mix(in srgb, var(--pfcp-shape, var(--pfcp-shape-fallback)) var(--pfcp-shape-strength), transparent) 0 0
+    );
     background-clip: padding-box;
     border-radius: var(--pfcp-shape-radius);
     font-size: 12px;

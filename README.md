@@ -203,6 +203,15 @@ color_individual_by_usage: true
 individual_color_max: 3000   # watts for full red; defaults to max_expected_power
 ```
 
+The batteries in the breakdown can be tinted by their state of charge — green
+when full, orange around half, red when empty:
+
+```yaml
+color_battery_by_soc: true
+```
+
+A colour set on the battery itself always wins over either tint.
+
 The docked breakdown below the diagram lays its entries out two per row, so four
 batteries form a 2x2 block rather than one tall column.
 

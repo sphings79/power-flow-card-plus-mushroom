@@ -56,6 +56,12 @@ interface mainConfigOptions {
    * Defaults to `max_expected_power`.
    */
   individual_color_max?: number;
+  /**
+   * Colour each battery in the breakdown by its state of charge: green when
+   * full, orange around half, red when empty. A colour set on the battery
+   * itself takes precedence.
+   */
+  color_battery_by_soc?: boolean;
   allow_layout_break?: boolean;
   /**
    * Maximum number of individual devices rendered in the four corner slots of the flow diagram.

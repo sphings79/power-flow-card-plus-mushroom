@@ -50,7 +50,7 @@ import { registerCustomCard } from "@/utils/register-custom-card";
 import { coerceNumber } from "@/utils/utils";
 import { checkShouldShowDots } from "@/utils/check-should-show-dots";
 import { IndividualSortMode, sortIndividualObjects } from "@/utils/sort-individual-objects";
-import { usageColor } from "@/utils/usage-color";
+import { socColor, usageColor } from "@/utils/usage-color";
 import localize from "@/localize/localize";
 
 const circleCircumference = 238.76104;
@@ -360,7 +360,7 @@ export class PowerFlowCardPlus extends LitElement {
         entity: i.entity,
         name: i.name,
         icon: i.icon,
-        color: colorByUsage ? usageColor(i.state ?? 0, usageMax) || explicit : explicit,
+        color: explicit ?? (colorByUsage ? usageColor(i.state ?? 0, usageMax) || undefined : undefined),
         state: i.state ?? 0,
         display: getIndividualDisplayState(i),
       };
@@ -655,7 +655,12 @@ export class PowerFlowCardPlus extends LitElement {
     const battery = {
       entity: entities.battery?.entity,
       has: checkIfHasBattery(),
-      subs: getBatterySubs(this.hass, this._config),
+      subs: getBatterySubs(this.hass, this._config).map((sub) =>
+        // Tint by state of charge, unless the battery carries an explicit colour.
+        this._config.color_battery_by_soc === true && sub.color === undefined && sub.soc !== null && sub.soc !== undefined
+          ? { ...sub, color: socColor(Number(sub.soc)) || undefined }
+          : sub
+      ),
       mainEntity: typeof entities.battery?.entity === "object" ? entities.battery.entity.consumption : entities.battery?.entity,
       name: computeFieldName(this.hass, entities.battery, this.hass.localize("ui.panel.lovelace.cards.energy.energy_distribution.battery")),
       icon: computeFieldIcon(this.hass, entities.battery, "mdi:battery-high"),

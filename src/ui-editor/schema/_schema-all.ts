@@ -61,6 +61,7 @@ export const cardConfigStruct = assign(
     individual_position: optional(string()),
     color_individual_by_usage: optional(boolean()),
     individual_color_max: optional(number()),
+    color_battery_by_soc: optional(boolean()),
     allow_layout_break: optional(boolean()),
   })
 );
@@ -248,6 +249,11 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
         name: "individual_color_max",
         label: "Usage colour: watts for full red",
         selector: { number: { mode: "box", min: 1, max: 1000000, step: 1 } },
+      },
+      {
+        name: "color_battery_by_soc",
+        label: "Colour batteries by state of charge",
+        selector: { boolean: {} },
       },
       {
         name: "sort_individual_devices",

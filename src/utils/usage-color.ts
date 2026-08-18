@@ -38,3 +38,15 @@ export const usageColor = (value: number, max: number): string => {
 
   return `rgb(${mix(lower[1][0], upper[1][0])}, ${mix(lower[1][1], upper[1][1])}, ${mix(lower[1][2], upper[1][2])})`;
 };
+
+/**
+ * Colour for a battery's state of charge — the same ramp read the other way
+ * round: full is green, half is orange, empty is red.
+ *
+ * @param soc State of charge in percent (0-100).
+ */
+export const socColor = (soc: number): string => {
+  if (!Number.isFinite(soc)) return "";
+  const clamped = soc < 0 ? 0 : soc > 100 ? 100 : soc;
+  return usageColor(100 - clamped, 100);
+};

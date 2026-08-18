@@ -53,7 +53,7 @@ const circleCircumference = 238.76104;
 
 registerCustomCard({
   type: "power-flow-card-plus-multi",
-  name: "Power Flow Card Plus (Multi)",
+  name: "Power Flow Card Plus (Mushroom)",
   description:
     "An extended version of the power flow card with richer options, advanced features and a few small UI enhancements. Inspired by the Energy Dashboard.",
 });

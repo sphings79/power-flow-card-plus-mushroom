@@ -1,18 +1,19 @@
-# Power Flow Card Plus
+# Power Flow Card Plus Mushroom
 
-[![ko-fi support](https://img.shields.io/badge/support-me-ff5e5b?style=flat-square&logo=ko-fi)](https://ko-fi.com/flixlix)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=flat-square)](https://github.com/hacs/integration)
-![GitHub total downloads](https://img.shields.io/github/downloads/flixlix/power-flow-card-plus/total?style=flat-square)
-![commit_activity](https://img.shields.io/github/commit-activity/y/flixlix/power-flow-card-plus?color=brightgreen&label=Commits&style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/flixlix/power-flow-card-plus?style=flat-square)
+[![HACS Custom Repository](https://img.shields.io/badge/HACS-Custom%20Repository-41BDF5.svg?style=flat-square)](https://hacs.xyz)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/sphings79/power-flow-card-plus-mushroom?style=flat-square)](https://github.com/sphings79/power-flow-card-plus-mushroom/releases/latest)
+[![GitHub total downloads](https://img.shields.io/github/downloads/sphings79/power-flow-card-plus-mushroom/total?style=flat-square)](https://github.com/sphings79/power-flow-card-plus-mushroom/releases)
+[![commit_activity](https://img.shields.io/github/commit-activity/y/sphings79/power-flow-card-plus-mushroom?color=brightgreen&label=Commits&style=flat-square)](https://github.com/sphings79/power-flow-card-plus-mushroom/commits/main)
 
-![2023-03-26-13-04-07](https://user-images.githubusercontent.com/61006057/227771568-78497ecc-e863-46f2-b29e-e15c7c20a154.gif)
-
-> [!TIP]  
-> Version 0.2.0 is out now! ✨ Check out the [new features](https://github.com/flixlix/power-flow-card-plus/releases/tag/v0.2.0)!
+<!-- TODO: replace with a screenshot/GIF of THIS fork (multiple batteries, multiple PV, Mushroom appearance) -->
+![Power Flow Card Plus Mushroom](docs/images/hero.gif)
 
 > [!NOTE]
-> This card is distributed via [flixlix/power-flow-card-plus](https://github.com/flixlix/power-flow-card-plus), but the source code lives in the monorepo at [flixlix/flixlix-cards](https://github.com/flixlix/flixlix-cards). Issues and feature requests will be tracked there going forward.
+> **This is a fork.** It builds on [flixlix/power-flow-card-plus](https://github.com/flixlix/power-flow-card-plus) by [@flixlix](https://github.com/flixlix), who wrote the original card and deserves the credit for it. This fork adds multiple batteries, multiple PV sources, unlimited individual devices and a Mushroom-style appearance.
+>
+> It is **not** part of the HACS default store — install it as a [custom repository](#hacs-custom-repository). Please report problems with the fork in [this repository's issue tracker](https://github.com/sphings79/power-flow-card-plus-mushroom/issues) rather than upstream.
+>
+> If the original card is useful to you, consider supporting its author on [ko-fi](https://ko-fi.com/flixlix).
 
 ## Additional Features / Enhancements
 
@@ -49,12 +50,12 @@
 > **This fork uses its own card type so it can run side by side with the original card.**
 > - Card type in YAML: **`custom:power-flow-card-plus-multi`**
 > - JavaScript resource file: **`power-flow-card-plus-mushroom.js`**
-> - Name in the card picker: **“Power Flow Card Plus (Multi)”**
+> - Name in the card picker: **“Power Flow Card Plus (Mushroom)”**
 >
-> Every custom element in this bundle is uniquely named, so installing both the original `power-flow-card-plus` and this `-multi` fork at the same time does not clash. Add the fork as a separate dashboard resource pointing to `power-flow-card-plus-mushroom.js`.
+> Every custom element in this bundle is uniquely named, so installing both the original `power-flow-card-plus` and this fork at the same time does not clash. Add the fork as a separate dashboard resource pointing to `power-flow-card-plus-mushroom.js`.
 
 > [!NOTE]
-> The `sources`, `batteries` and `max_individual_in_grid` options are **additions of this fork** (`sphings79/power-flow-card-plus`) and are not part of the upstream card. Everything else works exactly like upstream; an upstream configuration keeps working once you switch its `type:` to `custom:power-flow-card-plus-multi`.
+> The `sources`, `batteries` and `max_individual_in_grid` options are **additions of this fork** (`sphings79/power-flow-card-plus-mushroom`) and are not part of the upstream card. Everything else works exactly like upstream; an upstream configuration keeps working once you switch its `type:` to `custom:power-flow-card-plus-multi`.
 
 This fork lets you drive the main **Solar** and **Battery** nodes from *several* entities and lift the four-device limit on **Individual** entities. The main nodes keep the familiar aggregated look and animated flows; each underlying device is additionally listed in a compact, docked breakdown directly below the flow diagram.
 
@@ -183,24 +184,33 @@ If this is your goal, check out the [Energy Flow Card Plus](https://github.com/f
 
 ## Guides
 
-In case you want to watch a tutorial instead of reading through this very long readme 😅, I recommend the following videos:
+In case you want to watch a tutorial instead of reading through this very long readme 😅, I recommend the following videos.
+
+> [!NOTE]
+> These videos cover the **original** card. They are still a good introduction to the shared options, but they do not show this fork's additions (multiple batteries, multiple PV sources, unlimited individual devices, Mushroom appearance).
 
 - [Power Flow Card Plus in Home Assistant - Jetzt noch besser? Anleitung from Smartzeug](https://youtu.be/PUOU5qdhMro) - _in german_, up to date with version 0.2.2
 - [Power Flow Card Plus for Home Assistant from Speak to the Geek](https://youtu.be/C4Zh35E9wJE?si=REuWZxmfF91G0Ht7) - _changes in indvidual configuration_
 
 ## Installation
 
-### HACS (recommended)
+### HACS (custom repository)
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=flixlix&repository=power-flow-card-plus&category=Dashboard)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sphings79&repository=power-flow-card-plus-mushroom&category=Dashboard)
 
-This card is directly available through [HACS](https://hacs.xyz). To install HACS, follow these [instructions](https://hacs.xyz/docs/setup/prerequisites).
-After having HACS installed, simply search for "Power Flow Card Plus" and download it using the UI 🙂
+This fork is **not** in the HACS default store, so searching for it will not find it. Add it as a custom repository first. To install HACS itself, follow these [instructions](https://hacs.xyz/docs/setup/prerequisites).
+
+1. In Home Assistant, open **HACS**.
+2. Open the three-dot menu (top right) and choose **Custom repositories**.
+3. Repository: `https://github.com/sphings79/power-flow-card-plus-mushroom` — Category: **Dashboard**.
+4. Add it, then search for **Power Flow Card Plus Mushroom** in HACS and download it.
+
+The button above does steps 1–3 for you.
 
 <details>
 <summary>Manual install</summary>
 
-1. Download and copy `power-flow-card-plus-mushroom.js` from the [latest release](https://github.com/flixlix/power-flow-card-plus/releases/latest) into your `config/www` directory.
+1. Download and copy `power-flow-card-plus-mushroom.js` from the [latest release](https://github.com/sphings79/power-flow-card-plus-mushroom/releases/latest) into your `config/www` directory.
 
 2. Add the resource reference as decribed below.
 
@@ -222,7 +232,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 4. Select Resources
 5. Hit (+ ADD RESOURCE) icon
 6. Enter URL `/local/power-flow-card-plus-mushroom.js` and select type "JavaScript Module".
-   (Use `/hacsfiles/power-flow-card-plus/power-flow-card-plus-mushroom.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
+   (Use `/hacsfiles/power-flow-card-plus-mushroom/power-flow-card-plus-mushroom.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
 
 </details>
 
@@ -469,7 +479,8 @@ watt_threshold: 10000
 
 This should give you something like this:
 
-![demo_only_grid-2](https://user-images.githubusercontent.com/61006057/232316687-70962cf8-3a94-4e01-a556-f4cf7d978969.gif)
+<!-- TODO: add your own screenshot of the grid-only configuration -->
+![demo_only_grid-2](docs/images/demo-grid-only.gif)
 
 ##### Grid and Solar
 
@@ -488,7 +499,8 @@ entities:
 
 This should give you something like this:
 
-![demo_solar_and_grid](https://user-images.githubusercontent.com/61006057/232317682-e20c83e9-9b51-45b0-bcf5-13447d2e93b1.gif)
+<!-- TODO: add your own screenshot of the solar + grid configuration -->
+![demo_solar_and_grid](docs/images/demo-solar-and-grid.gif)
 
 ##### Grid, Solar and Battery
 
@@ -517,7 +529,8 @@ watt_threshold: 10000
 
 This should give you something like this:
 
-![demo_grid_solar_bat-2](https://user-images.githubusercontent.com/61006057/232319141-06ac61c7-daed-461e-9fdb-5ce84606bde6.gif)
+<!-- TODO: add your own screenshot of the grid + solar + battery configuration -->
+![demo_grid_solar_bat-2](docs/images/demo-grid-solar-battery.gif)
 
 ### Mix & Match Config aka "Full Config"
 
@@ -573,14 +586,19 @@ title: Power Flow Card Plus
 ```
 
 This should give you something like this:
-![minimal_config_full](https://user-images.githubusercontent.com/61006057/227789815-41f15dd4-3d24-4eb8-96ca-c7f7f01a4f46.png)
+<!-- TODO: add your own screenshot of the minimal configuration -->
+![minimal_config_full](docs/images/minimal-config.png)
 
 ### Random Configurations
 
-![2023-03-26-13-04-07](https://user-images.githubusercontent.com/61006057/227771568-78497ecc-e863-46f2-b29e-e15c7c20a154.gif)
-![recording_multi_indiv](https://github.com/flixlix/power-flow-card-plus/assets/61006057/337b921c-306c-4447-9c6f-1b4b72579731)
-![demo](https://user-images.githubusercontent.com/61006057/232316110-eff64095-e147-4462-abfc-961c88d5ada8.gif)
-![demo_grid_solar_bat](https://user-images.githubusercontent.com/61006057/233212881-89af5af0-4b25-4a7c-9da1-008801129130.png)
+<!-- TODO: add your own screenshot of the full configuration -->
+![2023-03-26-13-04-07](docs/images/demo-full.gif)
+<!-- TODO: add your own screenshot of the individual devices -->
+![recording_multi_indiv](docs/images/demo-individual-devices.gif)
+<!-- TODO: add your own screenshot of the layout variant -->
+![demo](docs/images/demo-variant-1.gif)
+<!-- TODO: add your own screenshot of the layout variant -->
+![demo_grid_solar_bat](docs/images/demo-variant-2.png)
 
 ### UI Editor (available in version 0.2)
 
@@ -588,7 +606,8 @@ This should give you something like this:
 > I've made a lot of improvements in version 0.2 for the UI-Editor. Now each field has its own subpage, meaning there is now much less scrolling.
 > The biggest change in the editor is the fact that you can now add up to 4 individual devices, all through the UI! 🥳
 
-![ui-editor](https://github.com/flixlix/power-flow-card-plus/assets/61006057/a5d0cbb4-f430-4ba0-9c6f-8c93689206d7)
+<!-- TODO: add your own screenshot of the UI editor -->
+![ui-editor](docs/images/ui-editor.png)
 
 ### Flow Formula
 

@@ -48,10 +48,10 @@
 > [!IMPORTANT]
 > **This fork uses its own card type so it can run side by side with the original card.**
 > - Card type in YAML: **`custom:power-flow-card-plus-multi`**
-> - JavaScript resource file: **`power-flow-card-plus-multi.js`**
+> - JavaScript resource file: **`power-flow-card-plus-mushroom.js`**
 > - Name in the card picker: **“Power Flow Card Plus (Multi)”**
 >
-> Every custom element in this bundle is uniquely named, so installing both the original `power-flow-card-plus` and this `-multi` fork at the same time does not clash. Add the fork as a separate dashboard resource pointing to `power-flow-card-plus-multi.js`.
+> Every custom element in this bundle is uniquely named, so installing both the original `power-flow-card-plus` and this `-multi` fork at the same time does not clash. Add the fork as a separate dashboard resource pointing to `power-flow-card-plus-mushroom.js`.
 
 > [!NOTE]
 > The `sources`, `batteries` and `max_individual_in_grid` options are **additions of this fork** (`sphings79/power-flow-card-plus`) and are not part of the upstream card. Everything else works exactly like upstream; an upstream configuration keeps working once you switch its `type:` to `custom:power-flow-card-plus-multi`.
@@ -200,17 +200,17 @@ After having HACS installed, simply search for "Power Flow Card Plus" and downlo
 <details>
 <summary>Manual install</summary>
 
-1. Download and copy `power-flow-card-plus-multi.js` from the [latest release](https://github.com/flixlix/power-flow-card-plus/releases/latest) into your `config/www` directory.
+1. Download and copy `power-flow-card-plus-mushroom.js` from the [latest release](https://github.com/flixlix/power-flow-card-plus/releases/latest) into your `config/www` directory.
 
 2. Add the resource reference as decribed below.
 
 ### Add resource reference
 
-If you configure Dashboards via YAML, add a reference to `power-flow-card-plus-multi.js` inside your `configuration.yaml`:
+If you configure Dashboards via YAML, add a reference to `power-flow-card-plus-mushroom.js` inside your `configuration.yaml`:
 
 ```yaml
 resources:
-  - url: /local/power-flow-card-plus-multi.js
+  - url: /local/power-flow-card-plus-mushroom.js
     type: module
 ```
 
@@ -221,8 +221,8 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 3. Click three dot icon
 4. Select Resources
 5. Hit (+ ADD RESOURCE) icon
-6. Enter URL `/local/power-flow-card-plus-multi.js` and select type "JavaScript Module".
-   (Use `/hacsfiles/power-flow-card-plus/power-flow-card-plus-multi.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
+6. Enter URL `/local/power-flow-card-plus-mushroom.js` and select type "JavaScript Module".
+   (Use `/hacsfiles/power-flow-card-plus/power-flow-card-plus-mushroom.js` and select "JavaScript Module" for HACS install if HACS didn't do it already)
 
 </details>
 

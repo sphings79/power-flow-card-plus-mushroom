@@ -46,14 +46,6 @@
 
 ## Fork additions: Multiple Batteries, Multiple PV & unlimited Individual devices
 
-> [!WARNING]
-> **Breaking change — the card type was renamed.** Earlier builds of this fork used
-> `custom:power-flow-card-plus-multi`. It is now `custom:power-flow-card-plus-mushroom`.
->
-> If you used an earlier build, edit every affected card and change its `type:` accordingly —
-> otherwise Home Assistant will show *"Custom element doesn't exist"*. Nothing else about your
-> configuration needs to change.
-
 > [!IMPORTANT]
 > **This fork uses its own card type so it can run side by side with the original card.**
 > - Card type in YAML: **`custom:power-flow-card-plus-mushroom`**

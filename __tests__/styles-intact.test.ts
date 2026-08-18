@@ -32,3 +32,18 @@ describe("style.ts template literal", () => {
     expect(opens).toBe(closes);
   });
 });
+
+/**
+ * Every zone variant overrides properties the shared `.pfcp-breakdown` rule sets.
+ * Both have one class of specificity, so a single-class zone selector defined
+ * before it silently loses — which shipped a stray divider above a zone three
+ * times during development.
+ */
+describe("zone rules outrank the shared breakdown rule", () => {
+  const source = readFileSync(join(__dirname, "../src/style.ts"), "utf-8");
+
+  it.each(["top", "bottom", "left", "right"])("the %s zone block uses the combined selector", (zone) => {
+    const block = new RegExp(`^\\s*\\.pfcp-zone-${zone}\\s*[,{]`, "m");
+    expect(source).not.toMatch(block);
+  });
+});

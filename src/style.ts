@@ -784,7 +784,7 @@ export const styles = css`
 
   /* Above the diagram the separator belongs on the other side, so the block reads
      as belonging to what sits below it. */
-  .pfcp-zone-top {
+  .pfcp-breakdown.pfcp-zone-top {
     margin-top: 0;
     margin-bottom: 12px;
     padding-top: 0;

@@ -52,3 +52,33 @@ describe("periodRange", () => {
     expect(iso(periodRange("week", sunday).start)).toBe("2025-06-16");
   });
 });
+
+import { displayEnergy } from "../src/utils/display-value";
+
+const hass: any = { locale: { language: "en", number_format: "comma_decimal" } };
+const cfg = (extra: any = {}) => ({ entities: {}, ...extra } as any);
+
+describe("displayEnergy", () => {
+  it("stays in kWh below the threshold", () => {
+    expect(displayEnergy(hass, cfg(), 999)).toContain("kWh");
+  });
+
+  it("switches to MWh at the threshold", () => {
+    const out = displayEnergy(hass, cfg(), 1000);
+    expect(out).toContain("MWh");
+    expect(out).toContain("1");
+  });
+
+  it("honours a lowered threshold", () => {
+    expect(displayEnergy(hass, cfg({ kwh_threshold: 100 }), 300)).toContain("MWh");
+    expect(displayEnergy(hass, cfg({ kwh_threshold: 100 }), 99)).toContain("kWh");
+  });
+
+  it("never switches when the threshold is zero", () => {
+    expect(displayEnergy(hass, cfg({ kwh_threshold: 0 }), 50000)).toContain("kWh");
+  });
+
+  it("applies the switch to negative values too", () => {
+    expect(displayEnergy(hass, cfg(), -1500)).toContain("MWh");
+  });
+});

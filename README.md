@@ -260,6 +260,13 @@ windows counting whole days back from today, today included.
 In the lists the batteries show both directions, with an arrow down for energy
 charged and an arrow up for energy discharged.
 
+Large totals switch to MWh so they do not crowd the layout:
+
+```yaml
+kwh_threshold: 1000   # kWh at which MWh takes over; 0 disables the switch
+mwh_decimals: 2
+```
+
 ### Mushroom appearance
 
 Set `appearance: mushroom` to restyle the card so it sits comfortably next to

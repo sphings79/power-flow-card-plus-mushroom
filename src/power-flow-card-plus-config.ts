@@ -79,6 +79,14 @@ interface mainConfigOptions {
   energy_toggle?: boolean;
   /** Start the card in energy mode rather than power mode. */
   energy_default?: boolean;
+  /**
+   * Energy at or above which values are shown in MWh instead of kWh.
+   * Defaults to 1000, the natural unit boundary. Lower it if the layout gets
+   * tight before then; 0 disables the switch entirely.
+   */
+  kwh_threshold?: number;
+  /** Decimals used once a value is displayed in MWh. Defaults to 2. */
+  mwh_decimals?: number;
   allow_layout_break?: boolean;
   /**
    * Maximum number of individual devices rendered in the four corner slots of the flow diagram.

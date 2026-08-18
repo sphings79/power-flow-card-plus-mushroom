@@ -53,9 +53,22 @@ export const displayValue = (
 };
 
 /**
- * Formats a period energy total. Passing an explicit unit keeps `displayValue`
- * from applying its watt-to-kilowatt conversion, which would be wrong here — the
- * value already is in kilowatt hours.
+ * Formats a period energy total, switching to megawatt hours once the value gets
+ * long enough to crowd the layout.
+ *
+ * Passing an explicit unit keeps `displayValue` from applying its watt-to-kilowatt
+ * conversion, which would be wrong here — the value already is in kilowatt hours.
  */
-export const displayEnergy = (hass: HomeAssistant, config: PowerFlowCardPlusConfig, kwh: number | null, decimals = 1): string =>
-  displayValue(hass, config, kwh, { unit: "kWh", decimals, accept_negative: true });
+export const displayEnergy = (hass: HomeAssistant, config: PowerFlowCardPlusConfig, kwh: number | null, decimals = 1): string => {
+  const threshold = config.kwh_threshold ?? 1000;
+
+  if (kwh !== null && Number.isFinite(kwh) && threshold > 0 && Math.abs(kwh) >= threshold) {
+    return displayValue(hass, config, kwh / 1000, {
+      unit: "MWh",
+      decimals: config.mwh_decimals ?? 2,
+      accept_negative: true,
+    });
+  }
+
+  return displayValue(hass, config, kwh, { unit: "kWh", decimals, accept_negative: true });
+};

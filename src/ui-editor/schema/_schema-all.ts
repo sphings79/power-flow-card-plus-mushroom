@@ -65,6 +65,8 @@ export const cardConfigStruct = assign(
     energy_period: optional(string()),
     energy_toggle: optional(boolean()),
     energy_default: optional(boolean()),
+    kwh_threshold: optional(number()),
+    mwh_decimals: optional(integer()),
     allow_layout_break: optional(boolean()),
   })
 );
@@ -282,6 +284,16 @@ export const advancedOptionsSchema = memoizeOne((localize, displayZeroLinesMode:
         name: "energy_default",
         label: "Start in kWh mode",
         selector: { boolean: {} },
+      },
+      {
+        name: "kwh_threshold",
+        label: "kWh to MWh Threshold",
+        selector: { number: { mode: "box", min: 0, max: 1000000, step: 1 } },
+      },
+      {
+        name: "mwh_decimals",
+        label: "MWh Decimals",
+        selector: { number: { mode: "box", min: 0, max: 4, step: 1 } },
       },
       {
         name: "color_battery_by_soc",

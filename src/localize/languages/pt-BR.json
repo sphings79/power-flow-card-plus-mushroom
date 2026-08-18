@@ -83,6 +83,19 @@
     "navigation_path": "Caminho de Navegação",
     "sort_individual_devices": "Classifique dispositivos individuais",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Sem rótulos"
+    "no_labels": "Sem rótulos",
+    "entity": "Entidade",
+    "name": "Nome",
+    "icon": "Ícone",
+    "unit": "Unidade",
+    "no_units": "Ainda sem entradas",
+    "move_up": "Mover para cima",
+    "move_down": "Mover para baixo",
+    "remove": "Remover",
+    "add": "Adicionar",
+    "battery_units": "Baterias individuais",
+    "solar_units": "Fontes FV individuais",
+    "charger_units": "Fontes de carregamento",
+    "charger": "Fonte de carregamento"
   }
 }

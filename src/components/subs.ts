@@ -7,7 +7,7 @@ import { SubEntity } from "@/states/raw/subs";
 export interface SubsGroup {
   title?: string;
   /** Used for the accent color / styling hook. */
-  kind: "solar" | "battery" | "individual";
+  kind: "solar" | "battery" | "individual" | "charger";
   items: SubEntity[];
   /** Show the state of charge next to the value (batteries). */
   showSoc?: boolean;

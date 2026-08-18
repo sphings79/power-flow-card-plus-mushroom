@@ -83,6 +83,19 @@
     "navigation_path": "Шлях переходу",
     "sort_individual_devices": "Сортувати окремі пристрої",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Без міток"
+    "no_labels": "Без міток",
+    "entity": "Об'єкт",
+    "name": "Назва",
+    "icon": "Значок",
+    "unit": "Одиниця",
+    "no_units": "Поки немає записів",
+    "move_up": "Перемістити вгору",
+    "move_down": "Перемістити вниз",
+    "remove": "Видалити",
+    "add": "Додати",
+    "battery_units": "Окремі батареї",
+    "solar_units": "Окремі джерела PV",
+    "charger_units": "Джерела заряджання",
+    "charger": "Джерело заряджання"
   }
 }

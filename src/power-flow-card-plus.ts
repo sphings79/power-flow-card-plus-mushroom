@@ -12,6 +12,7 @@ import { individualRightBottomElement } from "@/components/individual-right-bott
 import { individualRightTopElement } from "@/components/individual-right-top-element";
 import { dashboardLinkElement } from "@/components/misc/dashboard-link";
 import { nonFossilElement } from "@/components/non-fossil";
+import { chargerElement } from "@/components/charger";
 import { solarElement } from "@/components/solar";
 import { subsElement } from "@/components/subs";
 import { handleAction } from "@/ha/panels/lovelace/common/handle-action";
@@ -21,8 +22,9 @@ import { getGridConsumptionState, getGridProductionState, getGridSecondaryState 
 import { getHomeSecondaryState } from "@/states/raw/home";
 import { getIndividualObject, IndividualObject } from "@/states/raw/individual/get-individual-object";
 import { getNonFossilHas, getNonFossilHasPercentage, getNonFossilSecondaryState } from "@/states/raw/non-fossil";
+import { getChargerSecondaryState, getChargerState } from "@/states/raw/charger";
 import { getSolarSecondaryState, getSolarState } from "@/states/raw/solar";
-import { getBatterySubs, getSolarSubs, SubEntity } from "@/states/raw/subs";
+import { getBatterySubs, getChargerSubs, getSolarSubs, SubEntity } from "@/states/raw/subs";
 import { adjustZeroTolerance } from "@/states/tolerance/base";
 import { doesEntityExist } from "@/states/utils/existence-entity";
 import { getEntityState } from "@/states/utils/get-entity-state";
@@ -48,6 +50,7 @@ import { registerCustomCard } from "@/utils/register-custom-card";
 import { coerceNumber } from "@/utils/utils";
 import { checkShouldShowDots } from "@/utils/check-should-show-dots";
 import { sortIndividualObjects } from "@/utils/sort-individual-objects";
+import localize from "@/localize/localize";
 
 const circleCircumference = 238.76104;
 
@@ -86,6 +89,7 @@ export class PowerFlowCardPlus extends LitElement {
         grid: GridObject;
         solar: any;
         battery: any;
+        charger: any;
         home: any;
         nonFossil: any;
         individualObjs: IndividualObject[];
@@ -157,6 +161,15 @@ export class PowerFlowCardPlus extends LitElement {
         .filter((e): e is string => typeof e === "string" && e.length > 0)
         .join(" | ");
       if (joined) entities.battery = { ...battery, entity: joined };
+    }
+
+    const charger = entities.charger;
+    if (charger?.sources?.length && !charger.entity) {
+      const joined = charger.sources
+        .map((c) => c?.entity)
+        .filter((e): e is string => typeof e === "string" && e.length > 0)
+        .join(" | ");
+      if (joined) entities.charger = { ...charger, entity: joined };
     }
 
     return { ...config, entities };
@@ -317,6 +330,7 @@ export class PowerFlowCardPlus extends LitElement {
       grid,
       solar,
       battery,
+      charger,
       home,
       nonFossil,
       individualObjs,
@@ -420,9 +434,9 @@ export class PowerFlowCardPlus extends LitElement {
               : html`<div class="spacer"></div>`}
             ${checkHasRightIndividual(individualObjs) ? html` <div class="spacer"></div>` : nothing}
           </div>
-          ${battery.has || checkHasBottomIndividual(individualObjs)
+          ${battery.has || charger.has || checkHasBottomIndividual(individualObjs)
             ? html`<div class="row">
-                <div class="spacer"></div>
+                ${charger.has ? chargerElement(this, this._config, { charger, entities, templatesObj }) : html`<div class="spacer"></div>`}
                 ${battery.has ? batteryElement(this, this._config, { battery, entities }) : html`<div class="spacer"></div>`}
                 ${individualFieldLeftBottom
                   ? individualLeftBottomElement(this, this._config, {
@@ -448,11 +462,13 @@ export class PowerFlowCardPlus extends LitElement {
             individual: individualObjs,
             newDur,
             solar,
+            charger,
           })}
-          ${solar.subs?.length || battery.subs?.length || overflowIndividualObjects?.length
+          ${solar.subs?.length || battery.subs?.length || charger.subs?.length || overflowIndividualObjects?.length
             ? html`<div class="pfcp-breakdown">
                 ${subsElement(this, this._config, { kind: "solar", title: solar.name, items: solar.subs })}
                 ${subsElement(this, this._config, { kind: "battery", title: battery.name, items: battery.subs, showSoc: true })}
+                ${subsElement(this, this._config, { kind: "charger", title: charger.name, items: charger.subs })}
                 ${subsElement(this, this._config, {
                   kind: "individual",
                   items: (overflowIndividualObjects ?? []).map(
@@ -638,6 +654,34 @@ export class PowerFlowCardPlus extends LitElement {
         circle_type: entities.battery?.color_circle,
       },
     };
+    const chargerState = getChargerState(this.hass, this._config) ?? 0;
+    const chargerTolerance = entities.charger?.display_zero_tolerance ?? 0;
+    const chargerIsActive = chargerState > chargerTolerance;
+    const charger = {
+      entity: entities.charger?.entity,
+      // Needs a battery to flow into — on its own the node would have nowhere to point.
+      has: entities.charger?.entity !== undefined && checkIfHasBattery() && (entities.charger?.display_zero !== false || chargerIsActive),
+      subs: getChargerSubs(this.hass, this._config),
+      name: computeFieldName(this.hass, entities.charger, localize("editor.charger")),
+      icon: computeFieldIcon(this.hass, entities.charger, "mdi:ev-station"),
+      state: {
+        toBattery: chargerIsActive ? chargerState : 0,
+      },
+      tap_action: entities.charger?.tap_action,
+      hold_action: entities.charger?.hold_action,
+      double_tap_action: entities.charger?.double_tap_action,
+      secondary: {
+        entity: entities.charger?.secondary_info?.entity,
+        decimals: entities.charger?.secondary_info?.decimals,
+        template: entities.charger?.secondary_info?.template,
+        has: entities.charger?.secondary_info?.entity !== undefined,
+        accept_negative: entities.charger?.secondary_info?.accept_negative || false,
+        state: getChargerSecondaryState(this.hass, this._config),
+        icon: entities.charger?.secondary_info?.icon,
+        unit: entities.charger?.secondary_info?.unit_of_measurement,
+        unit_white_space: entities.charger?.secondary_info?.unit_white_space,
+      },
+    };
     const home = {
       entity: entities.home?.entity,
       has: entities?.home?.entity !== undefined,
@@ -789,6 +833,7 @@ export class PowerFlowCardPlus extends LitElement {
       solarToBattery: computeFlowRate(this._config, solar.state.toBattery ?? 0, totalLines),
       solarToGrid: computeFlowRate(this._config, solar.state.toGrid ?? 0, totalLines),
       solarToHome: computeFlowRate(this._config, solar.state.toHome ?? 0, totalLines),
+      chargerToBattery: computeFlowRate(this._config, charger.state.toBattery ?? 0, totalLines),
       individual: individualObjs?.map((individual) => computeFlowRate(this._config, individual.state ?? 0, totalIndividualConsumption)) || [],
       nonFossil: computeFlowRate(this._config, nonFossil.state.power ?? 0, totalLines),
     };
@@ -872,6 +917,7 @@ export class PowerFlowCardPlus extends LitElement {
       grid,
       solar,
       battery,
+      charger,
       home,
       nonFossil,
       individualObjs: visibleIndividualObjects,

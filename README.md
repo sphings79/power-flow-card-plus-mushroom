@@ -44,7 +44,7 @@
 
 </details>
 
-## Fork additions: Multiple Batteries, Multiple PV & unlimited Individual devices
+## Fork additions: Multiple Batteries, Multiple PV, unlimited Individual devices & external charging
 
 > [!IMPORTANT]
 > **This fork uses its own card type so it can run side by side with the original card.**
@@ -120,6 +120,58 @@ entities:
 
 > [!TIP]
 > All sub-entities of one node should share the same unit (e.g. all `W` or all `kW`); the aggregate uses the first entity's unit. The docked list items are clickable (more-info) when `clickable_entities` is enabled.
+
+### External battery charging (`charger`)
+
+Some setups charge the battery from a source that is neither the grid nor the PV
+array — a car via V2L, a generator, shore power. The `charger` node makes that
+visible: it sits **below the grid** and feeds the battery through its own one-way
+flow line.
+
+```yaml
+type: custom:power-flow-card-plus-mushroom
+entities:
+  battery:
+    entity: sensor.battery_power
+  charger:
+    name: V2L / Generator
+    icon: mdi:ev-station
+    sources:
+      - entity: sensor.v2l_power
+        name: V2L
+        icon: mdi:car-electric
+      - entity: sensor.generator_power
+        name: Generator
+        icon: mdi:engine
+```
+
+Like `solar.sources` and `battery.batteries`, the `sources` list is summed into
+the node and each entry also appears in the docked breakdown below the diagram.
+A single `entity` works too, if you already aggregate the sources elsewhere.
+
+| Option                   | Type      | Default        | Description                                                                 |
+| ------------------------ | --------- | -------------- | --------------------------------------------------------------------------- |
+| `sources`                | `list`    | —              | Individual charging sources, summed into the node.                          |
+| `entity`                 | `string`  | —              | Single aggregate entity. Optional when `sources` is set.                    |
+| `name`                   | `string`  | `Charging source` | Label below the circle.                                                  |
+| `icon`                   | `string`  | `mdi:ev-station` | Icon inside the circle.                                                   |
+| `display_zero`           | `boolean` | `true`         | Keep the node visible when nothing is charging.                             |
+| `display_zero_tolerance` | `number`  | `0`            | Ignore readings at or below this many watts, to suppress sensor noise.      |
+| `invert_state`           | `boolean` | `false`        | For sources that report delivered power as negative.                        |
+
+> [!NOTE]
+> The flow is one-way and deliberately kept out of the grid/solar/home
+> distribution maths. Your battery entity already reports the resulting charge,
+> so feeding this power into the distribution as well would count it twice. The
+> node needs a configured battery — on its own it would have nowhere to point.
+
+### Configuring all of this in the UI
+
+The lists above (`solar.sources`, `battery.batteries`, `charger.sources`) used to
+be YAML-only. They now have proper fields in the visual editor: open the Solar,
+Battery or Charging-source page and use **Add** to append an entry, with controls
+to reorder and remove. Editing the rest of a page no longer discards a list that
+was set up in YAML.
 
 ### Mushroom appearance
 

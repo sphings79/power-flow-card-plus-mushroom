@@ -83,6 +83,19 @@
     "navigation_path": "Navigatiepad",
     "sort_individual_devices": "Sorteer individuele apparaten",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Geen labels"
+    "no_labels": "Geen labels",
+    "entity": "Entiteit",
+    "name": "Naam",
+    "icon": "Pictogram",
+    "unit": "Eenheid",
+    "no_units": "Nog geen items",
+    "move_up": "Omhoog",
+    "move_down": "Omlaag",
+    "remove": "Verwijderen",
+    "add": "Toevoegen",
+    "battery_units": "Individuele batterijen",
+    "solar_units": "Individuele PV-bronnen",
+    "charger_units": "Laadbronnen",
+    "charger": "Laadbron"
   }
 }

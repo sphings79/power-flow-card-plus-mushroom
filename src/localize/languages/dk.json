@@ -83,6 +83,19 @@
     "navigation_path": "Navigationssti",
     "sort_individual_devices": "Sorter individuelle enheder",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Ingen etiketter"
+    "no_labels": "Ingen etiketter",
+    "entity": "Entitet",
+    "name": "Navn",
+    "icon": "Ikon",
+    "unit": "Enhed",
+    "no_units": "Ingen poster endnu",
+    "move_up": "Flyt op",
+    "move_down": "Flyt ned",
+    "remove": "Fjern",
+    "add": "Tilføj",
+    "battery_units": "Individuelle batterier",
+    "solar_units": "Individuelle PV-kilder",
+    "charger_units": "Opladningskilder",
+    "charger": "Opladningskilde"
   }
 }

@@ -10,12 +10,15 @@ import { LovelaceRowConfig } from "./types/entity-rows";
 import "./components/individual-devices-editor";
 import "./components/link-subpage";
 import "./components/subpage-header";
+import "./components/unit-list-editor";
+import { UnitListKind } from "./components/unit-list-editor";
 import { loadHaForm } from "./utils/load-ha-form";
 import { gridSchema } from "./schema/grid";
 import { solarSchema } from "./schema/solar";
 import { batterySchema } from "./schema/battery";
 import { nonFossilSchema } from "./schema/fossil-fuel-percentage";
 import { homeSchema } from "./schema/home";
+import { chargerSchema } from "./schema/charger";
 import { ConfigPage } from "./types/config-page";
 
 const CONFIG_PAGES: {
@@ -49,6 +52,11 @@ const CONFIG_PAGES: {
     schema: homeSchema,
   },
   {
+    page: "charger",
+    icon: "mdi:ev-station",
+    schema: chargerSchema,
+  },
+  {
     page: "individual",
     icon: "mdi:dots-horizontal-circle-outline",
   },
@@ -58,6 +66,16 @@ const CONFIG_PAGES: {
     schema: advancedOptionsSchema,
   },
 ];
+
+/**
+ * Which config key holds the aggregated unit list for a given sub-page, and which
+ * flavour of the list editor to render for it. Pages absent here have no list.
+ */
+const UNIT_LISTS: Partial<Record<string, { key: "batteries" | "sources"; kind: UnitListKind }>> = {
+  battery: { key: "batteries", kind: "battery" },
+  solar: { key: "sources", kind: "solar" },
+  charger: { key: "sources", kind: "charger" },
+};
 
 @customElement("power-flow-card-plus-mushroom-editor")
 export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardEditor {
@@ -110,7 +128,9 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
         currentPage === "advanced"
           ? advancedOptionsSchema(localize, this._config.display_zero_lines?.mode ?? defaultValues.displayZeroLines.mode)
           : CONFIG_PAGES.find((page) => page.page === currentPage)?.schema;
-      const dataForForm = currentPage === "advanced" ? data : data.entities[currentPage];
+      // The charger page is commonly unconfigured; give ha-form an object either way.
+      const dataForForm = currentPage === "advanced" ? data : (data.entities[currentPage] ?? {});
+      const unitList = currentPage ? UNIT_LISTS[currentPage] : undefined;
 
       return html`
         <pfcp-multi-subpage-header @go-back=${this._goBack} page=${this._currentConfigPage}> </pfcp-multi-subpage-header>
@@ -121,6 +141,19 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
           .computeLabel=${this._computeLabelCallback}
           @value-changed=${this._valueChanged}
         ></ha-form>
+        ${unitList
+          ? html`
+              <div class="pfcp-unit-section">
+                <div class="pfcp-unit-section-title">${localize(`editor.${unitList.kind}_units`)}</div>
+                <pfcp-multi-unit-list-editor
+                  .hass=${this.hass}
+                  .kind=${unitList.kind}
+                  .units=${(dataForForm as any)?.[unitList.key] ?? []}
+                  @units-changed=${(ev: CustomEvent) => this._unitsChanged(ev, unitList.key)}
+                ></pfcp-multi-unit-list-editor>
+              </div>
+            `
+          : nothing}
       `;
     }
 
@@ -168,16 +201,47 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
     }
 
     if (this._currentConfigPage !== null && this._currentConfigPage !== "advanced" && this._currentConfigPage !== "individual") {
+      const page = this._currentConfigPage;
+      const previous = (this._config.entities as any)?.[page] ?? {};
+      const unitList = UNIT_LISTS[page];
+
+      // `ha-form` only reports the fields it renders. The aggregated unit lists
+      // (`batteries` / `sources`) have no form fields on this page, so they would be
+      // dropped from the config on every edit if we did not carry them over.
+      const preserved = unitList && previous[unitList.key] !== undefined ? { [unitList.key]: previous[unitList.key] } : {};
+
       config = {
         ...this._config,
         entities: {
           ...this._config.entities,
-          [this._currentConfigPage]: config,
+          [page]: { ...config, ...preserved },
         },
       };
     }
 
     fireEvent(this, "config-changed", { config });
+  }
+
+  /** Applies a changed unit list (batteries / PV sources / charging sources). */
+  private _unitsChanged(ev: CustomEvent, key: "batteries" | "sources"): void {
+    ev.stopPropagation();
+    const page = this._currentConfigPage;
+    if (!this._config || page === null || page === "advanced" || page === "individual") return;
+
+    const units = (ev.detail as any)?.units ?? [];
+    const previous = (this._config.entities as any)?.[page] ?? {};
+    const next = { ...previous };
+
+    // An empty list is removed entirely rather than left as `[]` in the YAML.
+    if (units.length) next[key] = units;
+    else delete next[key];
+
+    fireEvent(this, "config-changed", {
+      config: {
+        ...this._config,
+        entities: { ...this._config.entities, [page]: next },
+      },
+    });
   }
 
   private _computeLabelCallback = (schema: any) =>
@@ -202,6 +266,17 @@ export class PowerFlowCardPlusEditor extends LitElement implements LovelaceCardE
         flex-direction: column;
         gap: 1.5rem;
         margin-bottom: 10px;
+      }
+
+      .pfcp-unit-section {
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px solid var(--divider-color, rgba(127, 127, 127, 0.3));
+      }
+
+      .pfcp-unit-section-title {
+        font-weight: 500;
+        margin-bottom: 8px;
       }
 
       .config-header {

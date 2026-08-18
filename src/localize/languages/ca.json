@@ -83,6 +83,19 @@
     "navigation_path": "Ruta de Navegació",
     "sort_individual_devices": "Ordena Dispositius Individuals",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Sense etiquetes"
+    "no_labels": "Sense etiquetes",
+    "entity": "Entitat",
+    "name": "Nom",
+    "icon": "Icona",
+    "unit": "Unitat",
+    "no_units": "Encara no hi ha entrades",
+    "move_up": "Mou amunt",
+    "move_down": "Mou avall",
+    "remove": "Elimina",
+    "add": "Afegeix",
+    "battery_units": "Bateries individuals",
+    "solar_units": "Fonts FV individuals",
+    "charger_units": "Fonts de càrrega",
+    "charger": "Font de càrrega"
   }
 }

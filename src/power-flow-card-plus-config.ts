@@ -122,6 +122,46 @@ interface Solar extends Omit<BaseConfigEntity, "entity"> {
   sources?: SolarSource[];
 }
 
+/**
+ * A single external charging source (V2L, generator, shore power, …) that is
+ * aggregated into the charger node and additionally rendered as a docked item
+ * below the flow diagram.
+ */
+export interface ChargerSource {
+  entity: string;
+  name?: string;
+  icon?: string;
+  color?: string;
+  invert_state?: boolean;
+}
+
+/**
+ * An external source that charges the battery directly, bypassing grid and solar
+ * (for example V2L from a car, or a generator).
+ *
+ * It is rendered as its own node underneath the grid, with a single one-way flow
+ * line into the battery. Its power deliberately does not take part in the
+ * grid/solar/home distribution maths — the battery entity already reports the
+ * resulting charge, so counting it again would double up the numbers.
+ */
+interface Charger extends Omit<BaseConfigEntity, "entity"> {
+  entity?: string;
+  color?: string;
+  color_icon?: boolean;
+  color_value?: boolean;
+  color_label?: boolean;
+  display_zero?: boolean;
+  display_zero_state?: boolean;
+  display_zero_tolerance?: number;
+  secondary_info?: SecondaryInfoType;
+  /**
+   * List of individual charging sources. Their power is summed into the charger
+   * node (when `entity` is omitted). Each source is also shown as a docked item
+   * below the diagram.
+   */
+  sources?: ChargerSource[];
+}
+
 interface Home extends BaseConfigEntity {
   entity: string;
   override_state?: boolean;
@@ -155,6 +195,7 @@ export type ConfigEntities = {
   home?: Home;
   fossil_fuel_percentage?: FossilFuelPercentage;
   individual?: IndividualField;
+  charger?: Charger;
 };
 
-export type ConfigEntity = Battery | Grid | Solar | Home | FossilFuelPercentage | IndividualDeviceType;
+export type ConfigEntity = Battery | Grid | Solar | Home | FossilFuelPercentage | IndividualDeviceType | Charger;

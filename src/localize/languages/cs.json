@@ -83,6 +83,19 @@
     "navigation_path": "Navigační cesta",
     "sort_individual_devices": "Seřaďte individuálně",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Bez popisků"
+    "no_labels": "Bez popisků",
+    "entity": "Entita",
+    "name": "Název",
+    "icon": "Ikona",
+    "unit": "Jednotka",
+    "no_units": "Zatím žádné položky",
+    "move_up": "Posunout nahoru",
+    "move_down": "Posunout dolů",
+    "remove": "Odebrat",
+    "add": "Přidat",
+    "battery_units": "Jednotlivé baterie",
+    "solar_units": "Jednotlivé FV zdroje",
+    "charger_units": "Zdroje nabíjení",
+    "charger": "Zdroj nabíjení"
   }
 }

@@ -11,6 +11,10 @@ export const styles = css`
     --individual-right-bottom-color: #5bd0cc;
     --non-fossil-color: var(--energy-non-fossil-color, #0f9d58);
     --icon-non-fossil-color: var(--non-fossil-color, #0f9d58);
+    --charger-color: var(--energy-battery-in-color, #f06292);
+    --icon-charger-color: var(--charger-color, #f06292);
+    --text-charger-color: var(--primary-text-color);
+    --secondary-text-charger-color: var(--primary-text-color);
     --icon-solar-color: var(--energy-solar-color, #ff9800);
     --icon-individual-bottom-color: var(--individual-left-bottom-color, #d0cc5b);
     --icon-individual-top-color: var(--individual-left-top-color, #964cb5);
@@ -384,6 +388,27 @@ export const styles = css`
     stroke-width: 4;
     fill: var(--non-fossil-color);
     stroke: var(--non-fossil-color);
+  }
+  .circle-container.charger {
+    height: 110px;
+    justify-content: flex-end;
+  }
+  #charger-battery {
+    stroke: var(--charger-color);
+  }
+  .charger path {
+    stroke: var(--charger-color);
+  }
+  .charger .circle {
+    border-color: var(--charger-color);
+  }
+  .charger ha-icon:not(.small) {
+    color: var(--icon-charger-color);
+  }
+  circle.charger-to-battery {
+    stroke-width: 4;
+    fill: var(--charger-color);
+    stroke: var(--charger-color);
   }
   .solar {
     color: var(--primary-text-color);

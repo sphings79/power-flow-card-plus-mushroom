@@ -83,6 +83,19 @@
     "navigation_path": "путь навигации",
     "sort_individual_devices": "Сортировка отдельных устройств",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Без меток"
+    "no_labels": "Без меток",
+    "entity": "Объект",
+    "name": "Название",
+    "icon": "Значок",
+    "unit": "Единица",
+    "no_units": "Пока нет записей",
+    "move_up": "Переместить вверх",
+    "move_down": "Переместить вниз",
+    "remove": "Удалить",
+    "add": "Добавить",
+    "battery_units": "Отдельные батареи",
+    "solar_units": "Отдельные источники PV",
+    "charger_units": "Источники зарядки",
+    "charger": "Источник зарядки"
   }
 }

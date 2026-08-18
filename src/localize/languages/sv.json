@@ -83,6 +83,19 @@
     "navigation_path": "Navigationsväg",
     "sort_individual_devices": "Sortera enskilda enheter",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Inga etiketter"
+    "no_labels": "Inga etiketter",
+    "entity": "Entitet",
+    "name": "Namn",
+    "icon": "Ikon",
+    "unit": "Enhet",
+    "no_units": "Inga poster ännu",
+    "move_up": "Flytta upp",
+    "move_down": "Flytta ner",
+    "remove": "Ta bort",
+    "add": "Lägg till",
+    "battery_units": "Enskilda batterier",
+    "solar_units": "Enskilda PV-källor",
+    "charger_units": "Laddkällor",
+    "charger": "Laddkälla"
   }
 }

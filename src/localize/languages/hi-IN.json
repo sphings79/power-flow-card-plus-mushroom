@@ -83,6 +83,19 @@
     "navigation_path": "नेविगेशन पथ",
     "sort_individual_devices": "व्यक्तिगत डिवाइस क्रमबद्ध करें",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "लेबल छुपाएँ"
+    "no_labels": "लेबल छुपाएँ",
+    "entity": "एंटिटी",
+    "name": "नाम",
+    "icon": "आइकन",
+    "unit": "इकाई",
+    "no_units": "अभी कोई प्रविष्टि नहीं",
+    "move_up": "ऊपर ले जाएँ",
+    "move_down": "नीचे ले जाएँ",
+    "remove": "हटाएँ",
+    "add": "जोड़ें",
+    "battery_units": "अलग-अलग बैटरियाँ",
+    "solar_units": "अलग-अलग पीवी स्रोत",
+    "charger_units": "चार्जिंग स्रोत",
+    "charger": "चार्जिंग स्रोत"
   }
 }

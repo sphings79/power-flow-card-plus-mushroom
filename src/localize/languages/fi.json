@@ -83,6 +83,19 @@
     "navigation_path": "Navigointipolku",
     "sort_individual_devices": "Lajittele yksittäiset laitteet",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "Ei tunnisteita"
+    "no_labels": "Ei tunnisteita",
+    "entity": "Entiteetti",
+    "name": "Nimi",
+    "icon": "Kuvake",
+    "unit": "Yksikkö",
+    "no_units": "Ei vielä merkintöjä",
+    "move_up": "Siirrä ylös",
+    "move_down": "Siirrä alas",
+    "remove": "Poista",
+    "add": "Lisää",
+    "battery_units": "Yksittäiset akut",
+    "solar_units": "Yksittäiset aurinkolähteet",
+    "charger_units": "Latauslähteet",
+    "charger": "Latauslähde"
   }
 }

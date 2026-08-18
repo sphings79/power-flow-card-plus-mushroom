@@ -83,6 +83,19 @@
     "navigation_path": "Navigation Path",
     "sort_individual_devices": "Sort individual devices",
     "allow_layout_break": "Allow Layout Break",
-    "no_labels": "No Labels"
+    "no_labels": "No Labels",
+    "entity": "Entity",
+    "name": "Name",
+    "icon": "Icon",
+    "unit": "Unit",
+    "no_units": "No entries yet",
+    "move_up": "Move up",
+    "move_down": "Move down",
+    "remove": "Remove",
+    "add": "Add",
+    "battery_units": "Individual batteries",
+    "solar_units": "Individual PV sources",
+    "charger_units": "Charging sources",
+    "charger": "Charging source"
   }
 }

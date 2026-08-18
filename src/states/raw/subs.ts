@@ -51,6 +51,26 @@ export const getSolarSubs = (hass: HomeAssistant, config: PowerFlowCardPlusConfi
     });
 };
 
+/** Build the list of docked charging sources (V2L, generator, …) for the breakdown. */
+export const getChargerSubs = (hass: HomeAssistant, config: PowerFlowCardPlusConfig): SubEntity[] => {
+  const sources = config.entities.charger?.sources;
+  if (!sources?.length) return [];
+
+  return sources
+    .filter((source) => source?.entity && doesEntityExist(hass, source.entity))
+    .map((source) => {
+      const raw = getEntityStateWatts(hass, source.entity);
+      const state = source.invert_state ? -raw : raw;
+      return {
+        entity: source.entity,
+        name: friendlyName(hass, source.entity, source.name),
+        icon: attrIcon(hass, source.entity, source.icon) ?? "mdi:ev-station",
+        color: source.color,
+        state,
+      };
+    });
+};
+
 /** Build the list of docked batteries for the breakdown below the diagram. */
 export const getBatterySubs = (hass: HomeAssistant, config: PowerFlowCardPlusConfig): SubEntity[] => {
   const batteries = config.entities.battery?.batteries;

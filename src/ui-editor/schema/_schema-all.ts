@@ -52,6 +52,7 @@ export const cardConfigStruct = assign(
       home: optional(any()),
       fossil_fuel_percentage: optional(any()),
       individual: optional(any()),
+      charger: optional(any()),
     }),
     appearance: optional(string()),
     max_individual_in_grid: optional(number()),

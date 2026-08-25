@@ -1,22 +1,21 @@
-# Screenshots
+# Illustrations
 
-The README references the image files listed below. They are **not in the repository yet** —
-the previous images showed the upstream card and were removed because they did not represent
-this fork. Drop your own captures here using exactly these filenames and they will appear
-in the README automatically.
+The README uses the SVG illustrations in this folder. They are drawn by hand, not captured from a
+running instance, and are deliberately schematic: they show the card's layout and what this fork
+adds, without pretending to be a screenshot of anyone's dashboard.
 
-| Filename | What it should show |
+| File | Shows |
 | --- | --- |
-| `hero.gif` | Headline animation at the top of the README — ideally the fork's strengths: several batteries, several PV sources, Mushroom appearance |
-| `demo-grid-only.gif` | Minimal setup: grid only |
-| `demo-solar-and-grid.gif` | Grid + solar |
-| `demo-grid-solar-battery.gif` | Grid + solar + battery |
-| `minimal-config.png` | Result of the "Minimal Configuration" example |
-| `demo-full.gif` | Fully configured card |
-| `demo-individual-devices.gif` | Several individual devices (beyond the upstream limit of 4) |
-| `demo-variant-1.gif` | Free layout variant |
-| `demo-variant-2.png` | Free layout variant |
-| `ui-editor.png` | The graphical UI editor |
+| `banner.svg` | README header |
+| `social-preview.svg` / `.png` | GitHub social preview (1280×640) |
+| `card-preview.svg` | Headline image — three PV sources, two batteries, docked breakdown |
+| `demo-grid-only.svg` | Minimal setup: grid only |
+| `demo-solar-and-grid.svg` | Grid + solar |
+| `demo-grid-solar-battery.svg` | Grid + solar + battery |
+| `minimal-config.svg` | Result of the "Minimal Configuration" example |
+| `demo-full.svg` | Fully configured card |
+| `demo-individual-devices.svg` | More individual devices than the upstream limit of four |
+| `ui-editor.svg` | The visual card editor |
 
-Recording tips: use a browser window around 500 px wide so the card fills the frame, and
-let animated flows run for a few seconds so the GIF loops cleanly.
+If you would rather have real captures, replace the `<img src="...">` targets in the README. A
+browser window around 500 px wide makes the card fill the frame nicely.

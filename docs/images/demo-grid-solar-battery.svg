@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 410" width="500" height="410" role="img" aria-label="Grid, solar and battery">
+  <rect width="500" height="410" rx="12" fill="#111111"/>
+  
+  <rect x="8" y="0" width="484" height="402" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+  <g transform="translate(0,0)">
+  <circle cx="250" cy="96" r="38" fill="none" stroke="#ff9800" stroke-width="2.5"/>
+  <g transform="translate(239,72) scale(0.92)" fill="none" stroke="#ff9800" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></g>
+  <text x="250" y="110" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">3,2 kW</text>
+  <text x="250" y="151" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Solar</text>
+  <circle cx="92" cy="216" r="38" fill="none" stroke="#488fc2" stroke-width="2.5"/>
+  <g transform="translate(81,192) scale(0.92)" fill="none" stroke="#488fc2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V8l7-5 7 5v13"/><path d="M5 12h14M9 3.5V21M15 3.5V21"/></g>
+  <text x="92" y="230" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">0 W</text>
+  <text x="92" y="271" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Grid</text>
+  <circle cx="408" cy="216" r="38" fill="none" stroke="#488fc2" stroke-width="2.5"/>
+  <g transform="translate(397,192) scale(0.92)" fill="none" stroke="#488fc2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></g>
+  <text x="408" y="230" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">2,1 kW</text>
+  <text x="408" y="271" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Home</text>
+  <circle cx="250" cy="336" r="38" fill="none" stroke="#f06292" stroke-width="2.5"/>
+  <g transform="translate(239,312) scale(0.92)" fill="none" stroke="#f06292" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="15" height="10" rx="2"/><path d="M21 10v4"/></g>
+  <text x="250" y="350" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">1,1 kW</text>
+  <text x="250" y="391" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Battery</text>
+  <text x="250" y="405" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10.5" font-weight="600" fill="#f06292" text-anchor="middle">62 %</text>
+  <path d="M130 216 L370 216" fill="none" stroke="#3a3a3a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M280 118 C 330 156, 378 146, 400 184" fill="none" stroke="#ff9800" stroke-width="2.5" stroke-opacity="0.9" stroke-linecap="round"/>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.0s" path="M280 118 C 330 156, 378 146, 400 184"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s" path="M280 118 C 330 156, 378 146, 400 184"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.6s" path="M280 118 C 330 156, 378 146, 400 184"/></circle>
+  <path d="M250 134 L250 298" fill="none" stroke="#ff9800" stroke-width="2.5" stroke-opacity="0.9" stroke-linecap="round"/>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.0s" path="M250 134 L250 298"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s" path="M250 134 L250 298"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.6s" path="M250 134 L250 298"/></circle>
+  </g>
+</svg>

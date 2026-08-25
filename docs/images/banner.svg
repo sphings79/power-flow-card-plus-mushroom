@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-label="Power Flow Card Plus Mushroom - Home Assistant energy flow card with multiple batteries and PV sources">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#12161F"/><stop offset="55%" stop-color="#1A2130"/><stop offset="100%" stop-color="#131822"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#4DB6AC"/>
+    </linearGradient>
+    <linearGradient id="wire" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF9800" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#FF9800" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#4DB6AC" stop-opacity="0.15"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="340" rx="18" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="4" rx="2" fill="url(#accent)"/>
+  <g stroke="#FF9800" stroke-opacity="0.06" stroke-width="1"><path d="M0 60H1200M0 120H1200M0 180H1200M0 240H1200M0 300H1200M120 0V340M280 0V340M440 0V340M760 0V340M920 0V340M1080 0V340"/></g>
+  <text x="72" y="128" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="50" font-weight="700" fill="#F2F5FA">Power Flow Card Plus</text>
+  <text x="72" y="174" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="26" font-weight="500" fill="#FF9800">Mushroom edition — for Home Assistant</text>
+  <text x="72" y="220" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="19" fill="#9AA5B5">Several batteries, several PV sources, unlimited devices.</text>
+  <rect x="72" y="248" width="142" height="34" rx="17" fill="#FF9800" fill-opacity="0.13" stroke="#FF9800" stroke-opacity="0.45"/>
+  <text x="143" y="270" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="15" font-weight="600" fill="#FF9800" text-anchor="middle">Multi-battery</text>
+  <rect x="225.8" y="248" width="99" height="34" rx="17" fill="#4DB6AC" fill-opacity="0.13" stroke="#4DB6AC" stroke-opacity="0.45"/>
+  <text x="275" y="270" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="15" font-weight="600" fill="#4DB6AC" text-anchor="middle">Multi-PV</text>
+  <rect x="336.6" y="248" width="107" height="34" rx="17" fill="#FF9800" fill-opacity="0.13" stroke="#FF9800" stroke-opacity="0.45"/>
+  <text x="390" y="270" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="15" font-weight="600" fill="#FF9800" text-anchor="middle">UI editor</text>
+  <rect x="456.0" y="248" width="64" height="34" rx="17" fill="#4DB6AC" fill-opacity="0.13" stroke="#4DB6AC" stroke-opacity="0.45"/>
+  <text x="488" y="270" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="15" font-weight="600" fill="#4DB6AC" text-anchor="middle">HACS</text>
+  <g transform="translate(790,22) scale(0.86)"><circle cx="160" cy="44" r="40" fill="none" stroke="#ff9800" stroke-width="3"/><circle cx="20" cy="160" r="40" fill="none" stroke="#488fc2" stroke-width="3"/><circle cx="300" cy="160" r="40" fill="none" stroke="#488fc2" stroke-width="3"/><circle cx="160" cy="276" r="40" fill="none" stroke="#f06292" stroke-width="3"/><g transform="translate(146,30)" fill="none" stroke="#ff9800" stroke-width="2.4" stroke-linecap="round"><circle cx="14" cy="14" r="5"/><path d="M14 2v3M14 23v3M2 14h3M23 14h3M5.8 5.8l2.2 2.2M20 20l2.2 2.2M22.2 5.8L20 8M8 20l-2.2 2.2"/></g><g transform="translate(6,146)" fill="none" stroke="#488fc2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 28V10L14 3l10 7v18"/><path d="M4 16h20M10 4.5V28M18 4.5V28"/></g><g transform="translate(286,146)" fill="none" stroke="#488fc2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13l12-9 12 9"/><path d="M5 11v16h18V11"/><path d="M11 27v-7h6v7"/></g><g transform="translate(146,262)" fill="none" stroke="#f06292" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="21" height="14" rx="3"/><path d="M26 12v4"/></g><path d="M196 66 C 244 96, 262 108, 282 130" fill="none" stroke="#ff9800" stroke-width="3" stroke-linecap="round"/><path d="M160 84 L160 236" fill="none" stroke="#ff9800" stroke-width="3" stroke-linecap="round"/><path d="M196 254 C 244 224, 262 212, 282 190" fill="none" stroke="#4db6ac" stroke-width="3" stroke-linecap="round"/><path d="M60 160 L260 160" fill="none" stroke="#3a4352" stroke-width="2.5" stroke-linecap="round"/><text x="160" y="112" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="15" fill="#9AA5B5" text-anchor="middle">3 PV sources</text><text x="160" y="336" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="15" fill="#9AA5B5" text-anchor="middle">2 batteries</text></g>
+</svg>

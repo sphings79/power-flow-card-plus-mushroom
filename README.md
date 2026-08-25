@@ -1,12 +1,23 @@
+<div align="center">
+
+<img src="docs/images/banner.svg" alt="Power Flow Card Plus Mushroom — Home Assistant energy flow card with multiple batteries, multiple PV sources and Mushroom styling" width="100%">
+
 # Power Flow Card Plus Mushroom
+
+**The power flow card, with more than one battery, more than one PV string and more than four devices.**
 
 [![HACS Custom Repository](https://img.shields.io/badge/HACS-Custom%20Repository-41BDF5.svg?style=flat-square)](https://hacs.xyz)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/sphings79/power-flow-card-plus-mushroom?style=flat-square)](https://github.com/sphings79/power-flow-card-plus-mushroom/releases/latest)
 [![GitHub total downloads](https://img.shields.io/github/downloads/sphings79/power-flow-card-plus-mushroom/total?style=flat-square)](https://github.com/sphings79/power-flow-card-plus-mushroom/releases)
 [![commit_activity](https://img.shields.io/github/commit-activity/y/sphings79/power-flow-card-plus-mushroom?color=brightgreen&label=Commits&style=flat-square)](https://github.com/sphings79/power-flow-card-plus-mushroom/commits/main)
 
-<!-- TODO: replace with a screenshot/GIF of THIS fork (multiple batteries, multiple PV, Mushroom appearance) -->
-![Power Flow Card Plus Mushroom](docs/images/hero.gif)
+**English** · [Deutsch](README.de.md)
+
+<img src="docs/images/card-preview.svg" alt="The card with three PV sources and two batteries: aggregated solar and battery nodes with animated flows, and a docked breakdown listing every source and battery underneath" width="52%">
+
+<sub>Illustration of the card's layout — not a photograph of a running instance.</sub>
+
+</div>
 
 > [!NOTE]
 > **This is a fork.** It builds on [flixlix/power-flow-card-plus](https://github.com/flixlix/power-flow-card-plus) by [@flixlix](https://github.com/flixlix), who wrote the original card and deserves the credit for it. This fork adds multiple batteries, multiple PV sources, unlimited individual devices and a Mushroom-style appearance.
@@ -698,8 +709,7 @@ watt_threshold: 10000
 
 This should give you something like this:
 
-<!-- TODO: add your own screenshot of the grid-only configuration -->
-![demo_only_grid-2](docs/images/demo-grid-only.gif)
+<img src="docs/images/demo-grid-only.svg" alt="The card configured with the grid only" width="52%">
 
 ##### Grid and Solar
 
@@ -718,8 +728,7 @@ entities:
 
 This should give you something like this:
 
-<!-- TODO: add your own screenshot of the solar + grid configuration -->
-![demo_solar_and_grid](docs/images/demo-solar-and-grid.gif)
+<img src="docs/images/demo-solar-and-grid.svg" alt="The card configured with grid and solar" width="52%">
 
 ##### Grid, Solar and Battery
 
@@ -748,8 +757,7 @@ watt_threshold: 10000
 
 This should give you something like this:
 
-<!-- TODO: add your own screenshot of the grid + solar + battery configuration -->
-![demo_grid_solar_bat-2](docs/images/demo-grid-solar-battery.gif)
+<img src="docs/images/demo-grid-solar-battery.svg" alt="The card configured with grid, solar and a battery" width="52%">
 
 ### Mix & Match Config aka "Full Config"
 
@@ -805,19 +813,12 @@ title: Power Flow Card Plus
 ```
 
 This should give you something like this:
-<!-- TODO: add your own screenshot of the minimal configuration -->
-![minimal_config_full](docs/images/minimal-config.png)
+<img src="docs/images/minimal-config.svg" alt="The result of the minimal configuration example" width="52%">
 
 ### Random Configurations
 
-<!-- TODO: add your own screenshot of the full configuration -->
-![2023-03-26-13-04-07](docs/images/demo-full.gif)
-<!-- TODO: add your own screenshot of the individual devices -->
-![recording_multi_indiv](docs/images/demo-individual-devices.gif)
-<!-- TODO: add your own screenshot of the layout variant -->
-![demo](docs/images/demo-variant-1.gif)
-<!-- TODO: add your own screenshot of the layout variant -->
-![demo_grid_solar_bat](docs/images/demo-variant-2.png)
+<img src="docs/images/demo-full.svg" alt="A fully configured card with several PV sources, two batteries and low-carbon energy" width="52%">
+<img src="docs/images/demo-individual-devices.svg" alt="Four individual devices in the corner slots and three more in the docked list below" width="52%">
 
 ### UI Editor (available in version 0.2)
 
@@ -825,8 +826,7 @@ This should give you something like this:
 > I've made a lot of improvements in version 0.2 for the UI-Editor. Now each field has its own subpage, meaning there is now much less scrolling.
 > The biggest change in the editor is the fact that you can now add up to 4 individual devices, all through the UI! 🥳
 
-<!-- TODO: add your own screenshot of the UI editor -->
-![ui-editor](docs/images/ui-editor.png)
+<img src="docs/images/ui-editor.svg" alt="The visual card editor with a list of solar sources that can be extended" width="66%">
 
 ### Flow Formula
 
@@ -879,6 +879,11 @@ On the old Flow Formula you might think that the sun is producing a lot of power
 At the end of the day these are two options and depending on what you're interested, one might suit you better than the other, that's why I kept the old formula, you have the choice. 🙂
 
 ### To-Do List
+
+> [!NOTE]
+> This list is inherited from the upstream card. Some of its entries — more than one solar source,
+> more than two individual devices — are already implemented in **this fork**; see
+> [Fork additions](#fork-additions-multiple-batteries-multiple-pv-unlimited-individual-devices--external-charging).
 
 Here is my to-do list containing a few enhancements I am planning in adding. The ones at the top are bigger priorities, so they’ll probably be available before the ones at the bottom.
 

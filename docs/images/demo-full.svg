@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 600" width="500" height="600" role="img" aria-label="Fully configured card">
+  <rect width="500" height="600" rx="12" fill="#111111"/>
+  
+  <rect x="8" y="0" width="484" height="592" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+  <g transform="translate(0,0)">
+  <circle cx="250" cy="96" r="38" fill="none" stroke="#ff9800" stroke-width="2.5"/>
+  <g transform="translate(239,72) scale(0.92)" fill="none" stroke="#ff9800" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></g>
+  <text x="250" y="110" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">4,8 kW</text>
+  <text x="250" y="151" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Solar</text>
+  <circle cx="92" cy="216" r="38" fill="none" stroke="#488fc2" stroke-width="2.5"/>
+  <g transform="translate(81,192) scale(0.92)" fill="none" stroke="#488fc2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V8l7-5 7 5v13"/><path d="M5 12h14M9 3.5V21M15 3.5V21"/></g>
+  <text x="92" y="230" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">0,3 kW</text>
+  <text x="92" y="271" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Grid</text>
+  <circle cx="408" cy="216" r="38" fill="none" stroke="#488fc2" stroke-width="2.5"/>
+  <g transform="translate(397,192) scale(0.92)" fill="none" stroke="#488fc2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></g>
+  <text x="408" y="230" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">3,4 kW</text>
+  <text x="408" y="271" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Home</text>
+  <circle cx="250" cy="336" r="38" fill="none" stroke="#f06292" stroke-width="2.5"/>
+  <g transform="translate(239,312) scale(0.92)" fill="none" stroke="#f06292" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="15" height="10" rx="2"/><path d="M21 10v4"/></g>
+  <text x="250" y="350" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">2,1 kW</text>
+  <text x="250" y="391" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Battery</text>
+  <text x="250" y="405" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10.5" font-weight="600" fill="#f06292" text-anchor="middle">74 %</text>
+  <path d="M280 118 C 330 156, 378 146, 400 184" fill="none" stroke="#ff9800" stroke-width="2.5" stroke-opacity="0.9" stroke-linecap="round"/>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.0s" path="M280 118 C 330 156, 378 146, 400 184"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s" path="M280 118 C 330 156, 378 146, 400 184"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.6s" path="M280 118 C 330 156, 378 146, 400 184"/></circle>
+  <path d="M250 134 L250 298" fill="none" stroke="#ff9800" stroke-width="2.5" stroke-opacity="0.9" stroke-linecap="round"/>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.0s" path="M250 134 L250 298"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s" path="M250 134 L250 298"/></circle>
+  <circle r="3.2" fill="#ff9800"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.6s" path="M250 134 L250 298"/></circle>
+  <path d="M280 314 C 330 276, 378 286, 400 248" fill="none" stroke="#4db6ac" stroke-width="2.5" stroke-opacity="0.9" stroke-linecap="round"/>
+  <circle r="3.2" fill="#4db6ac"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.0s" path="M280 314 C 330 276, 378 286, 400 248"/></circle>
+  <circle r="3.2" fill="#4db6ac"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s" path="M280 314 C 330 276, 378 286, 400 248"/></circle>
+  <circle r="3.2" fill="#4db6ac"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.6s" path="M280 314 C 330 276, 378 286, 400 248"/></circle>
+  <path d="M130 216 L370 216" fill="none" stroke="#488fc2" stroke-width="2.5" stroke-opacity="0.9" stroke-linecap="round"/>
+  <circle r="3.2" fill="#488fc2"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.0s" path="M130 216 L370 216"/></circle>
+  <circle r="3.2" fill="#488fc2"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.8s" path="M130 216 L370 216"/></circle>
+  <circle r="3.2" fill="#488fc2"><animateMotion dur="2.4s" repeatCount="indefinite" begin="1.6s" path="M130 216 L370 216"/></circle>
+  <circle cx="78" cy="92" r="26" fill="none" stroke="#0f9d58" stroke-width="2.5"/>
+  <g transform="translate(67,68) scale(0.92)" fill="none" stroke="#0f9d58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c0 9-5 14-13 14"/><path d="M20 4C10 4 5 8 5 14c0 2 1 4 2 4"/></g>
+  <text x="78" y="106" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#e1e1e1" text-anchor="middle">62 %</text>
+  <text x="78" y="135" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#9b9b9b" text-anchor="middle">Low carbon</text>
+  <rect x="24" y="424" width="452" height="34" rx="7" fill="#252525" fill-opacity="0.6"/>
+  <g transform="translate(35,432.0) scale(0.76)" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></g>
+  <text x="62" y="445.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="400" fill="#e1e1e1">Roof South</text>
+  <text x="464" y="445.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="600" fill="#ff9800" text-anchor="end">2,9 kW</text>
+  <rect x="24" y="464" width="452" height="34" rx="7" fill="#252525" fill-opacity="0.6"/>
+  <g transform="translate(35,472.0) scale(0.76)" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></g>
+  <text x="62" y="485.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="400" fill="#e1e1e1">Roof East</text>
+  <text x="464" y="485.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="600" fill="#ff9800" text-anchor="end">1,9 kW</text>
+  <rect x="24" y="504" width="452" height="34" rx="7" fill="#252525" fill-opacity="0.6"/>
+  <g transform="translate(35,512.0) scale(0.76)" fill="none" stroke="#f06292" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="15" height="10" rx="2"/><path d="M21 10v4"/></g>
+  <text x="62" y="525.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="400" fill="#e1e1e1">Battery 1</text>
+  <text x="464" y="525.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="600" fill="#f06292" text-anchor="end">1,2 kW</text>
+  <rect x="24" y="544" width="452" height="34" rx="7" fill="#252525" fill-opacity="0.6"/>
+  <g transform="translate(35,552.0) scale(0.76)" fill="none" stroke="#f06292" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="15" height="10" rx="2"/><path d="M21 10v4"/></g>
+  <text x="62" y="565.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="400" fill="#e1e1e1">Battery 2</text>
+  <text x="464" y="565.0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="600" fill="#f06292" text-anchor="end">0,9 kW</text>
+  </g>
+</svg>

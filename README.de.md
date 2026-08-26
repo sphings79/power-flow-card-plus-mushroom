@@ -829,3 +829,12 @@ Hier meine To-do-Liste mit einigen geplanten Verbesserungen. Die oberen haben h�
 - Performance verbessern [#144](https://github.com/flixlix/power-flow-card-plus/issues/144)
 
 Ich bin bei diesem Projekt immer noch nur eine Person und habe natürlich auch anderes zu tun — Beiträge sind also sehr willkommen. Gern auch direkt ein PR mit einer neuen Funktion, ich schaue ihn mir nach Kräften an 😊
+
+---
+
+## ☕ Unterstützen
+
+Diese Tools entstehen in meiner Freizeit und bleiben kostenlos, quelloffen und cloudfrei.
+Wenn dir eines davon einen Nachmittag gespart hat, kannst du mir [einen Kaffee ausgeben](https://buymeacoffee.com/sphings).
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-sphings-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=000000)](https://buymeacoffee.com/sphings)

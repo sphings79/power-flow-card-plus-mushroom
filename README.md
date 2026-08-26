@@ -896,3 +896,12 @@ Here is my to-do list containing a few enhancements I am planning in adding. The
 - Improve performance [#144](https://github.com/flixlix/power-flow-card-plus/issues/144)
 
 I am still just one person working on this project and obviously have other things going on in my life, so feel free to contribute to the project. You can also feel free to create a PR with a new feature and I'll try my best to review it 😊
+
+---
+
+## ☕ Support
+
+These tools are built and maintained in my free time, and they stay free, open and cloud-free.
+If one of them saved you an afternoon, you can [buy me a coffee](https://buymeacoffee.com/sphings).
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-sphings-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=000000)](https://buymeacoffee.com/sphings)

@@ -832,7 +832,7 @@ Ich bin bei diesem Projekt immer noch nur eine Person und habe natürlich auch a
 
 ---
 
-## ☕ Unterstützen
+## Sponsor this project
 
 Diese Tools entstehen in meiner Freizeit und bleiben kostenlos, quelloffen und cloudfrei.
 Wenn dir eines davon einen Nachmittag gespart hat, kannst du mir [einen Kaffee ausgeben](https://buymeacoffee.com/sphings).

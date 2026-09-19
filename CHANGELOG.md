@@ -93,7 +93,7 @@ No functional change to the card.
 
 ### Added
 
-- An **Energy** section on every node page of the UI editor. Since 1.4.0 the kWh mode could be switched on under *Advanced*, period included, but there was no field at all for the kWh entities — those were YAML only, which made the mode practically unusable from the interface. Fields per page:
+- An **Energy** section on every node page of the UI editor. The kWh mode could already be switched on under *Advanced*, period included, but there was no field at all for the kWh entities — those were YAML only, which made the mode practically unusable from the interface. Fields per page:
   - Grid: consumed / returned energy
   - Battery: charged / discharged energy
   - Solar, home, charger: energy entity
@@ -125,7 +125,7 @@ No functional change to the card.
 
 ### Fixed
 
-- Flow lines still ran through the circles. The circle background added in 1.2.0 was not enough on its own: the line overlay renders *after* the rows and therefore sat on top. The circles now have an explicit stacking order and the lines end at the circle edge.
+- Flow lines still ran through the circles. The opaque circle background was not enough on its own: the line overlay renders *after* the rows and therefore sat on top. The circles now have an explicit stacking order and the lines end at the circle edge.
 
 ## [1.1.2] - 2026-08-18
 

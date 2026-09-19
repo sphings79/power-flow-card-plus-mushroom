@@ -9,6 +9,14 @@ import minifyHTML from 'rollup-plugin-minify-html-literals';
 
 const dev = process.env.ROLLUP_WATCH;
 
+const banner = `/*!
+ * power-flow-card-plus-mushroom
+ * Copyright (c) 2023-2026 flixlix
+ * Copyright (c) 2026 sphings79
+ * @license MIT
+ * https://github.com/sphings79/power-flow-card-plus-mushroom/blob/main/LICENSE
+ */`;
+
 const serveOptions = {
   contentBase: ["./dist"],
   host: "0.0.0.0",
@@ -28,11 +36,12 @@ export default [
         format: "es",
         inlineDynamicImports: true,
         entryFileNames: "power-flow-card-plus-mushroom.js",
+        banner,
       },
     ],
     plugins: [
       minifyHTML(),
-      terser({ output: { comments: false } }),
+      terser({ output: { comments: /@license/ } }),
       typescript({
         declaration: false,
       }),
@@ -45,7 +54,7 @@ export default [
         exclude: "node_modules/**",
         babelHelpers: "bundled",
       }),
-      ...(dev ? [serve(serveOptions)] : [terser()]),
+      ...(dev ? [serve(serveOptions)] : [terser({ output: { comments: /@license/ } })]),
     ],
     moduleContext: (id) => {
       const thisAsWindowForModules = [

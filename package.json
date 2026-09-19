@@ -14,14 +14,14 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sphings79/power-flow-card-plus.git"
+    "url": "git+https://github.com/sphings79/power-flow-card-plus-mushroom.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sphings79/power-flow-card-plus/issues"
+    "url": "https://github.com/sphings79/power-flow-card-plus-mushroom/issues"
   },
-  "homepage": "https://github.com/sphings79/power-flow-card-plus#readme",
+  "homepage": "https://github.com/sphings79/power-flow-card-plus-mushroom#readme",
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",

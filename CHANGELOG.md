@@ -107,37 +107,11 @@ No functional change to the card.
 
 - Rows in the individual-device list show the configured `name`, else the entity's friendly name, else its id, instead of always the entity — a speaking name is configured in nearly every case. The entity picker in the row gives way to a clickable label that opens the same detail editor as the pencil icon, where the entity stays editable; the id is in the row's tooltip.
 
-## [1.4.1] - 2026-08-18
-
-### Added
-
-- `kwh_threshold` (default 1000, `0` disables it) and `mwh_decimals`: energy values switch to MWh above the threshold so long numbers do not break the layout. 1000 is the natural unit boundary; at `kwh_threshold: 100`, 300 kWh becomes 0.30 MWh. Both options are in the UI editor under **Advanced**.
-
-## [1.4.0] - 2026-08-18
-
-### Added
-
-- Energy mode with a W/kWh toggle in the header. In kWh mode every node shows the energy of the selected period, with the period named beside it.
-- Batteries and individual devices show their kWh permanently, regardless of the toggle; batteries in both directions, arrow down for charged, arrow up for discharged.
-- Energy entities per node: `energy_consumed_entity` / `energy_returned_entity` for the grid, `energy_charged_entity` / `energy_discharged_entity` for the battery, `energy_entity` everywhere else. The card queries Home Assistant's statistics API and takes the difference over the period, so a single cumulative meter covers every period. `energy_from_state: true` reads the state as-is for sensors that already cover the period.
-- `energy_period` — calendar-based: today, yesterday, this week (from Monday), this month, this year, each up to now. Rolling: the last 7, 30 and 365 days, today included. The date arithmetic is covered by eight tests, including Sunday as end of week rather than start.
-- All options are in the UI editor under **Advanced**.
-
 ## [1.3.1] - 2026-08-18
 
 ### Fixed
 
 - Newly added editor fields appeared without a name, or with the raw translation key (`editor.individual_position` and so on). Two causes: the translations were missing — the editor translates through `editor.<name>`, and `localize` returns the key itself when it finds nothing, so they were added for all 18 languages, including `appearance`, unlabelled since the Mushroom option. And the fallback to the schema's `label` never fired, because the expression was chained with `||` and the returned key is truthy. Labels now fall back to `schema.label` explicitly, which keeps future fields readable too.
-
-## [1.3.0] - 2026-08-18
-
-### Added
-
-- `color_battery_by_soc`: green when full, orange around half, red when empty — the same colour ramp as `color_individual_by_usage`, read the other way round (95 % green, 62 % yellow, 33 % orange, 8 % red). Available as a switch in the UI editor under **Advanced**.
-
-### Fixed
-
-- A `color` set explicitly on a device or battery now wins over both colourings. Previously the usage colour overrode a deliberately configured colour.
 
 ## [1.2.1] - 2026-08-18
 
@@ -153,53 +127,8 @@ No functional change to the card.
 
 - Flow lines still ran through the circles. The circle background added in 1.2.0 was not enough on its own: the line overlay renders *after* the rows and therefore sat on top. The circles now have an explicit stacking order and the lines end at the circle edge.
 
-## [1.2.0] - 2026-08-18
-
-### Added
-
-- `individual_position: right` renders individual devices as a list beside the diagram instead of circles in the four corner slots, styled like the battery breakdown — considerably more usable with many devices. On narrow cards the list moves below the diagram.
-- `sort_individual_devices` accepts `value` (default), `name` and `name_desc`; the previous boolean still works and corresponds to `value`.
-- `charger.show_breakdown` to force the charger breakdown.
-- Both new options are available as select fields in the UI editor.
-
-### Changed
-
-- With only one charger source the breakdown below the diagram is omitted — it only repeated the node's value there.
-
-### Fixed
-
-- Flow lines showed through the circles. The CSS declaration meant to prevent that was commented out with `//`, which CSS does not know, so the line was silently discarded. With `appearance: mushroom` the tint now sits on an opaque base so the effect is preserved.
-
 ## [1.1.2] - 2026-08-18
 
 ### Fixed
 
 - Flow lines ended 16 px short of the circles and sat 16 px above their centre, caused by the `padding` of the line container: at the sides it shortens the lines, at the bottom it lifts them. Measured after the fix: 0 px gap left and right, horizontal lines exactly on circle centre, charger line from circle edge to battery centre. A deliberate deviation from upstream 0.3.7, which has the same gaps — the comparison beforehand measured an identical −16/+16 px in fork and original.
-
-## [1.1.1] - 2026-08-18
-
-Both fixes were verified by rendering the card in a test environment and measuring actual element positions, not only in code.
-
-### Fixed
-
-- Every flow line was pushed down by the height of the breakdown list whenever that list was visible — that is, whenever multiple batteries or PV sources are in use (measured: 101 px offset at 105 px list height). The lines are anchored absolutely to the bottom of their containing block, and that was `.card-content`, which holds the list as well. The diagram now has its own positioning context. Measured against the original card 0.3.7, the offset between circles and lines is identical in both.
-- The V2L/generator line introduced in 1.1.0 was invisible. It lay in the shared line overlay, which only exposes a narrow band above the battery row, and was clipped away entirely. It has its own container now and meets circle centre and battery centre exactly.
-
-## [1.1.0] - 2026-08-18
-
-### Added
-
-- `charger` node, for sources that charge the battery directly — V2L, generator, shore power. It sits below the grid node and feeds the battery over its own one-way flow line. Multiple `sources` are summed into the node and listed individually in the breakdown below the diagram, exactly like batteries and PV sources. Its power is deliberately kept out of the grid/solar/home distribution: the battery entity already reports the resulting charge current, so counting it again would double it.
-- UI editor support for `solar.sources`, `battery.batteries` and `charger.sources`, with add, remove and reorder on the respective sub-page. They were YAML only before; the visual editor did not know them.
-- `charger` added to the editor's config validation, and translations for all 18 languages.
-
-### Fixed
-
-- Data loss: editing a page in the UI editor discarded lists set via YAML, because `ha-form` only reports back the fields it rendered itself. They are preserved now.
-
-## [1.0.1] - 2026-08-18
-
-### Fixed
-
-- HACS reported `Repository structure is not compliant`. The bundle now lives at `dist/power-flow-card-plus-mushroom.js`, the layout HACS expects for frontend plugins. 1.0.0 was not installable because of this — use this version instead.
-- The console output on load still referred to the upstream repository. Source and shipped bundle now come from a real build.
